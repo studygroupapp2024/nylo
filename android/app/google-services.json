@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378925058177",
+    "project_id": "nylo-c23aa",
+    "storage_bucket": "nylo-c23aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378925058177:android:037a5e7330a025f944e580",
+        "android_client_info": {
+          "package_name": "com.turnix.nylo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq0zzPYTD_ScFYdUe8HEkMvgQ3vA3u7Qc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

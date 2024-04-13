@@ -1,0 +1,43 @@
+name: nylo
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+
+dependencies:
+
+  cloud_firestore: ^4.15.6
+  firebase_auth: ^4.17.6
+  firebase_core: ^2.29.0
+  flutter:
+    sdk: flutter
+  hooks_riverpod: ^2.5.1
+  file_picker: ^6.2.0
+  flutter_svg: ^2.0.10+1
+  google_sign_in: ^6.2.1
+  intl: ^0.19.0
+  uuid: ^4.3.3
+  firebase_messaging: ^14.7.20
+  firebase_storage: ^11.6.10
+  googleapis_auth: ^1.5.1
+  awesome_notifications: ^0.9.3+1
+  smooth_page_indicator: ^1.1.0
+  permission_handler: ^11.3.1
+  url_launcher: ^6.2.5
+  cupertino_icons: ^1.0.6
+  open_file: ^3.3.2
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets: 
+    - assets/icons/

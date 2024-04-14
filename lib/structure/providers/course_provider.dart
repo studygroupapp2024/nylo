@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nylo/structure/models/subject_model.dart';
 import 'package:nylo/structure/models/user_courses.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/services/course_services.dart';
@@ -74,33 +73,35 @@ final completedStudentCoursesInformationProvider =
 });
 
 // search course
-final unenrolledCoursesProvider = StreamProvider.family
-    .autoDispose<List<SubjectModel>, String>((ref, userId) {
+final unenrolledCoursesProvider = StreamProvider.autoDispose
+    .family<List<Map<String, dynamic>>, String>((ref, userId) {
   final searchQuery = ref.watch(courseSearchQueryProvider);
-  print("UNENROLLED COURSE");
   final institutionId = ref.watch(setGlobalUniversityId);
 
-  final getCourses = _firestore
+  final stream = _firestore
       .collection("institution")
       .doc(institutionId)
       .collection("subjects")
       .snapshots()
-      .map(
-        (querySnapshot) => querySnapshot.docs
-            .map((snapshot) => SubjectModel.fromSnapshot(snapshot))
-            .where((group) =>
-                !group.studentId.contains(userId) &&
-                (group.subject_code
-                        .toLowerCase()
-                        .contains(searchQuery.toLowerCase()) ||
-                    group.subject_title
-                        .toLowerCase()
-                        .contains(searchQuery.toLowerCase()) ||
-                    searchQuery.isEmpty))
-            .toList(),
-      );
+      .map((querySnapshot) => querySnapshot.docs
+          .map((snapshot) => {
+                'subjectId': snapshot.id,
+                'subject_code': snapshot.data()['subject_code'],
+                'subject_title': snapshot.data()['subject_title'],
+                'studentId': snapshot.data()['studentId'],
+              })
+          .where((group) =>
+              !group['studentId'].contains(userId) &&
+              (group['subject_code']
+                      .toLowerCase()
+                      .contains(searchQuery.toLowerCase()) ||
+                  group['subject_title']
+                      .toLowerCase()
+                      .contains(searchQuery.toLowerCase()) ||
+                  searchQuery.isEmpty))
+          .toList());
 
-  return getCourses;
+  return stream;
 });
 
 // ======================= STATE PROVIDERS =============================

@@ -1,8 +1,11 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/pages/home/create_study_group.dart';
 import 'package:nylo/pages/home/my_courses.dart';
 import 'package:nylo/pages/home/my_study_groups.dart';
+import 'package:nylo/pages/home/my_tutor.dart';
 import 'package:nylo/pages/home/search_study_group.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
@@ -22,7 +25,70 @@ class CategoryModel {
     required this.caption,
   });
 
-  static List<CategoryModel> getCategories(
+  static List<CategoryModel> tutorCategories(
+      BuildContext context, WidgetRef ref) {
+    List<CategoryModel> categories = [];
+
+    categories.add(
+      CategoryModel(
+        caption: "Become a tutor",
+        name: "Register",
+        iconPath: 'assets/icons/search-phone_svgrepo.com.svg',
+        backgroundColor: const Color.fromARGB(255, 222, 159, 172),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RegisterAsTutor(),
+            ),
+          );
+          ref.read(searchQueryLengthProvider.notifier).update((state) => 0);
+          ref.read(searchQueryProvider.notifier).update((state) => '');
+        },
+      ),
+    );
+
+    categories.add(
+      CategoryModel(
+        caption: "Find a tutor",
+        name: "Find",
+        iconPath: 'assets/icons/search-phone_svgrepo.com.svg',
+        backgroundColor: const Color.fromARGB(255, 222, 159, 172),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RegisterAsTutor(),
+            ),
+          );
+          ref.read(searchQueryLengthProvider.notifier).update((state) => 0);
+          ref.read(searchQueryProvider.notifier).update((state) => '');
+        },
+      ),
+    );
+
+    categories.add(
+      CategoryModel(
+        caption: "Guides in learning",
+        name: "Tutors",
+        iconPath: 'assets/icons/search-phone_svgrepo.com.svg',
+        backgroundColor: const Color.fromARGB(255, 222, 159, 172),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RegisterAsTutor(),
+            ),
+          );
+          ref.read(searchQueryLengthProvider.notifier).update((state) => 0);
+          ref.read(searchQueryProvider.notifier).update((state) => '');
+        },
+      ),
+    );
+    return categories;
+  }
+
+  static List<CategoryModel> studyGroupCategories(
       BuildContext context, WidgetRef ref) {
     List<CategoryModel> categories = [];
 

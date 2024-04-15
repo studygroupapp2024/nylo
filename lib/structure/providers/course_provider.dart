@@ -82,6 +82,7 @@ final unenrolledCoursesProvider = StreamProvider.autoDispose
       .collection("institution")
       .doc(institutionId)
       .collection("subjects")
+      .limit(10)
       .snapshots()
       .map((querySnapshot) => querySnapshot.docs
           .map((snapshot) => {

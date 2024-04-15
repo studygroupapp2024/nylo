@@ -53,7 +53,7 @@ class GroupChat {
         .doc(institutionId)
         .collection("students")
         .doc(userId)
-        .collection("study_groups")
+        .collection("groupChats")
         .doc(groupChatId)
         .delete();
   }

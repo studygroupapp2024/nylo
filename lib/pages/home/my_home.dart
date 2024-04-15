@@ -6,6 +6,7 @@ import 'package:nylo/components/containers/category_container.dart';
 import 'package:nylo/pages/home/my_profile.dart';
 import 'package:nylo/structure/models/category_model.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
+import 'package:nylo/structure/providers/homepage_providers.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 
 class HomePage extends ConsumerWidget {
@@ -21,6 +22,7 @@ class HomePage extends ConsumerWidget {
     final userInfo =
         ref.watch(userInfoProvider(_firebaseAuth.currentUser!.uid));
 
+    final isMyGroup = ref.watch(myGroup);
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -105,113 +107,219 @@ class HomePage extends ConsumerWidget {
             ),
           ],
         ),
-        body: Column(
+        body: ListView(
           children: [
-            const SizedBox(
-              height: 25,
-            ),
-            Center(
-              child: SizedBox(
-                height: 100,
-                width: 500,
-                child: ClipRRect(
-                  child: SvgPicture.asset(
-                    'assets/icons/nylo_v1.svg',
-                    alignment: Alignment.centerLeft,
-                    fit: BoxFit.fitWidth,
-                    height: 125,
-                  ),
+            Column(
+              children: [
+                const SizedBox(
+                  height: 25,
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20, right: 40),
-              child: Text(
-                "Connect with study partners and tutors easily.",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiaryContainer,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(50),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Align(
+                Center(
+                  child: SizedBox(
+                    height: 100,
+                    width: 500,
+                    child: ClipRRect(
+                      child: SvgPicture.asset(
+                        'assets/icons/nylo_v1.svg',
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Category",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Theme.of(context).colorScheme.background,
+                        fit: BoxFit.fitWidth,
+                        height: 125,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20, right: 40),
+                  child: Text(
+                    "Connect with study partners and tutors easily.",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          ref.read(myGroup.notifier).state = true;
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(
+                            left: 10,
+                            top: 5,
+                            bottom: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: isMyGroup
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer
+                                : null,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.subject_outlined,
+                                color: isMyGroup
+                                    ? Theme.of(context).colorScheme.background
+                                    : Theme.of(context).colorScheme.primary,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Study Group",
+                                style: TextStyle(
+                                  color: isMyGroup
+                                      ? Theme.of(context).colorScheme.background
+                                      : Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    checkMemberRequest.when(
-                      data: (value) {
-                        print("value: $value");
-                        return Expanded(
-                          child: GridView.builder(
-                            itemCount: CategoryModel.getCategories(context, ref)
-                                .length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                            ),
-                            itemBuilder: (context, index) {
-                              final category = CategoryModel.getCategories(
-                                  context, ref)[index];
-
-                              return Category(
-                                text: category.name,
-                                iconPath: category.iconPath,
-                                onTap: category.onTap,
-                                caption: category.caption,
-                                notification:
-                                    category.name == "Study Groups" && value
-                                        ? true
-                                        : false,
-                              );
-                            },
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          ref.read(myGroup.notifier).state = false;
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(
+                            top: 5,
+                            bottom: 5,
+                            right: 10,
                           ),
-                        );
-                      },
-                      error: (error, stackTrace) {
-                        return Center(
-                          child: Text('Error: $error'),
-                        );
-                      },
-                      loading: () {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: isMyGroup
+                                ? null
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.done_all_rounded,
+                                color: isMyGroup
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).colorScheme.background,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Tutor",
+                                style: TextStyle(
+                                  color: isMyGroup
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
+                if (isMyGroup)
+                  Column(
+                    children: [
+                      checkMemberRequest.when(
+                        data: (value) {
+                          return Wrap(
+                            spacing:
+                                8, // adjust spacing between items as needed
+                            runSpacing: 8, // adjust run spacing as needed
+                            children:
+                                CategoryModel.studyGroupCategories(context, ref)
+                                    .map((category) {
+                              return SizedBox(
+                                width: 200,
+                                child: Category(
+                                  text: category.name,
+                                  iconPath: category.iconPath,
+                                  onTap: category.onTap,
+                                  caption: category.caption,
+                                  notification:
+                                      category.name == "Study Groups" && value,
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return Center(
+                            child: Text('Error: $error'),
+                          );
+                        },
+                        loading: () {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                if (!isMyGroup)
+                  Column(
+                    children: [
+                      checkMemberRequest.when(
+                        data: (value) {
+                          return Wrap(
+                            spacing:
+                                8, // adjust spacing between items as needed
+                            runSpacing: 8, // adjust run spacing as needed
+                            children:
+                                CategoryModel.tutorCategories(context, ref)
+                                    .map((category) {
+                              return SizedBox(
+                                width: 200,
+                                child: Category(
+                                  text: category.name,
+                                  iconPath: category.iconPath,
+                                  onTap: category.onTap,
+                                  caption: category.caption,
+                                  notification:
+                                      category.name == "Study Groups" && value,
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return Center(
+                            child: Text('Error: $error'),
+                          );
+                        },
+                        loading: () {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+              ],
             ),
           ],
         ),

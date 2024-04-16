@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
-import 'package:nylo/structure/providers/university_provider.dart';
+import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/services/course_services.dart';
 
 class SearchCourseToTeach extends ConsumerWidget {
@@ -85,20 +86,96 @@ class SearchCourseToTeach extends ConsumerWidget {
                           itemCount: courses.length,
                           itemBuilder: (context, index) {
                             final course = courses[index];
-                            return ListTile(
-                              title: Text(course['subject_title']),
-                              subtitle: Text(course['subject_code']),
-                              trailing: IconButton(
-                                icon: const Icon(
-                                    Icons.add_circle_outline_outlined),
-                                onPressed: () async {
-                                  ref.read(courseProvider).addCourse(
-                                        course['subject_code'],
-                                        course['subject_title'],
-                                        course['subjectId'],
-                                        ref.watch(setGlobalUniversityId),
-                                      );
-                                },
+                            return GestureDetector(
+                              onTap: () {
+                                String subjectId = course['subjectId'];
+                                String subjectTitle = course['subject_title'];
+                                String subjectCode = course['subject_code'];
+                                // ref.read(courseProvider).addCourse(
+                                //       course['subject_code'],
+                                //       course['subject_title'],
+                                //       course['subjectId'],
+                                //       ref.watch(setGlobalUniversityId),
+                                //     );
+
+                                final selectedCourse =
+                                    ref.watch(selectedCoursesToTeachProvider);
+                                print(
+                                    "SELECTED COURSE LENGTH: ${selectedCourse.length}");
+                                for (final course in selectedCourse) {
+                                  if (course.subjectId.contains(subjectId)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        content: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.notifications,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiaryContainer,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "$subjectCode is already added.",
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiaryContainer,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                }
+                                final state =
+                                    ref.read(selectedCoursesToTeachProvider);
+                                state.add(
+                                  SelectedCoursesToTeachModel(
+                                    subjectId: subjectId,
+                                    subjectTitle: subjectTitle,
+                                    subjectCode: subjectCode,
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.secondary,
+                                    content: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.notifications,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiaryContainer,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "$subjectCode has been added.",
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiaryContainer,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                                print("ADDED");
+                              },
+                              child: ListTile(
+                                title: Text(course['subject_title']),
+                                subtitle: Text(course['subject_code']),
                               ),
                             );
                           },

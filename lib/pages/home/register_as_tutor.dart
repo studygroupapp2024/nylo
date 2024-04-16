@@ -8,6 +8,7 @@ import 'package:nylo/components/textfields/rounded_textfield_title.dart';
 import 'package:nylo/pages/home/search_course_to_teach.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
+import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/subject_matter.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 
@@ -69,20 +70,64 @@ class RegisterAsTutorPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  Center(
-                    child: NoContent(
-                        icon: 'assets/icons/study-student_svgrepo.com.svg',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SearchCourseToTeach(),
-                            ),
-                          );
-                        },
-                        description: "Select a course to teach",
-                        buttonText: "Search Courses"),
-                  ),
+                  if (ref.watch(selectedCoursesToTeachProvider).isEmpty)
+                    Center(
+                      child: NoContent(
+                          icon: 'assets/icons/study-student_svgrepo.com.svg',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchCourseToTeach(),
+                              ),
+                            );
+                            ref
+                                .read(selectedCoursesToTeachProvider.notifier)
+                                .state = [];
+                          },
+                          description: "Select a course to teach",
+                          buttonText: "Search Courses"),
+                    ),
+                  if (ref.watch(selectedCoursesToTeachProvider).isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Wrap(
+                          spacing: 8.0, // Adjust spacing as needed
+                          runSpacing: 8.0, // Adjust run spacing as needed
+                          children: ref
+                              .watch(selectedCoursesToTeachProvider)
+                              .map((course) {
+                            return IntrinsicWidth(
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(course.subjectCode),
+                                    const SizedBox(
+                                      width: 2,
+                                    ),
+                                    const IconButton(
+                                      onPressed: null,
+                                      icon: Icon(Icons.remove_circle_outline),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
                   const SizedBox(
                     height: 15,
                   ),

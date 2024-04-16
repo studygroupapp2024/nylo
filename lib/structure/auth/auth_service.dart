@@ -22,7 +22,6 @@ class AuthService {
       BuildContext context,
       String email,
       String password,
-      List<String> allowedDomains,
       List<Map<String, dynamic>> idAndUni) async {
     try {
       final userDomain = email.split('@').last;
@@ -148,99 +147,87 @@ class AuthService {
 // signin with Google account
   Future<UserCredential?> signInWithGoogle(
     BuildContext context,
-    List<String> domains,
     List<Map<String, dynamic>> idAndUni,
   ) async {
-    // Begin interactive signin process
-    final GoogleSignInAccount? guser = await GoogleSignIn().signIn();
+    try {
+      // Begin interactive signin process
+      final GoogleSignInAccount? guser = await GoogleSignIn().signIn();
 
-    if (guser != null) {
-      // Obtain auth details from request
-      final GoogleSignInAuthentication gAuth = await guser.authentication;
+      if (guser != null) {
+        // Obtain auth details from request
+        final GoogleSignInAuthentication gAuth = await guser.authentication;
 
-      // Create a new credential for user
-      final credential = GoogleAuthProvider.credential(
-        accessToken: gAuth.accessToken,
-        idToken: gAuth.idToken,
-      );
+        // Create a new credential for user
+        final credential = GoogleAuthProvider.credential(
+          accessToken: gAuth.accessToken,
+          idToken: gAuth.idToken,
+        );
 
-      // Sign in with Google
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+        // Sign in with Google
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // Get the user's email domain
-      final userId = userCredential.user!.uid;
-      final userEmail = userCredential.user!.email!;
-      final userDomain = userEmail.split('@').last;
+        // Get the user's email domain
+        final userId = userCredential.user!.uid;
+        final userEmail = userCredential.user!.email!;
+        final userDomain = userEmail.split('@').last;
 
-      // Check if the user's domain is in the list of allowed domains
+        // Check if the user's domain is in the list of allowed domains
+        String? uni;
+        String? uniName;
+        for (final entry in idAndUni) {
+          if (entry['domains'].contains("@$userDomain")) {
+            uni = entry['uniId'];
+            uniName = entry['uniName'];
+            break;
+          }
+        }
 
-      // final uni = await _universityInfo.getUniversityId("@$userDomain");
-
-      String? uni;
-      String? uniName;
-      for (final entry in idAndUni) {
-        if (entry['domains'].contains("@$userDomain")) {
-          uni = entry['uniId'];
-          uniName = entry['uniName'];
-          break;
-        } else {
+        if (uni == null || uniName == null) {
           await signOut(); // Sign out the user
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Email domain is not allowed.'),
             ),
           );
+          return null;
         }
+
+        final fcmtoken = await _firebaseMessage.getFCMToken();
+
+        // Add user to Firestore
+        await _firestore.collection('institution').doc(uni).update({
+          'students': FieldValue.arrayUnion([userId]),
+        });
+
+        await _firestore
+            .collection('institution')
+            .doc(uni)
+            .collection("students")
+            .doc(userCredential.user!.uid)
+            .set(
+          {
+            'uid': userCredential.user!.uid,
+            'email': userCredential.user!.email,
+            'name': userCredential.user!.displayName,
+            'imageUrl': userCredential.user!.photoURL,
+            'fcmtoken': fcmtoken,
+            'universityId': uni,
+            'university': uniName,
+          },
+        );
+
+        return userCredential;
       }
-
-      print('uniId: $uni');
-      print('uniName: $uniName');
-      // final uniName =
-      //     await _universityInfo.getUniversityName("@$userDomain");
-
-      final fcmtoken = await _firebaseMessage.getFCMToken();
-
-      // get the uniId where the domain belongs to
-
-      // Add user to Firestore
-      // final getUser = await _userInfo.getUserInfo(userId, uni!);
-
-      // final userData = getUser.data();
-
-      // String name = userData?['name'];
-      // String image = userData?['imageUrl'];
-
-      await _firestore.collection('institution').doc(uni).update({
-        'students': FieldValue.arrayUnion([userId]),
-      });
-
-      await _firestore
-          .collection('institution')
-          .doc(uni)
-          .collection("students")
-          .doc(userCredential.user!.uid)
-          .set(
-        {
-          'uid': userCredential.user!.uid,
-          'email': userCredential.user!.email,
-          'name': userCredential.user!
-              .displayName, //name.isEmpty ? userCredential.user!.displayName : name,
-          'imageUrl': userCredential.user!
-              .photoURL, //image.isEmpty ? userCredential.user!.photoURL : image,
-          'fcmtoken': fcmtoken,
-          'universityId': uni,
-          'university': uniName,
-        },
+    } catch (e) {
+      await signOut(); // Sign out the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email domain is not allowed.'),
+        ),
       );
-      return userCredential;
+      return null;
     }
-    await signOut(); // Sign out the user
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Email domain is not allowed.'),
-      ),
-    );
     return null;
   }
 }

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/dialogs/create_group.dart';
+import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
+import 'package:nylo/pages/home/search_course_to_teach.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/subject_matter.dart';
@@ -66,6 +68,20 @@ class RegisterAsTutorPage extends ConsumerWidget {
                         ),
                       ),
                     ),
+                  ),
+                  Center(
+                    child: NoContent(
+                        icon: 'assets/icons/study-student_svgrepo.com.svg',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchCourseToTeach(),
+                            ),
+                          );
+                        },
+                        description: "Select a course to teach",
+                        buttonText: "Search Courses"),
                   ),
                   const SizedBox(
                     height: 15,

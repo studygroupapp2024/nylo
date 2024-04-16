@@ -23,12 +23,10 @@ class LoginPage extends ConsumerWidget {
   //login with Google
   void signInWithGoogle(
     BuildContext context,
-    List<String> domains,
     List<Map<String, dynamic>> idAndUnis,
   ) async {
     await _authService.signInWithGoogle(
       context,
-      domains,
       idAndUnis,
     );
   }
@@ -36,7 +34,6 @@ class LoginPage extends ConsumerWidget {
   // login method
   Future<void> login(
     BuildContext context,
-    List<String> domains,
     List<Map<String, dynamic>> idAndUnis,
   ) async {
     if (_emailController.text.isNotEmpty && _pwController.text.isNotEmpty) {
@@ -44,7 +41,6 @@ class LoginPage extends ConsumerWidget {
         context,
         _emailController.text,
         _pwController.text,
-        domains,
         idAndUnis,
       );
 
@@ -71,9 +67,9 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final domains = ref.watch(universityDomainNamesProvider).value;
+    // final domains = ref.watch(universityDomainNamesProvider).value;
 
-    print("domains: $domains");
+    //   print("domains: $domains");
 
     final asyncData = ref.watch(listOfDomains);
     final List<Map<String, dynamic>> idAndUnis = [];
@@ -171,7 +167,6 @@ class LoginPage extends ConsumerWidget {
                         onTap: () async {
                           login(
                             context,
-                            domains!,
                             idAndUnis,
                           );
                         },
@@ -233,7 +228,6 @@ class LoginPage extends ConsumerWidget {
                         child: GestureDetector(
                           onTap: () => signInWithGoogle(
                             context,
-                            domains!,
                             idAndUnis,
                           ),
                           child: Row(

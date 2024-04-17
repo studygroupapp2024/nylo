@@ -5,9 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class SubjectMatterModel {
   final String proctorId;
   final Timestamp dateCreated;
-  final String courseId;
-  final String courseCode;
-  final String courseTitle;
+  final List<dynamic> courseId;
+
   final String className;
   final String description;
   final String? classId;
@@ -16,8 +15,6 @@ class SubjectMatterModel {
     required this.proctorId,
     required this.dateCreated,
     required this.courseId,
-    required this.courseCode,
-    required this.courseTitle,
     required this.className,
     required this.description,
     this.classId,
@@ -28,8 +25,6 @@ class SubjectMatterModel {
       'proctorId': proctorId,
       'dateCreated': dateCreated,
       'courseId': courseId,
-      'courseCode': courseCode,
-      'courseTitle': courseTitle,
       'className': className,
       'description': description,
       'classId': classId,
@@ -41,9 +36,7 @@ class SubjectMatterModel {
       proctorId: map['proctorId'] as String,
       dateCreated:
           Timestamp.fromDate(DateTime.parse(map['timestamp'] as String)),
-      courseId: map['courseId'] as String,
-      courseCode: map['courseCode'] as String,
-      courseTitle: map['courseTitle'] as String,
+      courseId: List<dynamic>.from((map['membersId'] as List<dynamic>)),
       className: map['className'] as String,
       description: map['description'] as String,
       classId: map['classId'] as String,
@@ -56,8 +49,6 @@ class SubjectMatterModel {
       proctorId: doc['proctorId'],
       dateCreated: doc['dateCreated'],
       courseId: doc['courseId'],
-      courseCode: doc['courseCode'],
-      courseTitle: doc['courseTitle'],
       className: doc['className'],
       description: doc['description'],
       classId: doc['classId'],

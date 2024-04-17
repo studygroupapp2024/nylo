@@ -87,7 +87,7 @@ class SearchCourseToTeach extends ConsumerWidget {
                           itemBuilder: (context, index) {
                             final course = courses[index];
                             return GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 String subjectId = course['subjectId'];
                                 String subjectTitle = course['subject_title'];
                                 String subjectCode = course['subject_code'];
@@ -100,8 +100,7 @@ class SearchCourseToTeach extends ConsumerWidget {
 
                                 final selectedCourse =
                                     ref.watch(selectedCoursesToTeachProvider);
-                                print(
-                                    "SELECTED COURSE LENGTH: ${selectedCourse.length}");
+
                                 for (final course in selectedCourse) {
                                   if (course.subjectId.contains(subjectId)) {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -135,15 +134,17 @@ class SearchCourseToTeach extends ConsumerWidget {
                                     return;
                                   }
                                 }
-                                final state =
-                                    ref.read(selectedCoursesToTeachProvider);
-                                state.add(
-                                  SelectedCoursesToTeachModel(
-                                    subjectId: subjectId,
-                                    subjectTitle: subjectTitle,
-                                    subjectCode: subjectCode,
-                                  ),
-                                );
+                                ref
+                                    .read(
+                                        selectedCoursesToTeachProvider.notifier)
+                                    .add(
+                                      SelectedCoursesToTeachModel(
+                                        subjectId: subjectId,
+                                        subjectTitle: subjectTitle,
+                                        subjectCode: subjectCode,
+                                      ),
+                                    );
+
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     backgroundColor:
@@ -171,7 +172,6 @@ class SearchCourseToTeach extends ConsumerWidget {
                                     ),
                                   ),
                                 );
-                                print("ADDED");
                               },
                               child: ListTile(
                                 title: Text(course['subject_title']),

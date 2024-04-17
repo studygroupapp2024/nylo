@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
 
 class SubjectMatter {
@@ -9,25 +10,24 @@ class SubjectMatter {
 
   Future<bool> teachCourse(
     String proctorId,
-    String courseId,
-    String courseCode,
-    String courseTitle,
+    List<SelectedCoursesToTeachModel> courses,
     String className,
     String description,
     String institutionId,
   ) async {
     try {
       // get current info
-      final String currentUserId = _firebaseAuth.currentUser!.uid;
       final Timestamp timestamp = Timestamp.now();
+
+      // get the SubjectIds Only
+      List<String> courseIds =
+          courses.map((course) => course.subjectId).toList();
 
       // create a new class
       SubjectMatterModel newSubjectMatter = SubjectMatterModel(
         proctorId: proctorId,
         dateCreated: timestamp,
-        courseId: courseId,
-        courseCode: courseCode,
-        courseTitle: courseTitle,
+        courseId: courseIds,
         className: className,
         description: description,
       );

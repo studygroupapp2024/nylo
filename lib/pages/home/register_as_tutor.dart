@@ -47,9 +47,10 @@ class RegisterAsTutorPage extends ConsumerWidget {
                     title: "What will be the name of your class?",
                     hinttext: "Class",
                     controller: _nameController,
-                    onChange: (val) {
-                      ref.read(chatNameProvider.notifier).state = val;
-                    },
+                    onChange: null,
+                    // (val) {
+                    //   ref.read(chatNameProvider.notifier).state = val;
+                    // },
                   ),
                   const SizedBox(
                     height: 15,
@@ -84,6 +85,11 @@ class RegisterAsTutorPage extends ConsumerWidget {
                             ref
                                 .read(selectedCoursesToTeachProvider.notifier)
                                 .state = [];
+                            ref.read(courseSearchQueryProvider.notifier).state =
+                                "";
+                            ref
+                                .read(courseSearchQueryLengthProvider.notifier)
+                                .state = 0;
                           },
                           description: "Select a course to teach",
                           buttonText: "Search Courses"),
@@ -98,33 +104,45 @@ class RegisterAsTutorPage extends ConsumerWidget {
                           runSpacing: 8.0, // Adjust run spacing as needed
                           children: ref
                               .watch(selectedCoursesToTeachProvider)
-                              .map((course) {
-                            return IntrinsicWidth(
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                              .map<Widget>(
+                            (course) {
+                              return IntrinsicWidth(
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                  borderRadius: BorderRadius.circular(20),
+                                  child: Row(
+                                    children: [
+                                      Text(course.subjectCode),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          final courseToRemove = course;
+                                          ref
+                                              .read(
+                                                  selectedCoursesToTeachProvider
+                                                      .notifier)
+                                              .remove(courseToRemove);
+                                          print(ref.watch(
+                                              selectedCoursesToTeachProvider));
+                                        },
+                                        icon: const Icon(
+                                            Icons.remove_circle_outline),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                child: Row(
-                                  children: [
-                                    Text(course.subjectCode),
-                                    const SizedBox(
-                                      width: 2,
-                                    ),
-                                    const IconButton(
-                                      onPressed: null,
-                                      icon: Icon(Icons.remove_circle_outline),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                              );
+                            },
+                          ).toList(),
                         ),
                       ),
                     ),
@@ -136,9 +154,8 @@ class RegisterAsTutorPage extends ConsumerWidget {
                     controller: _descriptionController,
                     hinttext:
                         "Let other students know about the purpose of the class.",
-                    onChange: (val) {
-                      ref.read(chatDescriptionProvider.notifier).state = val;
-                    },
+                    onChange: null, //(val) {
+                    // ref.read(chatDescriptionProvider.notifier).state = val;
                   ),
                   const SizedBox(
                     height: 25,
@@ -151,10 +168,8 @@ class RegisterAsTutorPage extends ConsumerWidget {
                       final success =
                           await ref.read(subjectMatterProvider).teachCourse(
                                 _auth.currentUser!.uid,
-                                "test", // subjectId,
-                                "test", // subjectCode,
-                                "test", // subjectTitle,
-
+                                ref.watch(
+                                    selectedCoursesToTeachProvider), // subjectCode,
                                 _nameController.text,
                                 _descriptionController.text,
                                 ref.watch(setGlobalUniversityId),
@@ -165,27 +180,13 @@ class RegisterAsTutorPage extends ConsumerWidget {
                       if (success) {
                         _nameController.clear();
                         _descriptionController.clear();
-                        ref.read(selectedCourseProvider.notifier).state = '';
-                        ref.read(selectedcourseIdProvider.notifier).state = '';
-                        ref.read(selectedcourseTitleProvider.notifier).state =
-                            '';
-
-                        ref.read(editUploadImagePathProvider.notifier).state =
-                            null;
-
-                        ref
-                            .read(editUploadImagePathNameProvider.notifier)
-                            .state = '';
-
-                        ref.read(editUploadImageNameProvider.notifier).state =
-                            '';
 
                         showDialog(
                           context: context,
                           builder: (context) {
                             return const CreateGroupChatDialog(
                               confirm: null,
-                              content: "The group chat has been created",
+                              content: "The class has been created",
                               title: "Success",
                               type: "Okay",
                             );
@@ -198,7 +199,7 @@ class RegisterAsTutorPage extends ConsumerWidget {
                             return const CreateGroupChatDialog(
                               confirm: null,
                               content:
-                                  "There was an error creating the study group. Kindly try again.",
+                                  "There was an error creating the class. Kindly try again.",
                               title: "Failed",
                               type: "Okay",
                             );

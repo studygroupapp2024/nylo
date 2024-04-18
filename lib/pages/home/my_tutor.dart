@@ -5,6 +5,7 @@ import 'package:nylo/components/dialogs/alert_dialog.dart';
 import 'package:nylo/pages/home/edit_class.dart';
 import 'package:nylo/pages/home/register_as_tutor.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
+import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
@@ -39,6 +40,9 @@ class RegisterAsTutor extends ConsumerWidget {
                 ),
               );
               ref.read(selectedCoursesToTeachProvider.notifier).clear();
+              ref.watch(courseSearchQueryProvider.notifier).state = '';
+
+              ref.watch(courseSearchQueryLengthProvider.notifier).state = 0;
             },
             icon: const Icon(
               Icons.add,

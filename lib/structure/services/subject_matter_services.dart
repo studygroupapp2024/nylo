@@ -62,4 +62,59 @@ class SubjectMatter {
       return false;
     }
   }
+
+  Future<void> removeClass(
+    String classId,
+    String institutionId,
+    String userId,
+  ) async {
+    // delete the class
+    await institution
+        .doc(institutionId)
+        .collection("subject_matters")
+        .doc(classId)
+        .delete();
+
+    // remove the class from the user
+    await institution
+        .doc(institutionId)
+        .collection("students")
+        .doc(userId)
+        .collection("subject_matters")
+        .doc(classId)
+        .delete();
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getSubjectInfo(
+    String subjectId,
+    String institutionId,
+  ) async {
+    return await _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection('subjects')
+        .doc(subjectId)
+        .get();
+  }
+
+  Future<bool> updateClass(
+    String classId,
+    List<SelectedCoursesToTeachModel> courses,
+    String className,
+    String description,
+    String institutionId,
+  ) async {
+    List<String> courseIds = courses.map((course) => course.subjectId).toList();
+    await _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection("subject_matters")
+        .doc(classId)
+        .update({
+      "courseId": courseIds,
+      "className": className,
+      "description": description,
+    });
+    return true;
+  }
 }

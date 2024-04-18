@@ -12,9 +12,16 @@ import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 
-class RegisterAsTutorPage extends ConsumerWidget {
-  RegisterAsTutorPage({
+class EditClass extends ConsumerWidget {
+  final String className;
+  final String classDescription;
+  final String classId;
+
+  EditClass({
     super.key,
+    required this.className,
+    required this.classDescription,
+    required this.classId,
   });
 
   final TextEditingController _nameController = TextEditingController();
@@ -29,13 +36,14 @@ class RegisterAsTutorPage extends ConsumerWidget {
     final courseId = ref.watch(selectedcourseIdProvider);
     final courseTitle = ref.watch(selectedcourseTitleProvider);
     final buttonColor = ref.watch(buttonColorProvider);
-
+    _nameController.text = className;
+    _descriptionController.text = classDescription;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Register as Tutor"),
+          title: const Text("Update Class"),
         ),
         body: ListView(
           children: [
@@ -163,13 +171,13 @@ class RegisterAsTutorPage extends ConsumerWidget {
                     height: 25,
                   ),
                   RoundedButtonWithProgress(
-                    text: "Register",
+                    text: "Update",
                     onTap: () async {
                       ref.read(isLoadingProvider.notifier).state = true;
 
                       final success =
-                          await ref.read(subjectMatterProvider).teachCourse(
-                                _auth.currentUser!.uid,
+                          await ref.read(subjectMatterProvider).updateClass(
+                                classId,
                                 ref.watch(
                                     selectedCoursesToTeachProvider), // subjectCode,
                                 _nameController.text,
@@ -198,7 +206,7 @@ class RegisterAsTutorPage extends ConsumerWidget {
                                   width: 10,
                                 ),
                                 Text(
-                                  "Class has been created.",
+                                  "Class has been updated.",
                                   style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme

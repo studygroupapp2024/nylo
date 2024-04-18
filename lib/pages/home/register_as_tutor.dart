@@ -99,53 +99,94 @@ class RegisterAsTutorPage extends ConsumerWidget {
                   if (ref.watch(selectedCoursesToTeachProvider).isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Wrap(
-                          spacing: 8.0, // Adjust spacing as needed
-                          runSpacing: 8.0, // Adjust run spacing as needed
-                          children: ref
-                              .watch(selectedCoursesToTeachProvider)
-                              .map<Widget>(
-                            (course) {
-                              return IntrinsicWidth(
-                                child: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Wrap(
+                              spacing: 8.0, // Adjust spacing as needed
+                              runSpacing: 8.0, // Adjust run spacing as needed
+                              children: ref
+                                  .watch(selectedCoursesToTeachProvider)
+                                  .map<Widget>(
+                                (course) {
+                                  return IntrinsicWidth(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Text(course.subjectCode),
+                                          const SizedBox(
+                                            width: 2,
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              final courseToRemove = course;
+                                              ref
+                                                  .read(
+                                                      selectedCoursesToTeachProvider
+                                                          .notifier)
+                                                  .remove(courseToRemove);
+                                              print(ref.watch(
+                                                  selectedCoursesToTeachProvider));
+                                            },
+                                            icon: const Icon(
+                                                Icons.remove_circle_outline),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(course.subjectCode),
-                                      const SizedBox(
-                                        width: 2,
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          final courseToRemove = course;
-                                          ref
-                                              .read(
-                                                  selectedCoursesToTeachProvider
-                                                      .notifier)
-                                              .remove(courseToRemove);
-                                          print(ref.watch(
-                                              selectedCoursesToTeachProvider));
-                                        },
-                                        icon: const Icon(
-                                            Icons.remove_circle_outline),
-                                      ),
-                                    ],
-                                  ),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: IntrinsicWidth(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          SearchCourseToTeach(),
+                                    ),
+                                  );
+                                  ref
+                                      .watch(courseSearchQueryProvider.notifier)
+                                      .state = '';
+
+                                  ref
+                                      .watch(courseSearchQueryLengthProvider
+                                          .notifier)
+                                      .state = 0;
+                                },
+                                child: const Row(
+                                  children: [
+                                    Icon(Icons.add_circle_outline),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text("Add Course")
+                                  ],
                                 ),
-                              );
-                            },
-                          ).toList(),
-                        ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   const SizedBox(
@@ -166,70 +207,87 @@ class RegisterAsTutorPage extends ConsumerWidget {
                     text: "Register",
                     onTap: () async {
                       ref.read(isLoadingProvider.notifier).state = true;
-
-                      final success =
-                          await ref.read(subjectMatterProvider).teachCourse(
-                                _auth.currentUser!.uid,
-                                ref.watch(
-                                    selectedCoursesToTeachProvider), // subjectCode,
-                                _nameController.text,
-                                _descriptionController.text,
-                                ref.watch(setGlobalUniversityId),
-                              );
-
-                      ref.read(isLoadingProvider.notifier).state = false;
-
-                      if (success) {
-                        _nameController.clear();
-                        _descriptionController.clear();
-                        Navigator.pop(context);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Row(
-                              children: [
-                                Icon(
-                                  Icons.notifications,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .tertiaryContainer,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Class has been created.",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .tertiaryContainer,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            backgroundColor:
-                                Theme.of(context).colorScheme.tertiary,
-                            elevation: 4,
-                            padding: const EdgeInsets.all(20),
-                          ),
-                        );
-                      } else {
+                      if (_nameController.text.isEmpty ||
+                          _descriptionController.text.isEmpty ||
+                          ref.watch(selectedCoursesToTeachProvider).isEmpty) {
                         showDialog(
                           context: context,
                           builder: (context) {
                             return const CreateGroupChatDialog(
                               confirm: null,
                               content:
-                                  "There was an error creating the class. Kindly try again.",
+                                  "There was an error updating the class. Kindly try again.",
                               title: "Failed",
                               type: "Okay",
                             );
                           },
                         );
+                        ref.read(isLoadingProvider.notifier).state = false;
+                      } else {
+                        final success =
+                            await ref.read(subjectMatterProvider).teachCourse(
+                                  _auth.currentUser!.uid,
+                                  ref.watch(
+                                      selectedCoursesToTeachProvider), // subjectCode,
+                                  _nameController.text,
+                                  _descriptionController.text,
+                                  ref.watch(setGlobalUniversityId),
+                                );
+
+                        ref.read(isLoadingProvider.notifier).state = false;
+
+                        if (success) {
+                          _nameController.clear();
+                          _descriptionController.clear();
+                          Navigator.pop(context);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Row(
+                                children: [
+                                  Icon(
+                                    Icons.notifications,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "Class has been created.",
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiaryContainer,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.tertiary,
+                              elevation: 4,
+                              padding: const EdgeInsets.all(20),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const CreateGroupChatDialog(
+                                confirm: null,
+                                content:
+                                    "There was an error creating the class. Kindly try again.",
+                                title: "Failed",
+                                type: "Okay",
+                              );
+                            },
+                          );
+                        }
                       }
                     },
                     margin: const EdgeInsets.symmetric(horizontal: 25),

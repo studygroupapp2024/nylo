@@ -28,6 +28,19 @@ class SelectedCoursesToTeachNotifier
   }
 }
 
+final classChatNameProvider = StateProvider<String?>((ref) => '');
+final classChatDescriptionProvider = StateProvider<String?>((ref) => '');
+
+final classButtonColorProvider = StateProvider<bool>((ref) {
+  final selectedCourse = ref.watch(selectedCoursesToTeachProvider);
+  final chatName = ref.watch(classChatNameProvider);
+  final chatDescription = ref.watch(classChatDescriptionProvider);
+//selectedCourse!.isNotEmpty &&
+  return (chatName!.isNotEmpty &&
+      chatDescription!.isNotEmpty &&
+      selectedCourse.isNotEmpty);
+});
+
 // get User Subject Matters
 final userSubjectMatterProvider =
     StreamProvider.family<List<SubjectMatterModel>, String>(

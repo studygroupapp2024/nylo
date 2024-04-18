@@ -22,13 +22,7 @@ class RegisterAsTutorPage extends ConsumerWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUserCourse = ref.watch(
-      currentStudentCoursesInformationProvider(_auth.currentUser!.uid),
-    );
-    final selectedCourse = ref.watch(selectedCourseProvider);
-    final courseId = ref.watch(selectedcourseIdProvider);
-    final courseTitle = ref.watch(selectedcourseTitleProvider);
-    final buttonColor = ref.watch(buttonColorProvider);
+    final buttonColor = ref.watch(classButtonColorProvider);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -47,10 +41,9 @@ class RegisterAsTutorPage extends ConsumerWidget {
                     title: "What will be the name of your class?",
                     hinttext: "Class",
                     controller: _nameController,
-                    onChange: null,
-                    // (val) {
-                    //   ref.read(chatNameProvider.notifier).state = val;
-                    // },
+                    onChange: (val) {
+                      ref.read(classChatNameProvider.notifier).state = val;
+                    },
                   ),
                   const SizedBox(
                     height: 15,
@@ -197,8 +190,10 @@ class RegisterAsTutorPage extends ConsumerWidget {
                     controller: _descriptionController,
                     hinttext:
                         "Let other students know about the purpose of the class.",
-                    onChange: null, //(val) {
-                    // ref.read(chatDescriptionProvider.notifier).state = val;
+                    onChange: (val) {
+                      ref.read(classChatDescriptionProvider.notifier).state =
+                          val;
+                    },
                   ),
                   const SizedBox(
                     height: 25,

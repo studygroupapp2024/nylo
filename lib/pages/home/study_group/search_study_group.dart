@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/study_group_container.dart';
 import 'package:nylo/components/no_data_holder.dart';
-import 'package:nylo/pages/home/create_study_group.dart';
+import 'package:nylo/pages/home/study_group/create_study_group.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';

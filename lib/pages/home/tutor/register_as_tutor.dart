@@ -5,23 +5,16 @@ import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/dialogs/create_group.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
-import 'package:nylo/pages/home/search_course_to_teach.dart';
+import 'package:nylo/pages/home/tutor/search_course_to_teach.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 
-class EditClass extends ConsumerWidget {
-  final String className;
-  final String classDescription;
-  final String classId;
-
-  EditClass({
+class RegisterAsTutorPage extends ConsumerWidget {
+  RegisterAsTutorPage({
     super.key,
-    required this.className,
-    required this.classDescription,
-    required this.classId,
   });
 
   final TextEditingController _nameController = TextEditingController();
@@ -30,14 +23,13 @@ class EditClass extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final buttonColor = ref.watch(classButtonColorProvider);
-    _nameController.text = className;
-    _descriptionController.text = classDescription;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Update Class"),
+          title: const Text("Register as Tutor"),
         ),
         body: ListView(
           children: [
@@ -207,10 +199,9 @@ class EditClass extends ConsumerWidget {
                     height: 25,
                   ),
                   RoundedButtonWithProgress(
-                    text: "Update",
+                    text: "Register",
                     onTap: () async {
                       ref.read(isLoadingProvider.notifier).state = true;
-
                       if (_nameController.text.isEmpty ||
                           _descriptionController.text.isEmpty ||
                           ref.watch(selectedCoursesToTeachProvider).isEmpty) {
@@ -229,14 +220,17 @@ class EditClass extends ConsumerWidget {
                         ref.read(isLoadingProvider.notifier).state = false;
                       } else {
                         final success =
-                            await ref.read(subjectMatterProvider).updateClass(
-                                  classId,
+                            await ref.read(subjectMatterProvider).teachCourse(
+                                  _auth.currentUser!.uid,
                                   ref.watch(
                                       selectedCoursesToTeachProvider), // subjectCode,
                                   _nameController.text,
                                   _descriptionController.text,
                                   ref.watch(setGlobalUniversityId),
                                 );
+
+                        ref.read(isLoadingProvider.notifier).state = false;
+
                         if (success) {
                           _nameController.clear();
                           _descriptionController.clear();
@@ -256,7 +250,7 @@ class EditClass extends ConsumerWidget {
                                     width: 10,
                                   ),
                                   Text(
-                                    "Class has been updated.",
+                                    "Class has been created.",
                                     style: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -290,8 +284,6 @@ class EditClass extends ConsumerWidget {
                           );
                         }
                       }
-
-                      ref.read(isLoadingProvider.notifier).state = false;
                     },
                     margin: const EdgeInsets.symmetric(horizontal: 25),
                     color: buttonColor

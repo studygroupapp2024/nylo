@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/pages/chat/chat_page.dart';
-import 'package:nylo/pages/home/search_study_group.dart';
+import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 
 class FindPage extends ConsumerWidget {

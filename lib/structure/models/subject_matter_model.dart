@@ -6,10 +6,11 @@ class SubjectMatterModel {
   final String proctorId;
   final Timestamp dateCreated;
   final List<dynamic> courseId;
-
   final String className;
   final String description;
   final String? classId;
+  final String courseCodes;
+  final String courseTitles;
 
   SubjectMatterModel({
     required this.proctorId,
@@ -18,6 +19,8 @@ class SubjectMatterModel {
     required this.className,
     required this.description,
     this.classId,
+    required this.courseCodes,
+    required this.courseTitles,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +31,8 @@ class SubjectMatterModel {
       'className': className,
       'description': description,
       'classId': classId,
+      'courseCodes': courseCodes,
+      'courseTitles': courseTitles,
     };
   }
 
@@ -40,6 +45,8 @@ class SubjectMatterModel {
       className: map['className'] as String,
       description: map['description'] as String,
       classId: map['classId'] as String,
+      courseCodes: map['courseCodes'] as String,
+      courseTitles: map['courseTitles'] as String,
     );
   }
 
@@ -52,6 +59,8 @@ class SubjectMatterModel {
       className: doc['className'],
       description: doc['description'],
       classId: doc['classId'],
+      courseCodes: doc['courseCodes'],
+      courseTitles: doc['courseTitles'],
     );
   }
 }

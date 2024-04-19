@@ -141,6 +141,7 @@ class ChatService {
     String type,
     String downloadUrl,
     String institutionId,
+    bool isGroupChat,
   ) async {
     // current user Info
     final userInfo =
@@ -169,30 +170,57 @@ class ChatService {
       filename: '',
     );
 
-    // add new message to database
-    await _firestore
-        .collection("institution")
-        .doc(institutionId)
-        .collection('study_groups')
-        .doc(groupChatid)
-        .collection("messages")
-        .add(newMessage.toMap());
+    if (isGroupChat) {
+      // add new message to database
+      await _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection('study_groups')
+          .doc(groupChatid)
+          .collection("messages")
+          .add(newMessage.toMap());
 
-    // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
-    _firestore
-        .collection("institution")
-        .doc(institutionId)
-        .collection("study_groups")
-        .doc(groupChatid)
-        .update(
-      {
-        "lastMessage": message,
-        "lastMessageSender": curreUserEmail,
-        "lastMessageTimeSent": timestamp,
-        "lastMessageType": type,
-      },
-    );
-    return true;
+      // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
+      _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("study_groups")
+          .doc(groupChatid)
+          .update(
+        {
+          "lastMessage": message,
+          "lastMessageSender": curreUserEmail,
+          "lastMessageTimeSent": timestamp,
+          "lastMessageType": type,
+        },
+      );
+      return true;
+    } else {
+      // add new message to database
+      await _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection('direct_messages')
+          .doc(groupChatid)
+          .collection("messages")
+          .add(newMessage.toMap());
+
+      // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
+      _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("direct_messages")
+          .doc(groupChatid)
+          .update(
+        {
+          "lastMessage": message,
+          "lastMessageSender": curreUserEmail,
+          "lastMessageTimeSent": timestamp,
+          "lastMessageType": type,
+        },
+      );
+      return true;
+    }
   }
 
   Future<bool> sendContentMessage(

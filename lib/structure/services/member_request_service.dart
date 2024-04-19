@@ -138,7 +138,13 @@ class MemberRequest {
       var message = "$userName has joined the study group.";
 
       await _chatService.sendAnnouncementMessage(
-          documentId, message, type, "", institutionId);
+        documentId,
+        message,
+        type,
+        "",
+        institutionId,
+        true,
+      );
     } else {
       await _firestore
           .collection("institution")

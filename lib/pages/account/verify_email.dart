@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nylo/components/buttons/rounded_button.dart';
-import 'package:nylo/pages/home/initialize_page.dart';
+import 'package:nylo/pages/home/study_group/initialize_page.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});

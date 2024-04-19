@@ -9,7 +9,7 @@ import 'package:nylo/components/dialogs/create_group.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
-import 'package:nylo/pages/home/my_courses.dart';
+import 'package:nylo/pages/home/study_group/my_courses.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';

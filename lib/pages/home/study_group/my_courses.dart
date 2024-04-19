@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/user_courses_container.dart';
 import 'package:nylo/components/dialogs/alert_dialog.dart';
-import 'package:nylo/pages/home/search_course.dart';
+import 'package:nylo/pages/home/study_group/search_course.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 

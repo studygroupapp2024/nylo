@@ -22,14 +22,21 @@ class SubjectMatter {
       // get the SubjectIds Only
       List<String> courseIds =
           courses.map((course) => course.subjectId).toList();
-
+      List<String> subjectCode =
+          courses.map((course) => course.subjectCode).toList();
+      List<String> subjectTitle =
+          courses.map((course) => course.subjectTitle).toList();
       // create a new class
+      String concatenatedSubjectCode = subjectCode.join(', ');
+      String concatenatedSubjectTitle = subjectTitle.join(', ');
       SubjectMatterModel newSubjectMatter = SubjectMatterModel(
         proctorId: proctorId,
         dateCreated: timestamp,
         courseId: courseIds,
         className: className,
         description: description,
+        courseCodes: concatenatedSubjectCode,
+        courseTitles: concatenatedSubjectTitle,
       );
 
       DocumentReference newSubjectMatterRef = await institution
@@ -105,6 +112,13 @@ class SubjectMatter {
     String institutionId,
   ) async {
     List<String> courseIds = courses.map((course) => course.subjectId).toList();
+
+    List<String> subjectCode =
+        courses.map((course) => course.subjectCode).toList();
+    List<String> subjectTitle =
+        courses.map((course) => course.subjectTitle).toList();
+    String concatenatedSubjectCode = subjectCode.join(', ');
+    String concatenatedSubjectTitle = subjectTitle.join(', ');
     await _firestore
         .collection("institution")
         .doc(institutionId)
@@ -114,6 +128,8 @@ class SubjectMatter {
       "courseId": courseIds,
       "className": className,
       "description": description,
+      "courseCodes": concatenatedSubjectCode,
+      "courseTitles": concatenatedSubjectTitle,
     });
     return true;
   }

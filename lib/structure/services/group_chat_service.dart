@@ -177,6 +177,7 @@ class GroupChat {
             type,
             "",
             institutionId,
+            true,
           );
           return true;
         } else {
@@ -253,12 +254,7 @@ class GroupChat {
           var type = "announcement";
           var message = "$userName has created the study group.";
           await _chatService.sendAnnouncementMessage(
-            groupChatId,
-            message,
-            type,
-            "",
-            institutionId,
-          );
+              groupChatId, message, type, "", institutionId, true);
           return true;
         }
       } else {
@@ -339,12 +335,7 @@ class GroupChat {
       var message = "$memberName has left the study group.";
 
       await _chatService.sendAnnouncementMessage(
-        groupChatId,
-        message,
-        type,
-        "",
-        institutionId,
-      );
+          groupChatId, message, type, "", institutionId, true);
 
       // Send notification to the owner that a member of his group has left
       await _firebaseMessage.sendPushMessage(
@@ -361,6 +352,7 @@ class GroupChat {
         type,
         "",
         institutionId,
+        true,
       );
 
       await _firebaseMessage.sendPushMessage(

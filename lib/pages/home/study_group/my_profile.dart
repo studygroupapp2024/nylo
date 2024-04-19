@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/chat_info_container.dart';
-import 'package:nylo/pages/home/edit_my_profile.dart';
+import 'package:nylo/pages/home/study_group/edit_my_profile.dart';
 import 'package:nylo/structure/auth/auth_service.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 

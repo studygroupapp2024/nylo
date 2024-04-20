@@ -8,11 +8,11 @@ import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/storage_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 
-class SendSpecialMessage extends ConsumerWidget {
+class TutorSendSpecialMessage extends ConsumerWidget {
   final String groupChatId;
   final String groupChatTitle;
 
-  const SendSpecialMessage({
+  const TutorSendSpecialMessage({
     super.key,
     required this.groupChatId,
     required this.groupChatTitle,
@@ -167,7 +167,7 @@ class SendSpecialMessage extends ConsumerWidget {
                     ref.watch(documentTypeProvider),
                     groupChatTitle,
                     ref.watch(setGlobalUniversityId),
-                    true,
+                    false,
                   );
 
               ref.watch(isLoadingProvider.notifier).state = false;

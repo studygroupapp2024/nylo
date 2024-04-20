@@ -16,24 +16,45 @@ class ChatService {
   Future<List<String>> membersWithNotificationOn(
     String groupChatId,
     String institutionId,
+    bool isGroupChat,
   ) async {
-    final QuerySnapshot membersSnapshot = await FirebaseFirestore.instance
-        .collection("institution")
-        .doc(institutionId)
-        .collection("study_groups")
-        .doc(groupChatId)
-        .collection("members")
-        .where("receiveNotification", isEqualTo: true)
-        .get();
+    if (isGroupChat) {
+      final QuerySnapshot membersSnapshot = await FirebaseFirestore.instance
+          .collection("institution")
+          .doc(institutionId)
+          .collection("study_groups")
+          .doc(groupChatId)
+          .collection("members")
+          .where("receiveNotification", isEqualTo: true)
+          .get();
 
-    List<String> membersList = [];
+      List<String> membersList = [];
 
-    // Extract member IDs from the snapshot
-    for (var doc in membersSnapshot.docs) {
-      membersList.add(doc.id);
+      // Extract member IDs from the snapshot
+      for (var doc in membersSnapshot.docs) {
+        membersList.add(doc.id);
+      }
+
+      return membersList;
+    } else {
+      final QuerySnapshot membersSnapshot = await FirebaseFirestore.instance
+          .collection("institution")
+          .doc(institutionId)
+          .collection("direct_messages")
+          .doc(groupChatId)
+          .collection("members")
+          .where("receiveNotification", isEqualTo: true)
+          .get();
+
+      List<String> membersList = [];
+
+      // Extract member IDs from the snapshot
+      for (var doc in membersSnapshot.docs) {
+        membersList.add(doc.id);
+      }
+
+      return membersList;
     }
-
-    return membersList;
   }
 
   Future<bool> sendMessage(
@@ -45,6 +66,7 @@ class ChatService {
     String groupChatTitle,
     String category,
     String filename,
+    bool isGroup,
   ) async {
     // current user Info
     final userInfo =
@@ -62,8 +84,11 @@ class ChatService {
     final Timestamp timestamp = Timestamp.now();
 
     // get all members where Notification = true
-    final membersIdNotif =
-        await membersWithNotificationOn(groupChatid, institutionId);
+    final membersIdNotif = await membersWithNotificationOn(
+      groupChatid,
+      institutionId,
+      isGroup,
+    );
     print("membersIdNotif: $membersIdNotif");
 
     // get all their FCM token
@@ -108,31 +133,58 @@ class ChatService {
       category: category,
       filename: filename,
     );
+    print("IS GROUP: $isGroup");
+    if (isGroup) {
+// add new message to database
+      await _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection('study_groups')
+          .doc(groupChatid)
+          .collection("messages")
+          .add(newMessage.toMap());
 
-    // add new message to database
-    await _firestore
-        .collection("institution")
-        .doc(institutionId)
-        .collection('study_groups')
-        .doc(groupChatid)
-        .collection("messages")
-        .add(newMessage.toMap());
+      // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
+      _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("study_groups")
+          .doc(groupChatid)
+          .update(
+        {
+          "lastMessage": message,
+          "lastMessageSender": curreUserEmail,
+          "lastMessageTimeSent": timestamp,
+          "lastMessageType": type,
+        },
+      );
+      return true;
+    } else {
+      await _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection('direct_messages')
+          .doc(groupChatid)
+          .collection("messages")
+          .add(newMessage.toMap());
 
-    // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
-    _firestore
-        .collection("institution")
-        .doc(institutionId)
-        .collection("study_groups")
-        .doc(groupChatid)
-        .update(
-      {
-        "lastMessage": message,
-        "lastMessageSender": curreUserEmail,
-        "lastMessageTimeSent": timestamp,
-        "lastMessageType": type,
-      },
-    );
-    return true;
+      // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
+      _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("direct_messages")
+          .doc(groupChatid)
+          .update(
+        {
+          "lastMessage": message,
+          "lastMessageSender": curreUserEmail,
+          "lastMessageTimeSent": timestamp,
+          "lastMessageType": type,
+        },
+      );
+
+      return true;
+    }
   }
 
   Future<bool> sendAnnouncementMessage(
@@ -232,7 +284,9 @@ class ChatService {
     String category,
     String groupChatTitle,
     String institutionId,
+    bool isGroup,
   ) async {
+    print("IS GROUP: $isGroup");
     try {
       File file = File(filePath);
       await _firebaseStorage.ref('chatImages/$fileName').putFile(file);
@@ -250,6 +304,7 @@ class ChatService {
           groupChatTitle,
           "image",
           fileName,
+          isGroup,
         );
         return true;
 
@@ -264,11 +319,11 @@ class ChatService {
           groupChatTitle,
           "document",
           fileName,
+          isGroup,
         );
         return true;
       }
     } on FirebaseException catch (e) {
-      print("ERROR: $e");
       return false;
     }
   }

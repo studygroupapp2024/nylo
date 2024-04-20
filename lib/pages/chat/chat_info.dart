@@ -303,6 +303,7 @@ class ChatInfo extends ConsumerWidget {
                       onTap: null,
                       title: "Notifications",
                       icon: Icons.notifications,
+                      isGroup: true,
                     ),
                     const SizedBox(
                       height: 20,

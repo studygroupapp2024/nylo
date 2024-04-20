@@ -37,9 +37,9 @@ class Members extends ConsumerWidget {
                   final members = membersList[index];
 
                   return MembersContainer(
-                    member: members.name,
+                    member: "TEST",
                     role: members.isAdmin ? "Admin" : "Member",
-                    image: members.imageUrl,
+                    image: "TEST",
                     isAdmin: members.isAdmin,
                     creatorId: creatorId,
                     onPressed: () async {
@@ -53,7 +53,7 @@ class Members extends ConsumerWidget {
                                     members.userId,
                                     ref.watch(setGlobalUniversityId),
                                     "kick",
-                                    members.name,
+                                    "TEST",
                                     groupChatTitle,
                                     creatorId,
                                   );

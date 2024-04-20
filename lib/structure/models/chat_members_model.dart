@@ -5,16 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatMembersModel {
   final String lastReadChat;
   final String userId;
-  final String imageUrl;
-  final String name;
+
   final bool isAdmin;
   final bool receiveNotification;
 
   ChatMembersModel({
     required this.lastReadChat,
     required this.userId,
-    required this.imageUrl,
-    required this.name,
     required this.isAdmin,
     required this.receiveNotification,
   });
@@ -23,8 +20,6 @@ class ChatMembersModel {
     return <String, dynamic>{
       'lastReadChat': lastReadChat,
       'userId': userId,
-      'imageUrl': imageUrl,
-      'name': name,
       'isAdmin': isAdmin,
       'receiveNotification': receiveNotification,
     };
@@ -34,8 +29,6 @@ class ChatMembersModel {
     return ChatMembersModel(
       lastReadChat: map['lastReadChat'] as String,
       userId: map['userId'] as String,
-      imageUrl: map['imageUrl'] as String,
-      name: map['name'] as String,
       isAdmin: map['isAdmin'] as bool,
       receiveNotification: map['receiveNotification'] as bool,
     );
@@ -44,11 +37,9 @@ class ChatMembersModel {
   factory ChatMembersModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
     return ChatMembersModel(
-      imageUrl: doc['imageUrl'],
       lastReadChat: doc['lastReadChat'],
       userId: doc['userId'],
       isAdmin: doc['isAdmin'],
-      name: doc['name'],
       receiveNotification: doc['receiveNotification'],
     );
   }

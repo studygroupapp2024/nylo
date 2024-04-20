@@ -5,35 +5,31 @@ import 'package:intl/intl.dart';
 import 'package:nylo/components/buttons/send_button.dart';
 import 'package:nylo/components/containers/chat_bubble.dart';
 import 'package:nylo/components/textfields/chat_textfield.dart';
-import 'package:nylo/pages/chat/chat_info.dart';
-import 'package:nylo/pages/chat/special_message.dart';
+import 'package:nylo/pages/home/tutor/tutor_chat_info.dart';
+import 'package:nylo/pages/home/tutor/tutor_special_message.dart';
 import 'package:nylo/structure/providers/chat_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
-import 'package:nylo/structure/providers/groupchat_provider.dart';
+import 'package:nylo/structure/providers/direct_message_provider.dart';
 import 'package:nylo/structure/providers/storage_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 
-class ChatPage extends ConsumerWidget {
+class TutorChatPage extends ConsumerWidget {
   final String groupChatId;
   final String title;
   final String creator;
-  final String desc;
   final String dateCreated;
-  final String courseCode;
-  final String courseTitle;
   final List<dynamic> members;
+  final String classId;
 
-  ChatPage({
+  TutorChatPage({
     super.key,
     required this.groupChatId,
     required this.title,
     required this.creator,
-    required this.desc,
     required this.dateCreated,
-    required this.courseCode,
-    required this.courseTitle,
     required this.members,
+    required this.classId,
   });
 
   final TextEditingController _messageController = TextEditingController();
@@ -43,10 +39,7 @@ class ChatPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chats = ref.watch(
-      studyGroupMessageProvider(groupChatId),
-    );
-    final groupChatMembers = ref.watch(
-      groupChatMembersProvider(groupChatId),
+      tutorClassMessagesProvider(groupChatId),
     );
 
     return GestureDetector(
@@ -64,15 +57,13 @@ class ChatPage extends ConsumerWidget {
                   context,
                   MaterialPageRoute(
                     settings: const RouteSettings(name: "/ChatPage"),
-                    builder: (context) => ChatInfo(
+                    builder: (context) => TutorChatInfo(
                       groupChatId: groupChatId,
                       creator: creator,
                       groupChatTitle: title,
-                      groupChatDescription: desc,
                       dateCreated: dateCreated,
-                      courseCode: courseCode,
-                      courseTitle: courseTitle,
                       members: members,
+                      classId: classId,
                     ),
                   ),
                 );
@@ -360,12 +351,13 @@ class ChatPage extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SendSpecialMessage(
+                              builder: (context) => TutorSendSpecialMessage(
                                 groupChatId: groupChatId,
                                 groupChatTitle: title,
                               ),
                             ),
                           );
+                          print("TutorSendSpecialMessage");
 
                           ref.watch(documentTypeProvider.notifier).state = '';
                           ref.read(pathNameProvider.notifier).state = '';
@@ -380,45 +372,35 @@ class ChatPage extends ConsumerWidget {
                           controller: _messageController,
                         ),
                       ),
-                      groupChatMembers.when(data: (membersList) {
-                        return SendButton(
-                          onPressed: () async {
-                            if (_messageController.text.isNotEmpty) {
-                              ref
-                                  .read(isLoadingProvider.notifier)
-                                  .update((state) => true);
+                      SendButton(
+                        onPressed: () async {
+                          if (_messageController.text.isNotEmpty) {
+                            ref
+                                .read(isLoadingProvider.notifier)
+                                .update((state) => true);
 
-                              final sendMessage =
-                                  await ref.read(chatProvider).sendMessage(
-                                        groupChatId,
-                                        _messageController.text,
-                                        "chat",
-                                        "",
-                                        ref.watch(setGlobalUniversityId),
-                                        title,
-                                        "",
-                                        "",
-                                        true,
-                                      );
-                              ref
-                                  .read(isLoadingProvider.notifier)
-                                  .update((state) => false);
+                            final sendMessage =
+                                await ref.read(chatProvider).sendMessage(
+                                      groupChatId,
+                                      _messageController.text,
+                                      "chat",
+                                      "",
+                                      ref.watch(setGlobalUniversityId),
+                                      title,
+                                      "",
+                                      "",
+                                      false,
+                                    );
+                            ref
+                                .read(isLoadingProvider.notifier)
+                                .update((state) => false);
 
-                              if (sendMessage) {
-                                _messageController.clear();
-                              }
+                            if (sendMessage) {
+                              _messageController.clear();
                             }
-                          },
-                        );
-                      }, error: (error, stackTrace) {
-                        return Center(
-                          child: Text('Error: $error'),
-                        );
-                      }, loading: () {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }),
+                          }
+                        },
+                      ),
                     ],
                   ),
                 )

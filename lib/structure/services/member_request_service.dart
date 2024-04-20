@@ -62,7 +62,7 @@ class MemberRequest {
     print("userInfodata: $userInfodata");
     final uid = userInfodata!['uid'];
     final userName = userInfodata['name'];
-    final imageUrl = userInfodata['imageUrl'];
+
     final fcmtoken = userInfodata['fcmtoken'];
 
     if (isAccepted) {
@@ -70,8 +70,6 @@ class MemberRequest {
       ChatMembersModel newMember = ChatMembersModel(
           lastReadChat: '',
           userId: uid,
-          imageUrl: imageUrl,
-          name: userName,
           isAdmin: false,
           receiveNotification: true);
 

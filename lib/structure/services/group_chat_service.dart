@@ -18,21 +18,29 @@ class GroupChat {
   final ChatService _chatService = ChatService();
   final FirebaseMessage _firebaseMessage = FirebaseMessage();
 
-  Future<void> configureNotification(
-    String groupChatId,
-    String institutionId,
-    String userId,
-    bool receiveNotification,
-  ) async {
-    await institution
-        .doc(institutionId)
-        .collection("study_groups")
-        .doc(groupChatId)
-        .collection("members")
-        .doc(userId)
-        .update({
-      'receiveNotification': receiveNotification,
-    });
+  Future<void> configureNotification(String groupChatId, String institutionId,
+      String userId, bool receiveNotification, bool isGroup) async {
+    if (isGroup) {
+      await institution
+          .doc(institutionId)
+          .collection("study_groups")
+          .doc(groupChatId)
+          .collection("members")
+          .doc(userId)
+          .update({
+        'receiveNotification': receiveNotification,
+      });
+    } else {
+      await institution
+          .doc(institutionId)
+          .collection("direct_messages")
+          .doc(groupChatId)
+          .collection("members")
+          .doc(userId)
+          .update({
+        'receiveNotification': receiveNotification,
+      });
+    }
   }
 
   // delete study group
@@ -123,8 +131,6 @@ class GroupChat {
           ChatMembersModel newMemberList = ChatMembersModel(
             lastReadChat: '',
             userId: _auth.currentUser!.uid,
-            imageUrl: imageUrl,
-            name: userName,
             isAdmin: true,
             receiveNotification: true,
           );
@@ -205,8 +211,6 @@ class GroupChat {
           ChatMembersModel newMemberList = ChatMembersModel(
             lastReadChat: '',
             userId: _auth.currentUser!.uid,
-            imageUrl: imageUrl,
-            name: userName,
             isAdmin: true,
             receiveNotification: true,
           );

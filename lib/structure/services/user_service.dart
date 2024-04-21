@@ -52,8 +52,6 @@ class UserInformation {
           "name": name,
         });
       }
-    } on FirebaseException catch (e) {
-      print(e);
-    }
+    } on FirebaseException catch (e) {}
   }
 }

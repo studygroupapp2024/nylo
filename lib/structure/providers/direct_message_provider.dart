@@ -15,7 +15,7 @@ final directMessageProvider = StateProvider.autoDispose<DirectMessage>((ref) {
 });
 
 // get User Study Groups
-final userDirectMessages =
+final tutorDirectMessages =
     StreamProvider.family<List<DirectMessageModel>, String>(
   (ref, userId) {
     final institutionId = ref.watch(setGlobalUniversityId);
@@ -23,10 +23,33 @@ final userDirectMessages =
         .collection("institution")
         .doc(institutionId)
         .collection("direct_messages")
-        .orderBy(
-          'lastMessageTimeSent',
-          descending: true,
-        )
+        .where("proctorId", isEqualTo: userId)
+        .orderBy("__name__", descending: true)
+        .snapshots()
+        .map(
+          (querySnapshot) => querySnapshot.docs
+              .map(
+                (snapshot) => DirectMessageModel.fromSnapshot(snapshot),
+              )
+              .where(
+                (group) => group.membersId.contains(userId),
+              )
+              .toList(),
+        );
+    return userStudyGroups;
+  },
+);
+
+final tuteeDirectMessages =
+    StreamProvider.family<List<DirectMessageModel>, String>(
+  (ref, userId) {
+    final institutionId = ref.watch(setGlobalUniversityId);
+    final userStudyGroups = _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection("direct_messages")
+        .where("proctorId", isNotEqualTo: userId)
+        .orderBy("__name__", descending: true)
         .snapshots()
         .map(
           (querySnapshot) => querySnapshot.docs

@@ -36,7 +36,7 @@ class CategoryModel {
       CategoryModel(
         caption: "Become a tutor",
         name: "Register",
-        iconPath: 'assets/icons/search-phone_svgrepo.com.svg',
+        iconPath: 'assets/icons/learning-teacher_svgrepo.com.svg',
         backgroundColor: const Color.fromARGB(255, 222, 159, 172),
         onTap: () {
           Navigator.push(
@@ -54,8 +54,8 @@ class CategoryModel {
     categories.add(
       CategoryModel(
         caption: "Find a tutor",
-        name: "Find",
-        iconPath: 'assets/icons/search-phone_svgrepo.com.svg',
+        name: "Seach",
+        iconPath: 'assets/icons/search_svgrepo.com.svg',
         backgroundColor: const Color.fromARGB(255, 222, 159, 172),
         onTap: () {
           Navigator.push(
@@ -76,7 +76,7 @@ class CategoryModel {
       CategoryModel(
         caption: "Guides in learning",
         name: "Tutors",
-        iconPath: 'assets/icons/search-phone_svgrepo.com.svg',
+        iconPath: 'assets/icons/presentation-teacher_svgrepo.com.svg',
         backgroundColor: const Color.fromARGB(255, 222, 159, 172),
         onTap: () {
           Navigator.push(

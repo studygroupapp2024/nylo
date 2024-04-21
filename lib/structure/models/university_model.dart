@@ -7,7 +7,7 @@ class UniversityModel {
   final String abbreviation;
   final String logo;
   final String color;
-  final String emailIndicator;
+
   final String uniId;
   final List<dynamic> students;
   final List<dynamic> domains;
@@ -17,7 +17,6 @@ class UniversityModel {
     required this.abbreviation,
     required this.logo,
     required this.color,
-    required this.emailIndicator,
     required this.uniId,
     required this.students,
     required this.domains,
@@ -29,7 +28,6 @@ class UniversityModel {
       'abbreviation': abbreviation,
       'logo': logo,
       'color': color,
-      'emailIndicator': emailIndicator,
       'students': students,
       'domains': domains,
     };
@@ -41,7 +39,6 @@ class UniversityModel {
       abbreviation: map['abbreviation'] as String,
       logo: map['logo'] as String,
       color: map['color'] as String,
-      emailIndicator: map['emailIndicator'] as String,
       uniId: map['uniId'] as String,
       students: List<dynamic>.from((map['students'] as List<dynamic>)),
       domains: List<dynamic>.from((map['domains'] as List<dynamic>)),
@@ -55,7 +52,6 @@ class UniversityModel {
       abbreviation: doc['abbreviation'],
       logo: doc['logo'],
       color: doc['color'],
-      emailIndicator: doc['emailIndicator'],
       uniId: doc['uniId'],
       students: doc['students'],
       domains: doc['domains'],

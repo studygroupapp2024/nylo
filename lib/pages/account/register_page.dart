@@ -91,8 +91,7 @@ class RegisterPage extends ConsumerWidget {
     final lastPage = ref.watch(lastPageProvider);
     final firstPage = ref.watch(firstPageProvider);
     final selectedIndex = ref.watch(selectedIndexProvider);
-    final domains = ref.watch(universityDomainNamesProvider).value;
-    print("DOMAINS: $domains");
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: SafeArea(
@@ -169,8 +168,8 @@ class RegisterPage extends ConsumerWidget {
                                 ref
                                     .read(selectedIndexProvider.notifier)
                                     .update((state) => index);
-                                ref.read(emailDomainProvider.notifier).state =
-                                    universityItem.emailIndicator;
+                                // ref.read(emailDomainProvider.notifier).state =
+                                //     universityItem.emailIndicator;
 
                                 ref
                                     .read(universityNameProvider.notifier)
@@ -215,11 +214,11 @@ class RegisterPage extends ConsumerWidget {
                                                   .notifier)
                                               .update((state) => number as int);
 
-                                          ref
-                                                  .read(emailDomainProvider
-                                                      .notifier)
-                                                  .state =
-                                              universityItem.emailIndicator;
+                                          // ref
+                                          //         .read(emailDomainProvider
+                                          //             .notifier)
+                                          //         .state =
+                                          //     universityItem.emailIndicator;
                                           ref
                                               .read(universityNameProvider
                                                   .notifier)

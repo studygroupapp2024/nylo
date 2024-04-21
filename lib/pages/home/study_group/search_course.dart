@@ -103,6 +103,29 @@ class SearchCourse extends ConsumerWidget {
                             );
                           },
                         );
+
+                        // return ListView.builder(
+                        //   itemCount: courses.length,
+                        //   itemBuilder: (context, index) {
+                        //     final course = courses[index];
+                        //     return ListTile(
+                        //       title: Text(course['subject_title']),
+                        //       subtitle: Text(course['subject_code']),
+                        //       trailing: IconButton(
+                        //         icon: const Icon(
+                        //             Icons.add_circle_outline_outlined),
+                        //         onPressed: () async {
+                        //           ref.read(courseProvider).addCourse(
+                        //                 course['subject_code'],
+                        //                 course['subject_title'],
+                        //                 course['subjectId'],
+                        //                 ref.watch(setGlobalUniversityId),
+                        //               );
+                        //         },
+                        //       ),
+                        //     );
+                        //   },
+                        // );
                       }
                     }, error: (error, stackTrace) {
                       return Center(

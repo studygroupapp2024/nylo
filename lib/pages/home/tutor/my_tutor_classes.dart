@@ -6,6 +6,7 @@ import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
+import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 
 class TutorClassses extends ConsumerWidget {
@@ -15,8 +16,9 @@ class TutorClassses extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userTutorClass =
         ref.watch(userDirectMessages(_auth.currentUser!.uid));
-
-    print("Tutor Class: $userTutorClass");
+    final classInformationProvider = ref.watch(
+      selectedClassInformationProvider(_auth.currentUser!.uid),
+    );
 
     return Scaffold(
       appBar: AppBar(

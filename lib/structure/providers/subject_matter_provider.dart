@@ -10,6 +10,8 @@ final subjectMatterProvider = StateProvider.autoDispose<SubjectMatter>((ref) {
   return SubjectMatter();
 });
 
+final myTutorProvider = StateProvider<bool>((ref) => true);
+
 final selectedClassInformationProvider = StreamProvider.family
     .autoDispose<List<SubjectMatterModel>, String>((ref, userId) {
   final searchQuery = ref.watch(findTutorSearchQueryProvider);

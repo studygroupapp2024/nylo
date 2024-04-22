@@ -100,8 +100,6 @@ class RegisterAsTutor extends ConsumerWidget {
                                     builder: (context) {
                                       return ConfirmationDialog(
                                         confirm: () async {
-                                          Navigator.pop(context);
-
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(

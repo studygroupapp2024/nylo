@@ -14,7 +14,7 @@ class DirectMessage {
   final ChatService _chatService = ChatService();
 
   // create a Direct Message
-  Future<bool> addDirectMessage(
+  Future<Map<String, dynamic>> addDirectMessage(
     String institutionId,
     String proctorId,
     String subjectMatterId,
@@ -26,7 +26,10 @@ class DirectMessage {
     final userInfodata = userInfo.data();
 
     final userName = userInfodata!['name'];
+    final proctorInfo = await _users.getUserInfo(proctorId, institutionId);
+    final proctorInfoData = proctorInfo.data();
 
+    final proctorName = proctorInfoData!['name'];
     try {
       final Timestamp timestamp = Timestamp.now();
 
@@ -138,9 +141,39 @@ class DirectMessage {
         false,
       );
 
-      return true;
+      Map<String, dynamic> createMap() {
+        Map<String, dynamic> myMap = {
+          'directMessageId': directMessageId,
+          'title': proctorName,
+          'creator': proctorId,
+          'dateCreated': timestamp.toString(),
+          'membersId': [proctorId, _auth.currentUser!.uid],
+          'classId': subjectMatterId,
+          'isSuccess': true,
+          // Add more key-value pairs as needed
+        };
+
+        return myMap;
+      }
+
+      return createMap();
     } catch (e) {
-      return false;
+      Map<String, dynamic> createMap() {
+        Map<String, dynamic> myMap = {
+          'directMessageId': '',
+          'title': '',
+          'creator': '',
+          'dateCreated': '',
+          'membersId': [],
+          'classId': '',
+          'isSuccess': false,
+          // Add more key-value pairs as needed
+        };
+
+        return myMap;
+      }
+
+      return createMap();
     }
   }
 }

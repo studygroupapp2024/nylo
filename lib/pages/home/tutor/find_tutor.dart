@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/no_data_holder.dart';
-import 'package:nylo/pages/home/study_group/create_study_group.dart';
+import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
+import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
@@ -66,7 +67,7 @@ class FindTutor extends ConsumerWidget {
               const Expanded(
                 child: Center(
                   child: Text(
-                    "Search study group by subject code and title",
+                    "Find tutors by subject or name",
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -80,7 +81,6 @@ class FindTutor extends ConsumerWidget {
                     );
                     return multipleGroupChatProvider.when(
                       data: (groupchats) {
-                        print("groupchats: ${groupchats.length}");
                         if (groupchats.isEmpty) {
                           return NoContent(
                               icon:
@@ -89,13 +89,13 @@ class FindTutor extends ConsumerWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => CreateStudyGroup(),
+                                    builder: (context) => RegisterAsTutorPage(),
                                   ),
                                 );
                               },
                               description:
-                                  "There is no study group available for now. Do you want to lead one?",
-                              buttonText: "Create Study Group");
+                                  "There are no classes on the aforementioned course. Do you want to lead one?",
+                              buttonText: "Create Class");
                         } else {
                           return ListView.builder(
                             itemCount: groupchats.length,
@@ -227,7 +227,7 @@ class FindTutor extends ConsumerWidget {
                                                             .notifier)
                                                         .state = true;
                                                     // create a Direct Message
-                                                    await ref
+                                                    final getData = await ref
                                                         .watch(
                                                             directMessageProvider)
                                                         .addDirectMessage(
@@ -236,11 +236,36 @@ class FindTutor extends ConsumerWidget {
                                                           groupChats.proctorId,
                                                           groupChats.classId!,
                                                         );
-                                                    Navigator.pop(context);
-                                                    ref
-                                                        .read(isLoadingProvider
-                                                            .notifier)
-                                                        .state = false;
+
+                                                    if (getData['isSuccess']) {
+                                                      Navigator.pop(context);
+
+                                                      Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              TutorChatPage(
+                                                            groupChatId: getData[
+                                                                'directMessageId'],
+                                                            title: getData[
+                                                                'title'],
+                                                            creator: getData[
+                                                                'creator'],
+                                                            dateCreated: getData[
+                                                                'dateCreated'],
+                                                            members: getData[
+                                                                'membersId'],
+                                                            classId: getData[
+                                                                'classId'],
+                                                          ),
+                                                        ),
+                                                      );
+                                                      ref
+                                                          .read(
+                                                              isLoadingProvider
+                                                                  .notifier)
+                                                          .state = false;
+                                                    }
                                                   },
                                                   margin:
                                                       const EdgeInsets.all(0),
@@ -273,36 +298,34 @@ class FindTutor extends ConsumerWidget {
                                         10,
                                       ),
                                       child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: ProctorImage(groupChats),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    groupChats.className,
-                                                  ),
-                                                  Courses(groupChats),
-                                                ],
-                                              ),
-                                            ],
+                                          Align(
+                                              alignment: Alignment.topLeft,
+                                              child: ProctorImage(groupChats)),
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      groupChats.className,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 250,
+                                                      child:
+                                                          Courses(groupChats),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          const Align(
-                                            alignment: Alignment.centerRight,
-                                            child: Icon(Icons.chevron_right),
-                                          ),
+                                          const Icon(Icons.chevron_right),
                                         ],
                                       ),
                                     ),
@@ -342,9 +365,11 @@ class FindTutor extends ConsumerWidget {
 
         return user.when(
           data: (userData) {
-            return CircleAvatar(
-              backgroundImage: NetworkImage(
-                userData.imageUrl,
+            return Container(
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  userData.imageUrl,
+                ),
               ),
             );
           },

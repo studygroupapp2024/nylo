@@ -36,7 +36,6 @@ class RegisterAsTutor extends ConsumerWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  settings: const RouteSettings(name: "/RegisterCategory"),
                   builder: (context) => RegisterAsTutorPage(),
                 ),
               );
@@ -100,8 +99,6 @@ class RegisterAsTutor extends ConsumerWidget {
                                     builder: (context) {
                                       return ConfirmationDialog(
                                         confirm: () async {
-                                          Navigator.pop(context);
-
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
@@ -185,7 +182,7 @@ class RegisterAsTutor extends ConsumerWidget {
                                             ),
                                           );
                                     }
-                                    Navigator.pop(context);
+
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

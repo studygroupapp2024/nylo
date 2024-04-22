@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
+import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
@@ -16,14 +17,10 @@ class TutorClassses extends ConsumerWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userTutorClass =
-        ref.watch(tutorDirectMessages(_auth.currentUser!.uid));
-    final userTuteeClass =
-        ref.watch(tuteeDirectMessages(_auth.currentUser!.uid));
     final myTutor = ref.watch(myTutorProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Tutors"),
+        title: const Text("Connections"),
         centerTitle: true,
       ),
       body: Column(
@@ -122,7 +119,17 @@ class TutorClassses extends ConsumerWidget {
           Expanded(
             child: Consumer(
               builder: (context, ref, child) {
-                return userTutorClass.when(
+                final AsyncValue<List<DirectMessageModel>> connections;
+
+                // Determine which function to call based on myTutor flag
+                if (myTutor) {
+                  connections =
+                      ref.watch(tutorDirectMessages(_auth.currentUser!.uid));
+                } else {
+                  connections =
+                      ref.watch(tuteeDirectMessages(_auth.currentUser!.uid));
+                }
+                return connections.when(
                   data: (ids) {
                     if (ids.isEmpty) {
                       return NoContent(
@@ -318,8 +325,6 @@ class TutorClassses extends ConsumerWidget {
                                                             children: [
                                                               Courses(
                                                                   subjectMatterInfo),
-                                                              const Text(
-                                                                  "Tutee"),
                                                               Text(
                                                                 data.name,
                                                                 style: const TextStyle(

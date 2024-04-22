@@ -80,8 +80,6 @@ class EditClass extends ConsumerWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                settings: const RouteSettings(
-                                    name: "/RegisterHomePage"),
                                 builder: (context) => SearchCourseToTeach(),
                               ),
                             );
@@ -241,7 +239,6 @@ class EditClass extends ConsumerWidget {
                           _nameController.clear();
                           _descriptionController.clear();
                           Navigator.pop(context);
-
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Row(

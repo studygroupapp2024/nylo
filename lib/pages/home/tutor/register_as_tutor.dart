@@ -72,8 +72,6 @@ class RegisterAsTutorPage extends ConsumerWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                settings: const RouteSettings(
-                                    name: "/RegisterHomePage"),
                                 builder: (context) => SearchCourseToTeach(),
                               ),
                             );
@@ -129,8 +127,6 @@ class RegisterAsTutorPage extends ConsumerWidget {
                                                       selectedCoursesToTeachProvider
                                                           .notifier)
                                                   .remove(courseToRemove);
-                                              print(ref.watch(
-                                                  selectedCoursesToTeachProvider));
                                             },
                                             icon: const Icon(
                                                 Icons.remove_circle_outline),

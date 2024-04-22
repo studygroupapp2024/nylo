@@ -215,8 +215,7 @@ class FindTutor extends ConsumerWidget {
                                                   height: 15,
                                                 ),
                                                 const Text("Course"),
-                                                IntrinsicWidth(
-                                                    child: Courses(groupChats)),
+                                                Courses(groupChats),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),

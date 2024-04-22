@@ -17,10 +17,6 @@ class TutorClassses extends ConsumerWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userTutorClass =
-        ref.watch(tutorDirectMessages(_auth.currentUser!.uid));
-    final userTuteeClass =
-        ref.watch(tuteeDirectMessages(_auth.currentUser!.uid));
     final myTutor = ref.watch(myTutorProvider);
     return Scaffold(
       appBar: AppBar(

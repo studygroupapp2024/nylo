@@ -24,6 +24,13 @@ final tutorDirectMessages =
         .doc(institutionId)
         .collection("direct_messages")
         .where("proctorId", isNotEqualTo: userId)
+        .orderBy("proctorId",
+            descending: true) // Order by proctorId in descending order
+        .orderBy("lastMessageTimeSent",
+            descending:
+                true) // Then order by lastMessageTimeSent in descending order
+        .orderBy("__name__",
+            descending: true) // Finally order by __name__ in descending order
         .snapshots()
         .map(
           (querySnapshot) => querySnapshot.docs
@@ -48,6 +55,13 @@ final tuteeDirectMessages =
         .doc(institutionId)
         .collection("direct_messages")
         .where("proctorId", isEqualTo: userId)
+        .orderBy("proctorId",
+            descending: true) // Order by proctorId in descending order
+        .orderBy("lastMessageTimeSent",
+            descending:
+                true) // Then order by lastMessageTimeSent in descending order
+        .orderBy("__name__",
+            descending: true) // Finally order by __name__ in descending order
         .snapshots()
         .map(
           (querySnapshot) => querySnapshot.docs

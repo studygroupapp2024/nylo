@@ -23,8 +23,7 @@ final tutorDirectMessages =
         .collection("institution")
         .doc(institutionId)
         .collection("direct_messages")
-        .where("proctorId", isEqualTo: userId)
-        .orderBy("__name__", descending: true)
+        .where("proctorId", isNotEqualTo: userId)
         .snapshots()
         .map(
           (querySnapshot) => querySnapshot.docs
@@ -48,8 +47,7 @@ final tuteeDirectMessages =
         .collection("institution")
         .doc(institutionId)
         .collection("direct_messages")
-        .where("proctorId", isNotEqualTo: userId)
-        .orderBy("__name__", descending: true)
+        .where("proctorId", isEqualTo: userId)
         .snapshots()
         .map(
           (querySnapshot) => querySnapshot.docs

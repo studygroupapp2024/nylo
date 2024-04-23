@@ -64,7 +64,7 @@ class EditClass extends ConsumerWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "What course is the study group for?",
+                        "What courses do you want to teach?",
                         style: TextStyle(
                           fontSize: 20,
                           color: Theme.of(context).colorScheme.primary,

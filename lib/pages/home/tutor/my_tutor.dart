@@ -14,15 +14,13 @@ import 'package:nylo/structure/services/course_services.dart';
 
 class RegisterAsTutor extends ConsumerWidget {
   RegisterAsTutor({super.key});
-  final TextEditingController _controller = TextEditingController();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Courses courses = Courses();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userSubjectMatter =
         ref.watch(userSubjectMatterProvider(_auth.currentUser!.uid));
-
-    print("userSubjectMatter: $userSubjectMatter");
 
     return Scaffold(
       appBar: AppBar(
@@ -194,7 +192,7 @@ class RegisterAsTutor extends ConsumerWidget {
                                       ),
                                     );
                                   },
-                                  icon: const Icon(Icons.update),
+                                  icon: const Icon(Icons.edit_note_rounded),
                                 ),
                               ],
                             ),
@@ -207,14 +205,32 @@ class RegisterAsTutor extends ConsumerWidget {
                                 (e) => Consumer(
                                   builder: (context, ref, child) {
                                     final course = ref.watch(getSubjectInfo(e));
-
                                     return course.when(
                                       data: (data) {
-                                        return Chip(
-                                          label: Text(
-                                            data.subject_code,
-                                            style:
-                                                const TextStyle(fontSize: 10),
+                                        return IntrinsicWidth(
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                              horizontal: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiaryContainer,
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            child: Text(
+                                              data.subject_code,
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                            ),
                                           ),
                                         );
                                       },

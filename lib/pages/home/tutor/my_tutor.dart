@@ -14,15 +14,13 @@ import 'package:nylo/structure/services/course_services.dart';
 
 class RegisterAsTutor extends ConsumerWidget {
   RegisterAsTutor({super.key});
-  final TextEditingController _controller = TextEditingController();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Courses courses = Courses();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userSubjectMatter =
         ref.watch(userSubjectMatterProvider(_auth.currentUser!.uid));
-
-    print("userSubjectMatter: $userSubjectMatter");
 
     return Scaffold(
       appBar: AppBar(
@@ -194,7 +192,7 @@ class RegisterAsTutor extends ConsumerWidget {
                                       ),
                                     );
                                   },
-                                  icon: const Icon(Icons.update),
+                                  icon: const Icon(Icons.edit_note_rounded),
                                 ),
                               ],
                             ),

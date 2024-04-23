@@ -17,7 +17,7 @@ class SearchCourseToTeach extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Courses Available",
+          "Manage Courses",
         ),
         centerTitle: true,
       ),
@@ -55,6 +55,55 @@ class SearchCourseToTeach extends ConsumerWidget {
                     hintText: "Search",
                     hintStyle: TextStyle(
                         color: Theme.of(context).colorScheme.primary)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 10,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Wrap(
+                  spacing: 8.0, // Adjust spacing as needed
+                  runSpacing: 8.0, // Adjust run spacing as needed
+                  children:
+                      ref.watch(selectedCoursesToTeachProvider).map<Widget>(
+                    (course) {
+                      return IntrinsicWidth(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(course.subjectCode),
+                              const SizedBox(
+                                width: 2,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  final courseToRemove = course;
+                                  ref
+                                      .read(selectedCoursesToTeachProvider
+                                          .notifier)
+                                      .remove(courseToRemove);
+                                  print(ref
+                                      .watch(selectedCoursesToTeachProvider));
+                                },
+                                icon: const Icon(Icons.remove_circle_outline),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
             ),
             if (ref.watch(courseSearchQueryLengthProvider) < 3)

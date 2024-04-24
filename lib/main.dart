@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/firebase_options.dart';
 import 'package:nylo/structure/auth/auth_gate.dart';
@@ -34,24 +33,28 @@ void main() async {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: router,
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      // routerConfig: router,
+      home: const AuthGate(),
       theme: lightMode,
     );
   }
 }
 
-final router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (
-        context,
-        state,
-      ) =>
-          const AuthGate(),
-    ),
-  ],
-);
+// final router = GoRouter(
+//   routes: [
+//     GoRoute(
+//       path: '/',
+//       builder: (
+//         context,
+//         state,
+//       ) =>
+//           const AuthGate(),
+//     ),
+//   ],
+// );

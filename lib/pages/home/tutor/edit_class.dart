@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/dialogs/create_group.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
+import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_button.dart';
 import 'package:nylo/pages/home/tutor/search_course_to_teach.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
@@ -26,7 +26,7 @@ class EditClass extends ConsumerWidget {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final buttonColor = ref.watch(classButtonColorProvider);
@@ -100,54 +100,9 @@ class EditClass extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Column(
                         children: [
-                          Align(
+                          const Align(
                             alignment: Alignment.centerLeft,
-                            child: Wrap(
-                              spacing: 8.0, // Adjust spacing as needed
-                              runSpacing: 8.0, // Adjust run spacing as needed
-                              children: ref
-                                  .watch(selectedCoursesToTeachProvider)
-                                  .map<Widget>(
-                                (course) {
-                                  return IntrinsicWidth(
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text(course.subjectCode),
-                                          const SizedBox(
-                                            width: 2,
-                                          ),
-                                          IconButton(
-                                            onPressed: () {
-                                              final courseToRemove = course;
-                                              ref
-                                                  .read(
-                                                      selectedCoursesToTeachProvider
-                                                          .notifier)
-                                                  .remove(courseToRemove);
-                                              print(ref.watch(
-                                                  selectedCoursesToTeachProvider));
-                                            },
-                                            icon: const Icon(
-                                                Icons.remove_circle_outline),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ).toList(),
-                            ),
+                            child: TutorCoursesChipWithButton(),
                           ),
                           const SizedBox(
                             height: 10,

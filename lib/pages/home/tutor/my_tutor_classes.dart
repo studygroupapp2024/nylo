@@ -262,8 +262,13 @@ class TutorClassses extends ConsumerWidget {
                                                         ],
                                                       );
                                                     },
-                                                    loading: () =>
-                                                        const CircularProgressIndicator(),
+                                                    loading: () => CircleAvatar(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
+                                                      radius: 30,
+                                                    ),
                                                     error:
                                                         (error, stackTrace) =>
                                                             const Text("Error"),
@@ -290,8 +295,13 @@ class TutorClassses extends ConsumerWidget {
                                                         ],
                                                       );
                                                     },
-                                                    loading: () =>
-                                                        const CircularProgressIndicator(),
+                                                    loading: () => CircleAvatar(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
+                                                      radius: 30,
+                                                    ),
                                                     error:
                                                         (error, stackTrace) =>
                                                             const Text("Error"),
@@ -382,8 +392,14 @@ class TutorClassses extends ConsumerWidget {
                                                             ],
                                                           );
                                                         },
-                                                        loading: () =>
-                                                            const CircularProgressIndicator(),
+                                                        loading:
+                                                            () => CircleAvatar(
+                                                                  backgroundColor: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary,
+                                                                  radius: 30,
+                                                                ),
                                                         error: (error,
                                                                 stackTrace) =>
                                                             const Text(

@@ -121,6 +121,11 @@ class ChatService {
           title: groupChatTitle,
           body: "$format: $message");
     }
+    //   NotificationService.sendPushMessage(
+    //       recipientToken: fcmtoken,
+    //       title: groupChatTitle,
+    //       body: "$format: $message");
+    // }
 
     // create a new message
     MessageModel newMessage = MessageModel(

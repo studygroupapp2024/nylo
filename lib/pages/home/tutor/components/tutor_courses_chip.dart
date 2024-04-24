@@ -52,9 +52,15 @@ class TutorCoursesChip extends ConsumerWidget {
                     );
                   },
                   loading: () {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return Center(
+                        child: Container(
+                      height: 10,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ));
                   },
                 );
               },

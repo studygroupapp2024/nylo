@@ -4,11 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
+import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_name.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
-import 'package:nylo/structure/models/subject_matter_model.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
-import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 
@@ -263,8 +262,13 @@ class TutorClassses extends ConsumerWidget {
                                                         ],
                                                       );
                                                     },
-                                                    loading: () =>
-                                                        const CircularProgressIndicator(),
+                                                    loading: () => CircleAvatar(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
+                                                      radius: 30,
+                                                    ),
                                                     error:
                                                         (error, stackTrace) =>
                                                             const Text("Error"),
@@ -291,8 +295,13 @@ class TutorClassses extends ConsumerWidget {
                                                         ],
                                                       );
                                                     },
-                                                    loading: () =>
-                                                        const CircularProgressIndicator(),
+                                                    loading: () => CircleAvatar(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
+                                                      radius: 30,
+                                                    ),
                                                     error:
                                                         (error, stackTrace) =>
                                                             const Text("Error"),
@@ -323,8 +332,9 @@ class TutorClassses extends ConsumerWidget {
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              Courses(
-                                                                  subjectMatterInfo),
+                                                              TutorCoursesChipWithName(
+                                                                  asyncTutorCourses:
+                                                                      subjectMatterInfo),
                                                               Text(
                                                                 data.name,
                                                                 style: const TextStyle(
@@ -382,8 +392,14 @@ class TutorClassses extends ConsumerWidget {
                                                             ],
                                                           );
                                                         },
-                                                        loading: () =>
-                                                            const CircularProgressIndicator(),
+                                                        loading:
+                                                            () => CircleAvatar(
+                                                                  backgroundColor: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary,
+                                                                  radius: 30,
+                                                                ),
                                                         error: (error,
                                                                 stackTrace) =>
                                                             const Text(
@@ -396,8 +412,9 @@ class TutorClassses extends ConsumerWidget {
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              Courses(
-                                                                  subjectMatterInfo),
+                                                              TutorCoursesChipWithName(
+                                                                  asyncTutorCourses:
+                                                                      subjectMatterInfo),
                                                               Text(
                                                                 data.name,
                                                                 style: const TextStyle(
@@ -495,72 +512,6 @@ class TutorClassses extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Consumer Courses(AsyncValue<SubjectMatterModel> subjectMatterInfo) {
-    return Consumer(
-      builder: (context, ref, child) {
-        return subjectMatterInfo.when(
-          data: (data) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  data.className,
-                  textAlign: TextAlign.start,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Wrap(
-                  spacing: 10,
-                  children: data.courseId
-                      .map(
-                        (e) => Consumer(
-                          builder: (context, ref, child) {
-                            final course = ref.watch(getSubjectInfo(e));
-
-                            return course.when(
-                              data: (data) {
-                                return Chip(
-                                  label: Text(
-                                    data.subject_code,
-                                    style: const TextStyle(fontSize: 10),
-                                  ),
-                                );
-                              },
-                              error: (error, stackTrace) {
-                                return Center(
-                                  child: Text('Error: $error'),
-                                );
-                              },
-                              loading: () {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-            );
-          },
-          error: (error, stackTrace) {
-            return Center(
-              child: Text('Error: $error'),
-            );
-          },
-          loading: () {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        );
-      },
     );
   }
 }

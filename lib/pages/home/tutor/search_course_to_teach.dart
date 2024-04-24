@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_button.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
@@ -57,53 +58,14 @@ class SearchCourseToTeach extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.primary)),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
+            const Padding(
+              padding: EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 10,
               ),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Wrap(
-                  spacing: 8.0, // Adjust spacing as needed
-                  runSpacing: 8.0, // Adjust run spacing as needed
-                  children:
-                      ref.watch(selectedCoursesToTeachProvider).map<Widget>(
-                    (course) {
-                      return IntrinsicWidth(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              Text(course.subjectCode),
-                              const SizedBox(
-                                width: 2,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  final courseToRemove = course;
-                                  ref
-                                      .read(selectedCoursesToTeachProvider
-                                          .notifier)
-                                      .remove(courseToRemove);
-                                  print(ref
-                                      .watch(selectedCoursesToTeachProvider));
-                                },
-                                icon: const Icon(Icons.remove_circle_outline),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                ),
+                child: TutorCoursesChipWithButton(),
               ),
             ),
             if (ref.watch(courseSearchQueryLengthProvider) < 3)
@@ -140,12 +102,6 @@ class SearchCourseToTeach extends ConsumerWidget {
                                 String subjectId = course['subjectId'];
                                 String subjectTitle = course['subject_title'];
                                 String subjectCode = course['subject_code'];
-                                // ref.read(courseProvider).addCourse(
-                                //       course['subject_code'],
-                                //       course['subject_title'],
-                                //       course['subjectId'],
-                                //       ref.watch(setGlobalUniversityId),
-                                //     );
 
                                 final selectedCourse =
                                     ref.watch(selectedCoursesToTeachProvider);

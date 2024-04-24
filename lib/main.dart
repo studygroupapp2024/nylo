@@ -33,11 +33,28 @@ void main() async {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const AuthGate(), //AuthGate
+      navigatorKey: navigatorKey,
+      // routerConfig: router,
+      home: const AuthGate(),
       theme: lightMode,
     );
   }
 }
+
+// final router = GoRouter(
+//   routes: [
+//     GoRoute(
+//       path: '/',
+//       builder: (
+//         context,
+//         state,
+//       ) =>
+//           const AuthGate(),
+//     ),
+//   ],
+// );

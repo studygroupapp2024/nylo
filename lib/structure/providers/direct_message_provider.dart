@@ -79,6 +79,7 @@ final tutorClassMessagesProvider =
         .collection("direct_messages")
         .doc(chatId)
         .collection("messages")
+        .limit(5)
         .orderBy("timestamp", descending: true)
         .snapshots()
         .map(

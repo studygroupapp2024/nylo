@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/dialogs/alert_dialog.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/pages/home/tutor/components/tutor_courses_chip.dart';
 import 'package:nylo/pages/home/tutor/edit_class.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
@@ -198,58 +199,7 @@ class RegisterAsTutor extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        Wrap(
-                          spacing: 10,
-                          children: classes.courseId
-                              .map(
-                                (e) => Consumer(
-                                  builder: (context, ref, child) {
-                                    final course = ref.watch(getSubjectInfo(e));
-                                    return course.when(
-                                      data: (data) {
-                                        return IntrinsicWidth(
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                              vertical: 4,
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 4,
-                                              horizontal: 8,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .tertiaryContainer,
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                            child: Text(
-                                              data.subject_code,
-                                              style:
-                                                  const TextStyle(fontSize: 14),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      error: (error, stackTrace) {
-                                        return Center(
-                                          child: Text('Error: $error'),
-                                        );
-                                      },
-                                      loading: () {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
+                        TutorCoursesChip(groupChats: classes),
                       ],
                     ),
                   ),

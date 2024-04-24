@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/pages/home/tutor/courses_wrap.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
-import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
@@ -215,7 +215,9 @@ class FindTutor extends ConsumerWidget {
                                                   height: 15,
                                                 ),
                                                 const Text("Course"),
-                                                Courses(groupChats),
+                                                TutorCoursesChip(
+                                                  groupChats: groupChats,
+                                                ),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
@@ -317,8 +319,9 @@ class FindTutor extends ConsumerWidget {
                                                     ),
                                                     SizedBox(
                                                       width: 250,
-                                                      child:
-                                                          Courses(groupChats),
+                                                      child: TutorCoursesChip(
+                                                        groupChats: groupChats,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
@@ -385,59 +388,6 @@ class FindTutor extends ConsumerWidget {
           },
         );
       },
-    );
-  }
-
-  Wrap Courses(SubjectMatterModel groupChats) {
-    return Wrap(
-      spacing: 10,
-      children: groupChats.courseId
-          .map(
-            (e) => Consumer(
-              builder: (context, ref, child) {
-                final course = ref.watch(getSubjectInfo(e));
-
-                return course.when(
-                  data: (data) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 10,
-                        ),
-                        child: Text(
-                          data.subject_code,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return Center(
-                      child: Text('Error: $error'),
-                    );
-                  },
-                  loading: () {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                );
-              },
-            ),
-          )
-          .toList(),
     );
   }
 }

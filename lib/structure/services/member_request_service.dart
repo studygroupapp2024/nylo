@@ -32,10 +32,11 @@ class MemberRequest {
 
     // send notification to the owner
     _firebaseMessage.sendPushMessage(
-        recipientToken: ownerfcm,
-        title: "Member Request Notification",
-        body:
-            "$groupChatTitle: $requestorName wants to join your study group.");
+      recipientToken: ownerfcm,
+      title: "Member Request Notification",
+      body: "$groupChatTitle: $requestorName wants to join your study group.",
+      route: 'groupchats',
+    );
 
     // add the study group to the user study group.
     await _firestore
@@ -86,9 +87,11 @@ class MemberRequest {
 
       // send notification
       _firebaseMessage.sendPushMessage(
-          recipientToken: fcmtoken,
-          title: "Welcome!",
-          body: "Your request to join $title has been accepted.");
+        recipientToken: fcmtoken,
+        title: "Welcome!",
+        body: "Your request to join $title has been accepted.",
+        route: 'groupchats',
+      );
       await _firestore
           .collection("institution")
           .doc(institutionId)
@@ -158,9 +161,11 @@ class MemberRequest {
       );
       // send notification
       _firebaseMessage.sendPushMessage(
-          recipientToken: fcmtoken,
-          title: "Notice",
-          body: "Your request to join $title has been rejected.");
+        recipientToken: fcmtoken,
+        title: "Notice",
+        body: "Your request to join $title has been rejected.",
+        route: 'groupchats',
+      );
     }
   }
 }

@@ -346,6 +346,7 @@ class GroupChat {
         recipientToken: ownerfcmtoken,
         title: "Notice",
         body: message,
+        route: 'groupchats',
       );
     } else {
       var message = "$memberName has been removed from the study group.";
@@ -360,9 +361,11 @@ class GroupChat {
       );
 
       await _firebaseMessage.sendPushMessage(
-          recipientToken: fcmtoken,
-          title: "Notice",
-          body: "You have been removed from the $groupChatTitle.");
+        recipientToken: fcmtoken,
+        title: "Notice",
+        body: "You have been removed from the $groupChatTitle.",
+        route: 'groupchats',
+      );
     }
   }
 

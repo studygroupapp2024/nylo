@@ -58,3 +58,39 @@ class MainApp extends StatelessWidget {
 //     ),
 //   ],
 // );
+
+// import 'package:firebase_messaging/firebase_messaging.dart';
+
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+  
+//   // Initialize Firebase
+//   await Firebase.initializeApp();
+
+//   // Get the initial message if the app was opened via a notification while terminated
+//   RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+//   // Process the initial message if it exists
+//   if (initialMessage != null) {
+//     print('Received initial message: $initialMessage');
+//     // Handle the initial message as needed
+//     handleInitialMessage(initialMessage);
+//   }
+
+//   // Run the app
+//   runApp(MyApp());
+// }
+
+// void handleInitialMessage(RemoteMessage message) {
+//   // Handle the initial message here, for example, show a dialog or navigate to a specific screen
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'My App',
+//       home: MyHomePage(),
+//     );
+//   }
+// }

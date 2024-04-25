@@ -114,13 +114,7 @@ class ChatService {
     final String firstName = nameParts[0];
     final String format = firstName.substring(0, 1).toUpperCase() +
         firstName.substring(1).toLowerCase();
-    for (String fcmtoken in listfcmtoken) {
-      //send notification
-      _firebaseMessage.sendPushMessage(
-          recipientToken: fcmtoken,
-          title: groupChatTitle,
-          body: "$format: $message");
-    }
+
     //   NotificationService.sendPushMessage(
     //       recipientToken: fcmtoken,
     //       title: groupChatTitle,
@@ -138,7 +132,7 @@ class ChatService {
       category: category,
       filename: filename,
     );
-    print("IS GROUP: $isGroup");
+
     if (isGroup) {
 // add new message to database
       await _firestore
@@ -163,6 +157,16 @@ class ChatService {
           "lastMessageType": type,
         },
       );
+
+      for (String fcmtoken in listfcmtoken) {
+        //send notification
+        _firebaseMessage.sendPushMessage(
+          recipientToken: fcmtoken,
+          title: groupChatTitle,
+          body: "$format: $message",
+          route: 'groupchats',
+        );
+      }
       return true;
     } else {
       await _firestore
@@ -187,7 +191,15 @@ class ChatService {
           "lastMessageType": type,
         },
       );
-
+      for (String fcmtoken in listfcmtoken) {
+        //send notification
+        _firebaseMessage.sendPushMessage(
+          recipientToken: fcmtoken,
+          title: groupChatTitle,
+          body: message,
+          route: 'personal_chats',
+        );
+      }
       return true;
     }
   }

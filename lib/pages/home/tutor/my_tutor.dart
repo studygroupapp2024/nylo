@@ -56,151 +56,176 @@ class RegisterAsTutor extends ConsumerWidget {
               itemCount: subjectMatter.length,
               itemBuilder: (context, index) {
                 final classes = subjectMatter[index];
-                return Container(
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  classes.className,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
+                return IntrinsicHeight(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      classes.className,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(classes.description),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    TutorCoursesChip(groupChats: classes),
+                                  ],
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(classes.description),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                // Delete Class
-                                IconButton(
-                                  onPressed: () => showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return ConfirmationDialog(
-                                        confirm: () async {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.notifications,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .tertiaryContainer,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    "The class has been removed.",
-                                                    style: TextStyle(
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // Delete Class
+                                  InkWell(
+                                    borderRadius: BorderRadius.circular(20),
+                                    onTap: () => showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return ConfirmationDialog(
+                                          confirm: () async {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.notifications,
                                                       color: Theme.of(context)
                                                           .colorScheme
                                                           .tertiaryContainer,
                                                     ),
-                                                  ),
-                                                ],
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      "The class has been removed.",
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiaryContainer,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .tertiary,
+                                                elevation: 4,
+                                                padding:
+                                                    const EdgeInsets.all(20),
                                               ),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              backgroundColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiary,
-                                              elevation: 4,
-                                              padding: const EdgeInsets.all(20),
-                                            ),
-                                          );
+                                            );
 
-                                          await ref
-                                              .read(subjectMatterProvider)
-                                              .removeClass(
-                                                classes.classId!,
-                                                ref.watch(
-                                                    setGlobalUniversityId),
-                                                _auth.currentUser!.uid,
-                                              );
-                                        },
-                                        content:
-                                            "Are you sure you want to remove this class?",
-                                        title: "Confirmation",
-                                        type: "Yes",
-                                      );
-                                    },
+                                            await ref
+                                                .read(subjectMatterProvider)
+                                                .removeClass(
+                                                  classes.classId!,
+                                                  ref.watch(
+                                                      setGlobalUniversityId),
+                                                  _auth.currentUser!.uid,
+                                                );
+                                          },
+                                          content:
+                                              "Are you sure you want to remove this class?",
+                                          title: "Confirmation",
+                                          type: "Yes",
+                                        );
+                                      },
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(4),
+                                      child: Icon(
+                                          Icons.remove_circle_outline_outlined),
+                                    ),
                                   ),
-                                  icon: const Icon(Icons.remove_circle_outline),
-                                ),
-
-                                IconButton(
-                                  onPressed: () async {
-                                    ref
-                                        .read(selectedCoursesToTeachProvider
-                                            .notifier)
-                                        .clear();
-                                    for (final item in classes.courseId) {
-                                      final subjectInfo = await ref
-                                          .read(subjectMatterProvider)
-                                          .getSubjectInfo(item,
-                                              ref.watch(setGlobalUniversityId));
-
-                                      final data = subjectInfo.data();
-
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  InkWell(
+                                    borderRadius: BorderRadius.circular(20),
+                                    onTap: () async {
                                       ref
                                           .read(selectedCoursesToTeachProvider
                                               .notifier)
-                                          .add(
-                                            SelectedCoursesToTeachModel(
-                                              subjectId: item,
-                                              subjectTitle:
-                                                  data!['subject_title'],
-                                              subjectCode: data['subject_code'],
-                                            ),
-                                          );
-                                    }
+                                          .clear();
+                                      for (final item in classes.courseId) {
+                                        final subjectInfo = await ref
+                                            .read(subjectMatterProvider)
+                                            .getSubjectInfo(
+                                                item,
+                                                ref.watch(
+                                                    setGlobalUniversityId));
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditClass(
-                                          className: classes.className,
-                                          classDescription: classes.description,
-                                          classId: classes.classId!,
+                                        final data = subjectInfo.data();
+
+                                        ref
+                                            .read(selectedCoursesToTeachProvider
+                                                .notifier)
+                                            .add(
+                                              SelectedCoursesToTeachModel(
+                                                subjectId: item,
+                                                subjectTitle:
+                                                    data!['subject_title'],
+                                                subjectCode:
+                                                    data['subject_code'],
+                                              ),
+                                            );
+                                      }
+
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditClass(
+                                            className: classes.className,
+                                            classDescription:
+                                                classes.description,
+                                            classId: classes.classId!,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.edit_note_rounded),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        TutorCoursesChip(groupChats: classes),
-                      ],
+                                      );
+                                    },
+                                    child: const Padding(
+                                        padding: EdgeInsets.all(4),
+                                        child: Icon(Icons.edit_note_rounded)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

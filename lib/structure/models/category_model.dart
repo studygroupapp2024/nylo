@@ -82,8 +82,8 @@ class CategoryModel {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TutorClassses(),
-            ),
+                builder: (context) => TutorClassses() //TutorClassses(),
+                ),
           );
           ref.read(searchQueryLengthProvider.notifier).update((state) => 0);
           ref.read(searchQueryProvider.notifier).update((state) => '');

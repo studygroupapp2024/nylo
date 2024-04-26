@@ -3,10 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessageModel {
   final String senderId;
-
   final String groupChatId;
   final String message;
-
   final Timestamp timestamp;
   final String type;
   final String? downloadUrl;
@@ -42,7 +40,8 @@ class MessageModel {
       senderId: map['senderId'] as String,
       groupChatId: map['groupChatId'] as String,
       message: map['message'] as String,
-      timestamp: Timestamp.fromDate(DateTime.parse(map['timestamp'] as String)),
+      timestamp: map['timestamp']
+          as Timestamp, // Timestamp.fromDate(DateTime.parse(map['timestamp'] as String)),
       type: map['type'] as String,
       downloadUrl: map['downloadUrl'] as String,
       category: map['category'] as String,

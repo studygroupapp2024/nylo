@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nylo/pages/home/tutor/paginations/test/pagination_provider.dart';
 import 'package:nylo/structure/models/subject_model.dart';
-import 'package:nylo/structure/providers/subjects.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 
 class PaginateController extends AsyncNotifier<List<SubjectModel>> {

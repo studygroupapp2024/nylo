@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 
@@ -52,15 +53,18 @@ class TutorCoursesChip extends ConsumerWidget {
                     );
                   },
                   loading: () {
-                    return Center(
-                        child: Container(
-                      height: 10,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                        borderRadius: BorderRadius.circular(20),
+                    return const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Wrap(
+                        spacing: 10,
+                        children: [
+                          Skeleton(height: 30, width: 100),
+                          Skeleton(height: 30, width: 80),
+                          Skeleton(height: 30, width: 50),
+                          Skeleton(height: 30, width: 90),
+                        ],
                       ),
-                    ));
+                    );
                   },
                 );
               },

@@ -25,6 +25,7 @@ final multipleStudentCoursesInformationProvider =
             )
             .toList(),
       );
+
   return getUserCourses;
 });
 
@@ -47,6 +48,7 @@ final currentStudentCoursesInformationProvider =
             .where((course) => !course.isCompleted)
             .toList(),
       );
+
   return getCurrentUserCourses;
 });
 
@@ -69,6 +71,7 @@ final completedStudentCoursesInformationProvider =
             .where((course) => course.isCompleted)
             .toList(),
       );
+
   return getCompletedUserCourses;
 });
 

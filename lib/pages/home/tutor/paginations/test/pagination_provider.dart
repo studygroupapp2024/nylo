@@ -34,24 +34,3 @@ final appSubjectRepositoryProvider = Provider(
     firestore: FirebaseFirestore.instance,
   ),
 );
-
-// FirebaseFirestore _firestore = FirebaseFirestore.instance;
-// final subjectsProvider = StreamProvider<List<SubjectModel>>(
-//   (ref) {
-//     final institutionId = ref.watch(setGlobalUniversityId);
-//     final chats = _firestore
-//         .collection("institution")
-//         .doc(institutionId)
-//         .collection("subjects")
-//         .limit(5)
-//         .snapshots()
-//         .map(
-//           (querySnapshot) => querySnapshot.docs
-//               .map(
-//                 (chats) => SubjectModel.fromSnapshot(chats),
-//               )
-//               .toList(),
-//         );
-//     return chats;
-//   },
-// );

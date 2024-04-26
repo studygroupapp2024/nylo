@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_name.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
@@ -502,8 +503,15 @@ class TutorClassses extends ConsumerWidget {
                     );
                   },
                   loading: () {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Expanded(
+                      child: ListView.separated(
+                        itemBuilder: (context, index) =>
+                            const Skeleton(height: 125, width: double.infinity),
+                        itemCount: 5,
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 10,
+                        ),
+                      ),
                     );
                   },
                 );

@@ -141,56 +141,52 @@ class FindCourses extends ConsumerWidget {
           if (completedOrNot)
             Column(
               children: [
-                currentCourses.when(
-                  data: (currentCourses) {
-                    return Wrap(
-                      children: currentCourses.map<Widget>(
-                        (currentCourse) {
-                          var icon = (currentCourse.isCompleted == true)
-                              ? Icon(
-                                  Icons.remove_circle_outline,
-                                  color: Theme.of(context).colorScheme.primary,
-                                )
-                              : Icon(
-                                  Icons.check_circle_outline,
-                                  color: Theme.of(context).colorScheme.primary,
-                                );
-                          return MyCoursesContainer(
-                            courseTitle: currentCourse.courseTitle,
-                            courseCode: currentCourse.courseCode,
-                            icon: icon,
-                            onTap: () => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ConfirmationDialog(
-                                  confirm: () async {
-                                    ref.read(courseProvider).markCompleted(
-                                          currentCourse.courseId,
-                                          ref.watch(setGlobalUniversityId),
-                                        );
-                                  },
-                                  content: "Have you completed this course?",
-                                  title: "Confirmation",
-                                  type: "Yes",
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      ).toList(),
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return Center(
-                      child: Text('Error: $error'),
-                    );
-                  },
-                  loading: () {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
+                currentCourses.when(data: (currentCourses) {
+                  return Wrap(
+                    children: currentCourses.map<Widget>(
+                      (currentCourse) {
+                        var icon = (currentCourse.isCompleted == true)
+                            ? Icon(
+                                Icons.remove_circle_outline,
+                                color: Theme.of(context).colorScheme.primary,
+                              )
+                            : Icon(
+                                Icons.check_circle_outline,
+                                color: Theme.of(context).colorScheme.primary,
+                              );
+                        return MyCoursesContainer(
+                          courseTitle: currentCourse.courseTitle,
+                          courseCode: currentCourse.courseCode,
+                          icon: icon,
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ConfirmationDialog(
+                                confirm: () async {
+                                  ref.read(courseProvider).markCompleted(
+                                        currentCourse.courseId,
+                                        ref.watch(setGlobalUniversityId),
+                                      );
+                                },
+                                content: "Have you completed this course?",
+                                title: "Confirmation",
+                                type: "Yes",
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  );
+                }, error: (error, stackTrace) {
+                  return Center(
+                    child: Text('Error: $error'),
+                  );
+                }, loading: () {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
               ],
             ),
           if (!completedOrNot)

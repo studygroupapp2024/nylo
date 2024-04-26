@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nylo/pages/home/tutor/paginate_controller.dart';
+import 'package:nylo/pages/home/tutor/paginations/test/paginate_controller.dart';
 
 class Pagination extends HookConsumerWidget {
   const Pagination({super.key});
@@ -53,8 +53,11 @@ class Pagination extends HookConsumerWidget {
                       itemBuilder: (context, index) {
                         if (subjects.length == index) {
                           if (isFetchingMore) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
+                            return const Padding(
+                              padding: EdgeInsets.all(5),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
                             );
                           } else if (!hasMore) {
                             return const Center(

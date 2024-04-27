@@ -43,4 +43,4 @@ app.*.map.json
 /android/app/release
 
 # lib Related
-**/lib/structure/messaging/message_api.dart
+**/lib/structure/messaging/ServiceAccountKey.json

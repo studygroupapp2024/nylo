@@ -57,6 +57,7 @@ class MemberRequest {
     String title,
     String institutionId,
   ) async {
+    final Timestamp timestamp = Timestamp.now();
     final userInfo = await _users.getUserInfo(userId, institutionId);
 
     final userInfodata = userInfo.data();
@@ -69,7 +70,7 @@ class MemberRequest {
     if (isAccepted) {
       // create a new Member
       ChatMembersModel newMember = ChatMembersModel(
-          lastReadChat: '',
+          lastReadChat: timestamp,
           userId: uid,
           isAdmin: false,
           receiveNotification: true);

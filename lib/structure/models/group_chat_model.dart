@@ -23,6 +23,7 @@ class GroupChatModel {
   final String lastMessageType;
   final String? groupChatImage;
   final String courseTitle;
+  final String lastMessageId;
 
   GroupChatModel({
     required this.docID,
@@ -41,6 +42,7 @@ class GroupChatModel {
     required this.lastMessageType,
     this.groupChatImage,
     required this.courseTitle,
+    required this.lastMessageId,
   });
 
   Map<String, dynamic> toMap() {
@@ -61,6 +63,7 @@ class GroupChatModel {
       'lastMessageType': lastMessageType,
       'groupChatImage': groupChatImage,
       'courseTitle': courseTitle,
+      'lastMessageId': lastMessageId,
     };
   }
 
@@ -89,27 +92,30 @@ class GroupChatModel {
           ? map['groupChatImage'] as String
           : null,
       courseTitle: map['studyGroupTitle'] as String,
+      lastMessageId: map['lastMessageId'] as String,
     );
   }
 
   factory GroupChatModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
     return GroupChatModel(
-        docID: doc['chatId'],
-        creatorId: doc['creatorId'],
-        creatorName: doc['creatorName'],
-        studyGroupTitle: doc['studyGroupTitle'],
-        studyGroupDescription: doc['studyGroupDescription'],
-        studyGroupCourseName: doc['studyGroupCourseName'],
-        studyGroupCourseId: doc['studyGroupCourseId'],
-        timestamp: doc['createdAt'],
-        membersId: doc['membersId'],
-        membersRequestId: doc['membersRequestId'],
-        lastMessage: doc['lastMessage'],
-        lastMessageSender: doc['lastMessageSender'],
-        lastMessageTimeSent: doc['lastMessageTimeSent'],
-        lastMessageType: doc['lastMessageType'],
-        groupChatImage: doc['groupChatImage'],
-        courseTitle: doc['courseTitle']);
+      docID: doc['chatId'],
+      creatorId: doc['creatorId'],
+      creatorName: doc['creatorName'],
+      studyGroupTitle: doc['studyGroupTitle'],
+      studyGroupDescription: doc['studyGroupDescription'],
+      studyGroupCourseName: doc['studyGroupCourseName'],
+      studyGroupCourseId: doc['studyGroupCourseId'],
+      timestamp: doc['createdAt'],
+      membersId: doc['membersId'],
+      membersRequestId: doc['membersRequestId'],
+      lastMessage: doc['lastMessage'],
+      lastMessageSender: doc['lastMessageSender'],
+      lastMessageTimeSent: doc['lastMessageTimeSent'],
+      lastMessageType: doc['lastMessageType'],
+      groupChatImage: doc['groupChatImage'],
+      courseTitle: doc['courseTitle'],
+      lastMessageId: doc['lastMessageId'],
+    );
   }
 }

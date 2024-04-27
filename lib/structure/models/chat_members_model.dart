@@ -3,17 +3,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatMembersModel {
-  final String lastReadChat;
+  final Timestamp? lastReadChat;
   final String userId;
 
   final bool isAdmin;
   final bool receiveNotification;
+  final String? lastMessageIdRead;
 
   ChatMembersModel({
     required this.lastReadChat,
     required this.userId,
     required this.isAdmin,
     required this.receiveNotification,
+    this.lastMessageIdRead,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,15 +24,18 @@ class ChatMembersModel {
       'userId': userId,
       'isAdmin': isAdmin,
       'receiveNotification': receiveNotification,
+      'lastMessageIdRead': lastMessageIdRead,
     };
   }
 
   factory ChatMembersModel.fromMap(Map<String, dynamic> map) {
     return ChatMembersModel(
-      lastReadChat: map['lastReadChat'] as String,
+      lastReadChat:
+          Timestamp.fromDate(DateTime.parse(map['lastReadChat'] as String)),
       userId: map['userId'] as String,
       isAdmin: map['isAdmin'] as bool,
       receiveNotification: map['receiveNotification'] as bool,
+      lastMessageIdRead: map['lastMessageIdRead'] as String,
     );
   }
 
@@ -41,6 +46,7 @@ class ChatMembersModel {
       userId: doc['userId'],
       isAdmin: doc['isAdmin'],
       receiveNotification: doc['receiveNotification'],
+      lastMessageIdRead: doc['lastMessageIdRead'],
     );
   }
 }

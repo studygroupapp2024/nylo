@@ -119,6 +119,7 @@ class GroupChat {
             timestamp: timestamp,
             membersId: [_auth.currentUser!.uid],
             membersRequestId: [],
+            lastMessageId: '',
             lastMessage: '',
             lastMessageSender: '',
             lastMessageTimeSent: null,
@@ -129,7 +130,7 @@ class GroupChat {
 
           // create a new study group
           ChatMembersModel newMemberList = ChatMembersModel(
-            lastReadChat: '',
+            lastReadChat: null,
             userId: _auth.currentUser!.uid,
             isAdmin: true,
             receiveNotification: true,
@@ -201,6 +202,7 @@ class GroupChat {
             membersRequestId: [],
             lastMessage: '',
             lastMessageSender: '',
+            lastMessageId: '',
             lastMessageTimeSent: null,
             lastMessageType: '',
             groupChatImage: '',
@@ -209,7 +211,7 @@ class GroupChat {
 
           // create a new study group
           ChatMembersModel newMemberList = ChatMembersModel(
-            lastReadChat: '',
+            lastReadChat: null,
             userId: _auth.currentUser!.uid,
             isAdmin: true,
             receiveNotification: true,
@@ -226,7 +228,7 @@ class GroupChat {
 
           String groupChatId = newGroupChatRef.id;
 
-          institution
+          await institution
               .doc(institutionId)
               .collection("study_groups")
               .doc(groupChatId)

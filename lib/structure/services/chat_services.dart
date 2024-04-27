@@ -73,7 +73,6 @@ class ChatService {
         await _users.getUserInfo(_firebaseAuth.currentUser!.uid, institutionId);
 
     final userInfodata = userInfo.data();
-    print("userInfodata: $userInfodata");
 
     final userName = userInfodata!['name'];
 
@@ -89,7 +88,6 @@ class ChatService {
       institutionId,
       isGroup,
     );
-    print("membersIdNotif: $membersIdNotif");
 
     // get all their FCM token
     final listfcmtoken = [];
@@ -108,18 +106,10 @@ class ChatService {
       listfcmtoken.add(userfcmToken);
     }
 
-    print("listfcmtoken: $listfcmtoken");
-
     final List<String> nameParts = userName.split(' ');
     final String firstName = nameParts[0];
     final String format = firstName.substring(0, 1).toUpperCase() +
         firstName.substring(1).toLowerCase();
-
-    //   NotificationService.sendPushMessage(
-    //       recipientToken: fcmtoken,
-    //       title: groupChatTitle,
-    //       body: "$format: $message");
-    // }
 
     // create a new message
     MessageModel newMessage = MessageModel(
@@ -135,14 +125,17 @@ class ChatService {
 
     if (isGroup) {
 // add new message to database
-      await _firestore
+      DocumentReference newMessageRef = await _firestore
           .collection("institution")
           .doc(institutionId)
           .collection('study_groups')
           .doc(groupChatid)
           .collection("messages")
-          .add(newMessage.toMap());
+          .add(
+            newMessage.toMap(),
+          );
 
+      String messageId = newMessageRef.id;
       // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
       _firestore
           .collection("institution")
@@ -155,7 +148,16 @@ class ChatService {
           "lastMessageSender": curreUserEmail,
           "lastMessageTimeSent": timestamp,
           "lastMessageType": type,
+          "lastMessageId": messageId,
         },
+      );
+
+      await updateUserLastMessageIdRead(
+        groupChatid,
+        institutionId,
+        messageId,
+        _firebaseAuth.currentUser!.uid,
+        true,
       );
 
       for (String fcmtoken in listfcmtoken) {
@@ -167,16 +169,20 @@ class ChatService {
           route: 'groupchats',
         );
       }
+
       return true;
     } else {
-      await _firestore
+      DocumentReference newMessageRef = await _firestore
           .collection("institution")
           .doc(institutionId)
           .collection('direct_messages')
           .doc(groupChatid)
           .collection("messages")
-          .add(newMessage.toMap());
+          .add(
+            newMessage.toMap(),
+          );
 
+      String messageId = newMessageRef.id;
       // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
       _firestore
           .collection("institution")
@@ -189,8 +195,18 @@ class ChatService {
           "lastMessageSender": curreUserEmail,
           "lastMessageTimeSent": timestamp,
           "lastMessageType": type,
+          "lastMessageId": messageId,
         },
       );
+
+      await updateUserLastMessageIdRead(
+        groupChatid,
+        institutionId,
+        messageId,
+        _firebaseAuth.currentUser!.uid,
+        false,
+      );
+
       for (String fcmtoken in listfcmtoken) {
         //send notification
         _firebaseMessage.sendPushMessage(
@@ -200,6 +216,7 @@ class ChatService {
           route: 'personal_chats',
         );
       }
+
       return true;
     }
   }
@@ -241,13 +258,15 @@ class ChatService {
 
     if (isGroupChat) {
       // add new message to database
-      await _firestore
+      DocumentReference newMessageDocRef = await _firestore
           .collection("institution")
           .doc(institutionId)
           .collection('study_groups')
           .doc(groupChatid)
           .collection("messages")
           .add(newMessage.toMap());
+
+      String messageId = newMessageDocRef.id;
 
       // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
       _firestore
@@ -261,12 +280,14 @@ class ChatService {
           "lastMessageSender": curreUserEmail,
           "lastMessageTimeSent": timestamp,
           "lastMessageType": type,
+          'lastMessageId': messageId
         },
       );
       return true;
     } else {
       // add new message to database
-      await _firestore
+
+      DocumentReference newMessageDocRef = await _firestore
           .collection("institution")
           .doc(institutionId)
           .collection('direct_messages')
@@ -274,6 +295,7 @@ class ChatService {
           .collection("messages")
           .add(newMessage.toMap());
 
+      String messageId = newMessageDocRef.id;
       // add GroupChat LastMessage, LastMessageSender, and LastMessageTimeSent
       _firestore
           .collection("institution")
@@ -286,6 +308,7 @@ class ChatService {
           "lastMessageSender": curreUserEmail,
           "lastMessageTimeSent": timestamp,
           "lastMessageType": type,
+          'lastMessageId': messageId
         },
       );
       return true;
@@ -342,6 +365,42 @@ class ChatService {
       }
     } on FirebaseException catch (e) {
       return false;
+    }
+  }
+
+  Future<void> updateUserLastMessageIdRead(
+    String groupChatId,
+    String institutionId,
+    String messageId,
+    String userId,
+    bool isGroup,
+  ) async {
+    if (isGroup) {
+      _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("study_groups")
+          .doc(groupChatId)
+          .collection("members")
+          .doc(userId)
+          .update(
+        {
+          'lastMessageIdRead': messageId,
+        },
+      );
+    } else {
+      _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("direct_messages")
+          .doc(groupChatId)
+          .collection("members")
+          .doc(userId)
+          .update(
+        {
+          'lastMessageIdRead': messageId,
+        },
+      );
     }
   }
 }

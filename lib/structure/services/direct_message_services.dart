@@ -62,7 +62,7 @@ class DirectMessage {
 
       // Add the user and the proctor to the members of the direct message
       ChatMembersModel addUserAsMember = ChatMembersModel(
-        lastReadChat: '',
+        lastReadChat: timestamp,
         userId: _auth.currentUser!.uid,
         isAdmin: false,
         receiveNotification: true,
@@ -79,7 +79,7 @@ class DirectMessage {
           );
 
       ChatMembersModel addProctorAsMember = ChatMembersModel(
-        lastReadChat: '',
+        lastReadChat: timestamp,
         userId: proctorId,
         isAdmin: true,
         receiveNotification: true,

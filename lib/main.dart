@@ -27,6 +27,7 @@ void main() async {
     systemNavigationBarColor: Colors.white,
     systemNavigationBarIconBrightness: Brightness.dark,
   ));
+
   runApp(const ProviderScope(child: MainApp()));
 }
 
@@ -45,6 +46,7 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+
 
 // final router = GoRouter(
 //   routes: [

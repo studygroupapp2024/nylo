@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer' as devtools show log;
-import 'dart:io';
 import 'dart:math';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:nylo/main.dart';
 import 'package:nylo/pages/home/study_group/my_study_groups.dart';
@@ -14,28 +14,28 @@ import 'package:nylo/pages/home/tutor/my_tutor_classes.dart';
 @pragma("vm:entry-point")
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   if (message.notification != null) {
-    int id = Random().nextInt(1000000);
-    await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: id,
-        channelKey: 'high_importance_channel',
-        title: message.data['title'],
-        body: message.data['body'],
-        actionType: ActionType.SilentAction,
-        notificationLayout: NotificationLayout.Default,
-        payload: {
-          "navigate": "true",
-        },
-      ),
-      actionButtons: [
-        NotificationActionButton(
-          key: 'check',
-          label: 'Check it out',
-          actionType: ActionType.SilentAction,
-          color: Colors.green,
-        )
-      ],
-    );
+    print("CLICKED");
+    // int id = Random().nextInt(1000000);
+    // await AwesomeNotifications().createNotification(
+    //   content: NotificationContent(
+    //     id: id,
+    //     channelKey: 'high_importance_channel',
+    //     title: message.data['title'],
+    //     body: message.data['body'],
+    //     actionType: ActionType.SilentAction,
+    //     notificationLayout: NotificationLayout.Default,
+    //     payload: {
+    //       "navigate": "true",
+    //     },
+    //   ),
+    // actionButtons: [
+    //   NotificationActionButton(
+    //     key: 'check',
+    //     label: 'Check it out',
+    //     actionType: ActionType.SilentAction,
+    //     color: Colors.green,
+    //   )
+    // ],
   } else {
     print("Notification is null");
   }
@@ -128,14 +128,14 @@ class FirebaseMessage {
               "navigate": "true",
             },
           ),
-          actionButtons: [
-            NotificationActionButton(
-              key: 'check',
-              label: 'Check it out',
-              actionType: ActionType.SilentAction,
-              color: Colors.green,
-            )
-          ],
+          // actionButtons: [
+          //   NotificationActionButton(
+          //     key: 'check',
+          //     label: 'Check it out',
+          //     actionType: ActionType.SilentAction,
+          //     color: Colors.green,
+          //   )
+          // ],
         );
       } else {
         print("Notification is null");
@@ -204,21 +204,25 @@ class FirebaseMessage {
     required String route,
   }) async {
 // Read the contents of the credentials file
-    String credentialsJson = File('ServiceAccountKey.json').readAsStringSync();
-
+    // String credentialsJson =
+    //     File('lib/structure/messaging/ServiceAccountKey.json')
+    //         .readAsStringSync();
+    String credentialsJson = await rootBundle
+        .loadString('lib/structure/messaging/ServiceAccountKey.json');
 // Parse the JSON string into a Map
     Map<String, dynamic> credentials = json.decode(credentialsJson);
     final client = await clientViaServiceAccount(
-      ServiceAccountCredentials.fromJson({credentials}),
+      ServiceAccountCredentials.fromJson(credentials),
       ['https://www.googleapis.com/auth/cloud-platform'],
     );
     final notificationData = {
       'message': {
         'token': recipientToken,
-        'notification': {},
+        'notification': {
+          'title': title,
+          'body': body,
+        },
         'data': {
-          "click_action": "FLUTTER_NOTIFICATION_CLICK",
-          "screen": "screenA",
           // Use 'data' instead of 'payload'
           "navigate": "false",
           "route": route,

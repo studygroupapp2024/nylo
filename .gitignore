@@ -49,3 +49,4 @@ app.*.map.json
 # Firebase Related
 **/android/app/src/production/google-services.json
 **/android/app/src/development/google-services.json
+**/android/app/src/staging/google-services.json

@@ -7,7 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart';
-import 'package:nylo/main.dart';
+import 'package:nylo/main_production.dart';
 import 'package:nylo/pages/home/study_group/my_study_groups.dart';
 import 'package:nylo/pages/home/tutor/my_tutor_classes.dart';
 

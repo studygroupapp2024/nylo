@@ -77,6 +77,30 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        production {
+            dimension "default"
+            resValue "string", "app_name", "Nylo"
+            applicationIdSuffix ""
+
+        }
+        staging {
+            dimension "default"
+            resValue "string", "app_name", "Nylo Staging"
+            applicationIdSuffix ".stg"
+
+        }
+
+        development {
+            dimension "default"
+            resValue "string", "app_name", "Nylo Development"
+            applicationIdSuffix ".dev"
+        }
+    }
+    
 }
 
 flutter {

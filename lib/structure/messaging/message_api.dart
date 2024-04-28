@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart';
+import 'package:nylo/appconfig.dart';
 import 'package:nylo/main_production.dart';
 import 'package:nylo/pages/home/study_group/my_study_groups.dart';
 import 'package:nylo/pages/home/tutor/my_tutor_classes.dart';
@@ -203,18 +204,28 @@ class FirebaseMessage {
     required String body,
     required String route,
   }) async {
-// Read the contents of the credentials file
-    // String credentialsJson =
-    //     File('lib/structure/messaging/ServiceAccountKey.json')
-    //         .readAsStringSync();
-    String credentialsJson = await rootBundle
-        .loadString('lib/structure/messaging/ServiceAccountKey.json');
-// Parse the JSON string into a Map
+    String path;
+    String senderId;
+    if (AppConfig.currentEnvironment == Environment.production) {
+      path = 'lib/structure/messaging/ServiceAccountKeyProduction.json';
+
+      senderId = '378925058177';
+    } else if (AppConfig.currentEnvironment == Environment.staging) {
+      path = 'lib/structure/messaging/ServiceAccountKeyStaging.json';
+      senderId = '407999311341';
+    } else {
+      path = 'lib/structure/messaging/ServiceAccountKeyDevelopment.json';
+      senderId = '578985333485';
+    }
+
+    String credentialsJson = await rootBundle.loadString(path);
+
     Map<String, dynamic> credentials = json.decode(credentialsJson);
     final client = await clientViaServiceAccount(
       ServiceAccountCredentials.fromJson(credentials),
       ['https://www.googleapis.com/auth/cloud-platform'],
     );
+
     final notificationData = {
       'message': {
         'token': recipientToken,
@@ -232,7 +243,6 @@ class FirebaseMessage {
       },
     };
 
-    const String senderId = '378925058177';
     final response = await client.post(
       Uri.parse(
           'https://fcm.googleapis.com/v1/projects/$senderId/messages:send'),

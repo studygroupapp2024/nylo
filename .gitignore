@@ -44,6 +44,8 @@ app.*.map.json
 
 # lib Related
 **/lib/structure/messaging/ServiceAccountKey.json
+**/lib/firebase/
 
 # Firebase Related
 **/android/app/src/production/google-services.json
+**/android/app/src/development/google-services.json

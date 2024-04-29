@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/appconfig.dart';
+import 'package:nylo/dependency_injection.dart';
 import 'package:nylo/firebase/prod/firebase_options-prod.dart';
 import 'package:nylo/structure/auth/auth_gate.dart';
 import 'package:nylo/structure/messaging/message_api.dart';
@@ -14,6 +16,9 @@ class AppConfig {
 
 @pragma('vm:entry-point')
 void main() async {
+  // Get.put(NetworkController());
+
+  DependencyInjection.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: 'nylo-c23aa',
@@ -40,7 +45,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       navigatorKey: navigatorKey,
       home: const AuthGate(),
       theme: lightMode,

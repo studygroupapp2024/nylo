@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/appconfig.dart';
 import 'package:nylo/firebase/dev/firebase_options-dev.dart';
@@ -39,7 +40,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       navigatorKey: navigatorKey,
       // routerConfig: router,
       home: const AuthGate(),

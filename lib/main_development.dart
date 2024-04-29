@@ -16,8 +16,8 @@ class AppConfig {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: "nylo-development",
     options: DefaultFirebaseOptions.currentPlatform,
-    name: "nylo-dev",
   );
 
   await Firebase.initializeApp();

@@ -171,7 +171,9 @@ class AuthService {
         final userId = userCredential.user!.uid;
         final userEmail = userCredential.user!.email!;
         final userDomain = userEmail.split('@').last;
-
+        print("userDomain: @$userDomain");
+        print("userId: $userId");
+        print("userEmail: $userEmail");
         // Check if the user's domain is in the list of allowed domains
         String? uni;
         String? uniName;
@@ -220,6 +222,7 @@ class AuthService {
         return userCredential;
       }
     } catch (e) {
+      print("Error: $e");
       await signOut(); // Sign out the user
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

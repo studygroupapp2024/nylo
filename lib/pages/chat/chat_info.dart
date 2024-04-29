@@ -112,10 +112,14 @@ class ChatInfo extends ConsumerWidget {
                                           radius: 58,
                                         )
                                       : ImagePlaceholder(
+                                          textColor: Colors.white,
                                           title: courseCode,
                                           subtitle: "Study Group",
                                           titleFontSize: 12,
                                           subtitleFontSize: 10,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiaryContainer,
                                         ),
                                   Padding(
                                     padding: const EdgeInsets.all(8),

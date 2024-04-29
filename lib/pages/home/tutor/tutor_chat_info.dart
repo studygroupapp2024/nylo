@@ -75,11 +75,15 @@ class TutorChatInfo extends ConsumerWidget {
                                                 NetworkImage(image.imageUrl),
                                             radius: 58,
                                           )
-                                        : const ImagePlaceholder(
+                                        : ImagePlaceholder(
                                             title: "HAHA",
                                             subtitle: "Study Group",
                                             titleFontSize: 12,
                                             subtitleFontSize: 10,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiaryContainer,
+                                            textColor: Colors.white,
                                           ),
                                   ],
                                 ),

@@ -115,7 +115,7 @@ class FindPage extends ConsumerWidget {
                                     ? BoxDecoration(
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .secondary,
+                                            .background,
                                         borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(50),
                                           topRight: Radius.circular(30),
@@ -126,7 +126,7 @@ class FindPage extends ConsumerWidget {
                                     : BoxDecoration(
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .tertiaryContainer,
+                                            .secondary,
                                         borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(50),
                                           topRight: Radius.circular(30),
@@ -156,6 +156,22 @@ class FindPage extends ConsumerWidget {
                                                 subtitle: "Study Group",
                                                 titleFontSize: 8,
                                                 subtitleFontSize: 6,
+                                                color: data.lastMessageIdRead ==
+                                                        chatIds.lastMessageId
+                                                    ? Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary
+                                                    : Colors.white,
+                                                textColor:
+                                                    data.lastMessageIdRead !=
+                                                            chatIds
+                                                                .lastMessageId
+                                                        ? Theme.of(context)
+                                                            .colorScheme
+                                                            .inversePrimary
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .inversePrimary,
                                               ),
                                         if (chatIds
                                                 .membersRequestId.isNotEmpty &&
@@ -186,8 +202,12 @@ class FindPage extends ConsumerWidget {
                                         children: [
                                           Text(
                                             chatIds.studyGroupTitle,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .inversePrimary,
+                                            ),
                                           ),
                                           const SizedBox(
                                             height: 4,
@@ -199,8 +219,12 @@ class FindPage extends ConsumerWidget {
                                                   children: [
                                                     Text(
                                                       format,
-                                                      style: const TextStyle(
-                                                          fontSize: 13),
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .inversePrimary,
+                                                      ),
                                                       maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -216,7 +240,7 @@ class FindPage extends ConsumerWidget {
                                                             color: Theme.of(
                                                                     context)
                                                                 .colorScheme
-                                                                .primary,
+                                                                .inversePrimary,
                                                             fontSize: 12),
                                                         DateFormat('hh:mm a')
                                                             .format(
@@ -237,7 +261,17 @@ class FindPage extends ConsumerWidget {
                                         ],
                                       ),
                                     ),
-                                    const Icon(Icons.chevron_right),
+                                    Icon(
+                                      Icons.chevron_right,
+                                      color: data.lastMessageIdRead !=
+                                              chatIds.lastMessageId
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .background
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .inversePrimary,
+                                    ),
                                   ],
                                 ),
                               ),

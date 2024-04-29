@@ -33,7 +33,9 @@ dependencies:
   open_file: ^3.3.2
   go_router: ^13.2.4
   flutter_hooks: ^0.20.5
-
+  connectivity_plus: ^6.0.3
+  get: ^4.6.6
+  internet_connection_checker: ^1.0.0+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -45,4 +47,4 @@ flutter:
   uses-material-design: true
   assets: 
     - assets/icons/
-    - lib/structure/messaging/ServiceAccountKey.json
+    - lib/structure/messaging/

@@ -94,6 +94,7 @@ class CreateStudyGroup extends ConsumerWidget {
                                   .colorScheme
                                   .tertiaryContainer,
                               child: ImagePlaceholder(
+                                textColor: Colors.white,
                                 title: ref.watch(selectedCourseProvider) != ''
                                     ? ref
                                         .watch(selectedCourseProvider)
@@ -102,6 +103,9 @@ class CreateStudyGroup extends ConsumerWidget {
                                 subtitle: "Study Group",
                                 titleFontSize: 8,
                                 subtitleFontSize: 6,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
                               ),
                             ),
                             if (ref.watch(editUploadImagePathProvider) != null)

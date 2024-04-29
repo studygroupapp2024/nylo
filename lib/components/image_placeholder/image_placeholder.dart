@@ -5,6 +5,8 @@ class ImagePlaceholder extends StatelessWidget {
   final String subtitle;
   final double titleFontSize;
   final double subtitleFontSize;
+  final Color color;
+  final Color textColor;
 
   const ImagePlaceholder({
     super.key,
@@ -12,6 +14,8 @@ class ImagePlaceholder extends StatelessWidget {
     required this.subtitle,
     required this.titleFontSize,
     required this.subtitleFontSize,
+    required this.color,
+    required this.textColor,
   });
 
   @override
@@ -22,15 +26,21 @@ class ImagePlaceholder extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: CircleAvatar(
         radius: 20,
-        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        backgroundColor: color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: titleFontSize,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: titleFontSize,
+                  color: textColor,
+                ),
               ),
             ),
             Text(
@@ -39,6 +49,7 @@ class ImagePlaceholder extends StatelessWidget {
               style: TextStyle(
                 fontSize: subtitleFontSize,
                 fontWeight: FontWeight.normal,
+                color: textColor,
               ),
             ),
           ],

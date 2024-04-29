@@ -43,6 +43,7 @@ class DirectMessage {
         proctorId: proctorId,
         classId: subjectMatterId,
         tuteeId: _auth.currentUser!.uid,
+        lastMessageId: null,
       );
 
       DocumentReference newDirectMessageRef = await institution

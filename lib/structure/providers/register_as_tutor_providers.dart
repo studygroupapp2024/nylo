@@ -72,6 +72,7 @@ final getSubjectInfo =
       .doc(institutionId)
       .collection("subjects")
       .doc(subjectId);
+
   return document.snapshots().map(
         (snapshot) => SubjectModel.fromSnapshot(snapshot),
       );

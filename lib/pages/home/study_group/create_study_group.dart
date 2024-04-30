@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/dialogs/create_group.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
+import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
 import 'package:nylo/pages/home/study_group/my_courses.dart';
@@ -63,11 +64,12 @@ class CreateStudyGroup extends ConsumerWidget {
                           );
 
                           if (result == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("No image has been selected."),
-                              ),
+                            informationSnackBar(
+                              context,
+                              Icons.info_outline,
+                              "No image has been selected.",
                             );
+
                             return;
                           }
                           final path = result.files.single.path;

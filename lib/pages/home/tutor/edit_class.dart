@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/dialogs/create_group.dart';
+import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
 import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_button.dart';
@@ -194,38 +195,11 @@ class EditClass extends ConsumerWidget {
                           _nameController.clear();
                           _descriptionController.clear();
                           Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Row(
-                                children: [
-                                  Icon(
-                                    Icons.notifications,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .tertiaryContainer,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "Class has been updated.",
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .tertiaryContainer,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.tertiary,
-                              elevation: 4,
-                              padding: const EdgeInsets.all(20),
-                            ),
+
+                          informationSnackBar(
+                            context,
+                            Icons.notifications,
+                            "Class has been updated.",
                           );
                         } else {
                           showDialog(

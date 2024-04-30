@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nylo/components/information_snackbar.dart';
 
 class Category extends StatelessWidget {
   final String text;
@@ -79,36 +80,10 @@ class Category extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: GestureDetector(
-                  onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Row(
-                        children: [
-                          Icon(
-                            Icons.notifications,
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "There is a pending member request.",
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer,
-                            ),
-                          ),
-                        ],
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      backgroundColor: Theme.of(context).colorScheme.tertiary,
-                      elevation: 4,
-                      padding: const EdgeInsets.all(20),
-                    ),
+                  onTap: () => informationSnackBar(
+                    context,
+                    Icons.notifications,
+                    "There is a pending member request.",
                   ),
                   child: CircleAvatar(
                     backgroundColor:

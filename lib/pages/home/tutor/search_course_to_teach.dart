@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_button.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
@@ -108,34 +109,12 @@ class SearchCourseToTeach extends ConsumerWidget {
 
                                 for (final course in selectedCourse) {
                                   if (course.subjectId.contains(subjectId)) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        content: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.notifications,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiaryContainer,
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              "$subjectCode is already added.",
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .tertiaryContainer,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                    informationSnackBar(
+                                      context,
+                                      Icons.notifications,
+                                      "$subjectCode is already added.",
                                     );
+
                                     return;
                                   }
                                 }
@@ -149,33 +128,10 @@ class SearchCourseToTeach extends ConsumerWidget {
                                         subjectCode: subjectCode,
                                       ),
                                     );
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.secondary,
-                                    content: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.notifications,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiaryContainer,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "$subjectCode has been added.",
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiaryContainer,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                informationSnackBar(
+                                  context,
+                                  Icons.notifications,
+                                  "$subjectCode has been added.",
                                 );
                               },
                               child: ListTile(

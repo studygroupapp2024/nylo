@@ -1,6 +1,4 @@
-
-
-enum Environment {
+enum Flavors {
   development,
   staging,
   production,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/error/firebaseauth_exception_error_extension.dart';
 import 'package:nylo/error/login_response.dart';
 import 'package:nylo/structure/messaging/message_api.dart';
@@ -87,11 +88,13 @@ class AuthService {
       if (!domains.contains(emailDomain)) {
         // Email does not match the required domain
         await signOut(); // Sign out the user
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('There is no domain match'),
-          ),
+
+        informationSnackBar(
+          context,
+          Icons.info_outline,
+          'There is no domain match',
         );
+
         // Return null to indicate failed sign-in attempt
         return LoginResponse(
             isSuccess: false, message: "There is no domain match");
@@ -187,11 +190,13 @@ class AuthService {
 
         if (uni == null || uniName == null) {
           await signOut(); // Sign out the user
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Email domain is not allowed.'),
-            ),
+
+          informationSnackBar(
+            context,
+            Icons.info_outline,
+            'Email domain is not allowed.',
           );
+
           return null;
         }
 
@@ -224,11 +229,13 @@ class AuthService {
     } catch (e) {
       print("Error: $e");
       await signOut(); // Sign out the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email domain is not allowed.'),
-        ),
+
+      informationSnackBar(
+        context,
+        Icons.info_outline,
+        'Email domain is not allowed.',
       );
+
       return null;
     }
     return null;

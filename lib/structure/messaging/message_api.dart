@@ -7,7 +7,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart';
-import 'package:nylo/appconfig.dart';
+import 'package:nylo/config/app_config.dart';
+import 'package:nylo/config/app_environments.dart';
 import 'package:nylo/main_production.dart';
 import 'package:nylo/pages/home/study_group/my_study_groups.dart';
 import 'package:nylo/pages/home/tutor/my_tutor_classes.dart';
@@ -206,11 +207,11 @@ class FirebaseMessage {
   }) async {
     String path;
     String senderId;
-    if (AppConfig.currentEnvironment == Environment.production) {
+    if (AppConfig.environment == Flavors.production) {
       path = 'lib/structure/messaging/ServiceAccountKeyProduction.json';
 
       senderId = '378925058177';
-    } else if (AppConfig.currentEnvironment == Environment.staging) {
+    } else if (AppConfig.environment == Flavors.staging) {
       path = 'lib/structure/messaging/ServiceAccountKeyStaging.json';
       senderId = '407999311341';
     } else {
@@ -225,6 +226,8 @@ class FirebaseMessage {
       ServiceAccountCredentials.fromJson(credentials),
       ['https://www.googleapis.com/auth/cloud-platform'],
     );
+
+    print("senderID: $senderId");
 
     final notificationData = {
       'message': {

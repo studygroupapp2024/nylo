@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
 import 'package:nylo/structure/auth/auth_service.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
@@ -31,29 +32,10 @@ class EditProfilePage extends ConsumerWidget {
               FocusScope.of(context).unfocus();
 
               if (_nameController.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    content: Row(
-                      children: [
-                        Icon(
-                          Icons.notifications,
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Please enter your name",
-                          style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                informationSnackBar(
+                  context,
+                  Icons.notifications,
+                  "Please enter your name",
                 );
               } else {
                 ref.read(userInfoService).changeProfilePicture(
@@ -63,36 +45,10 @@ class EditProfilePage extends ConsumerWidget {
                       ref.watch(setGlobalUniversityId),
                       _nameController.text,
                     );
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Row(
-                      children: [
-                        Icon(
-                          Icons.notifications,
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Your profile picture has been updated",
-                          style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                          ),
-                        ),
-                      ],
-                    ),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    backgroundColor: Theme.of(context).colorScheme.tertiary,
-                    elevation: 4,
-                    padding: const EdgeInsets.all(20),
-                  ),
+                informationSnackBar(
+                  context,
+                  Icons.notifications,
+                  "Your profile picture has been updated",
                 );
               }
             },
@@ -138,11 +94,12 @@ class EditProfilePage extends ConsumerWidget {
                         );
 
                         if (result == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("No image has been selected."),
-                            ),
+                          informationSnackBar(
+                            context,
+                            Icons.info_outline,
+                            "No image has been selected.",
                           );
+
                           return;
                         }
                         final path = result.files.single.path;

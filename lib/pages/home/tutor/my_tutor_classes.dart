@@ -11,7 +11,9 @@ import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/tutor_class_provider.dart';
+import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
+import 'package:nylo/structure/services/chat_services.dart';
 
 class TutorClassses extends ConsumerWidget {
   TutorClassses({super.key});
@@ -195,7 +197,18 @@ class TutorClassses extends ConsumerWidget {
                                   return userChatInfo.when(
                                     data: (data) {
                                       return GestureDetector(
-                                        onTap: () {
+                                        onTap: () async {
+                                          print("chat id: ${chatIds.chatId}");
+                                          print(
+                                              "lastMessage id: ${data.lastMessageIdRead}");
+                                          await ChatService()
+                                              .updateUserLastMessageIdRead(
+                                            chatIds.chatId!,
+                                            ref.watch(setGlobalUniversityId),
+                                            chatIds.lastMessageId!,
+                                            _auth.currentUser!.uid,
+                                            false,
+                                          );
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -228,7 +241,7 @@ class TutorClassses extends ConsumerWidget {
                                           child: Container(
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              color: chatIds.lastMessage ==
+                                              color: chatIds.lastMessageId !=
                                                       data.lastMessageIdRead
                                                   ? Theme.of(context)
                                                       .colorScheme

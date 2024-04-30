@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
+import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
 import 'package:nylo/structure/providers/chat_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
@@ -68,11 +69,12 @@ class TutorSendSpecialMessage extends ConsumerWidget {
                 );
 
                 if (result == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("No item has been selected."),
-                    ),
+                  informationSnackBar(
+                    context,
+                    Icons.info_outline,
+                    "No item has been selected.",
                   );
+
                   return;
                 }
                 final path = result.files.single.path;

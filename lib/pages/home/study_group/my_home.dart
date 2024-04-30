@@ -18,7 +18,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final checkMemberRequest =
         ref.watch(userHasStudyGroupRequest(_firebaseAuth.currentUser!.uid));
-
+    print("checkMemberRequest: $checkMemberRequest");
     final userInfo =
         ref.watch(userInfoProvider(_firebaseAuth.currentUser!.uid));
 

@@ -47,4 +47,6 @@ flutter:
   uses-material-design: true
   assets: 
     - assets/icons/
-    - lib/structure/messaging/
+    - lib/structure/messaging/ServiceAccountKeyDevelopment.json
+    - lib/structure/messaging/ServiceAccountKeyProduction.json
+    - lib/structure/messaging/ServiceAccountKeyStaging.json

@@ -6,6 +6,7 @@ import 'package:nylo/components/containers/chat_info_container.dart';
 import 'package:nylo/components/containers/chat_info_containers/chat_info_container_with_switch.dart';
 import 'package:nylo/components/dialogs/alert_dialog.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
+import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/pages/chat/members.dart';
 import 'package:nylo/pages/chat/members_request.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
@@ -338,39 +339,10 @@ class ChatInfo extends ConsumerWidget {
                                     .popUntil(
                                   ModalRoute.withName("/ChatOption"),
                                 );
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.notifications,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiaryContainer,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "$groupChatTitle has been deleted.",
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiaryContainer,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    elevation: 4,
-                                    padding: const EdgeInsets.all(20),
-                                  ),
+                                informationSnackBar(
+                                  context,
+                                  Icons.notifications,
+                                  "$groupChatTitle has been deleted.",
                                 );
 
                                 await ref
@@ -406,39 +378,10 @@ class ChatInfo extends ConsumerWidget {
                                     .popUntil(
                                   ModalRoute.withName("/ChatOption"),
                                 );
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.notifications,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiaryContainer,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "You have left the $groupChatTitle",
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiaryContainer,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    elevation: 4,
-                                    padding: const EdgeInsets.all(20),
-                                  ),
+                                informationSnackBar(
+                                  context,
+                                  Icons.notifications,
+                                  "You have left the $groupChatTitle",
                                 );
 
                                 await ref.read(groupChatProvider).removeMember(

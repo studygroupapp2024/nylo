@@ -11,14 +11,14 @@ void informationSnackBar(
       content: Row(
         children: [
           Icon(
-            Icons.signal_wifi_connected_no_internet_4_outlined,
+            icon,
             color: Theme.of(context).colorScheme.tertiaryContainer,
           ),
           const SizedBox(
             width: 10,
           ),
           Text(
-            "No internet connection found",
+            text,
             style: TextStyle(
               color: Theme.of(context).colorScheme.tertiaryContainer,
             ),

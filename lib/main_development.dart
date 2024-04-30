@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/appconfig.dart';
-import 'package:nylo/firebase/dev/firebase_options-dev.dart';
+import 'package:nylo/dependency_injection.dart';
+import 'package:nylo/firebase/development/firebase_options-dev.dart';
 import 'package:nylo/structure/auth/auth_gate.dart';
 import 'package:nylo/structure/messaging/message_api.dart';
 import 'package:nylo/themes/light_mode.dart';
@@ -15,9 +16,11 @@ class AppConfig {
 
 @pragma('vm:entry-point')
 void main() async {
+  DependencyInjection.init();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    name: "nylo-development",
+    name: "nylo-dev",
     options: DefaultFirebaseOptions.currentPlatform,
   );
 

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/structure/models/university_model.dart';
-import 'package:nylo/structure/providers/user_provider.dart';
 import 'package:nylo/structure/services/university_service.dart';
 import 'package:nylo/structure/services/user_service.dart';
 
@@ -81,15 +80,15 @@ final getUniversityId = FutureProvider.family<String, String>(
     if (snapshot.docs.isNotEmpty) {
       final uniId = snapshot.docs.first.data()['uniId'];
       // if (uniId!= null && uniId is String) {
-      final setUserData = await _userInformation.getUserInfo(userId, uniId);
+      // final setUserData = await _userInformation.getUserInfo(userId, uniId);
       //   // Set the global university ID state and UserInfo
 
-      ref.read(currentUserName.notifier).state = setUserData['name'];
-      ref.read(currentUserNameFCMToken.notifier).state =
-          setUserData['fcmtoken'];
-      ref.read(currentUserImageURL.notifier).state = setUserData['imageUrl'];
-      ref.read(currentUserEmail.notifier).state = setUserData['email'];
-      ref.read(currentUserUID.notifier).state = userId;
+      // ref.read(currentUserName.notifier).state = setUserData['name'];
+      // ref.read(currentUserNameFCMToken.notifier).state =
+      //     setUserData['fcmtoken'];
+      // ref.read(currentUserImageURL.notifier).state = setUserData['imageUrl'];
+      // ref.read(currentUserEmail.notifier).state = setUserData['email'];
+      // ref.read(currentUserUID.notifier).state = userId;
       ref.read(setGlobalUniversityId.notifier).state = uniId;
 
       return uniId;

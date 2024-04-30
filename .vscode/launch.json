@@ -1,6 +1,8 @@
 {
     "version": "0.1.0",
+    
     "configurations": [
+        // Launch Flavors
         {
             "name": "Launch Development",
             "request": "launch",
@@ -21,6 +23,6 @@
             "type": "dart",
             "program": "lib/main_production.dart",
             "args": ["--flavor","production" , "--target","lib/main_production.dart"],
-        }
+        },
     ]
 }

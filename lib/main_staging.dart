@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/appconfig.dart';
-import 'package:nylo/firebase/staging/firebase_options-staging.dart';
+import 'package:nylo/firebase/staging/firebase_options-stg.dart';
 import 'package:nylo/structure/auth/auth_gate.dart';
 import 'package:nylo/structure/messaging/message_api.dart';
 import 'package:nylo/themes/light_mode.dart';

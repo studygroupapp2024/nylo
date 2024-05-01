@@ -5,12 +5,19 @@ class RoundedTextFieldTitle extends StatelessWidget {
   final String hinttext;
   final void Function(String)? onChange;
   final TextEditingController controller;
-  const RoundedTextFieldTitle(
-      {super.key,
-      required this.title,
-      required this.hinttext,
-      required this.controller,
-      required this.onChange});
+  final bool? withButton;
+  final bool? isDate;
+  final void Function()? onPressed;
+  const RoundedTextFieldTitle({
+    super.key,
+    required this.title,
+    required this.hinttext,
+    required this.controller,
+    required this.onChange,
+    this.withButton = false,
+    this.isDate = false,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +38,24 @@ class RoundedTextFieldTitle extends StatelessWidget {
           ),
           TextField(
             obscureText: false,
+            readOnly: withButton! ? true : false,
             minLines: 1,
             maxLines: 3,
             controller: controller,
             onChanged: onChange,
             decoration: InputDecoration(
+                suffixIcon: withButton!
+                    ? GestureDetector(
+                        onTap: () {},
+                        child: IconButton(
+                          onPressed: onPressed,
+                          icon: isDate!
+                              ? const Icon(Icons.date_range)
+                              : const Icon(Icons.schedule),
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      )
+                    : null,
                 enabledBorder: OutlineInputBorder(
                   borderSide:
                       BorderSide(color: Theme.of(context).colorScheme.tertiary),

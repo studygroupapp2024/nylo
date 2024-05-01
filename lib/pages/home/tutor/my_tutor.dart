@@ -62,7 +62,10 @@ class RegisterAsTutor extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ViewSchedule(),
+                        builder: (context) => ViewSchedule(
+                          classId: classes.classId!,
+                          tutorId: classes.proctorId,
+                        ),
                       ),
                     );
                   },

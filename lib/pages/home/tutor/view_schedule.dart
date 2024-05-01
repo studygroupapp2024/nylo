@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:nylo/pages/home/tutor/add_schedule.dart';
 
 class ViewSchedule extends StatelessWidget {
-  const ViewSchedule({super.key});
+  final String classId;
+  final String tutorId;
+  const ViewSchedule({
+    super.key,
+    required this.classId,
+    required this.tutorId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +19,13 @@ class ViewSchedule extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddSchedule()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddSchedule(
+                            classId: classId,
+                            tutorId: tutorId,
+                          )));
             },
             icon: const Icon(Icons.schedule),
           ),

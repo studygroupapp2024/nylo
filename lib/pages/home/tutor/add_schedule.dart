@@ -2,11 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
+import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
 import 'package:nylo/pages/home/tutor/components/pick_date_time.dart';
+import 'package:nylo/structure/providers/create_group_chat_providers.dart';
+import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
+import 'package:nylo/structure/providers/university_provider.dart';
 
 class AddSchedule extends ConsumerWidget {
-  AddSchedule({super.key});
+  final String classId;
+  final String tutorId;
+
+  AddSchedule({
+    super.key,
+    required this.classId,
+    required this.tutorId,
+  });
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
@@ -32,7 +43,7 @@ class AddSchedule extends ConsumerWidget {
               if (_dateController.text.isEmpty) {
                 currentDate = DateTime.now();
               } else {
-                currentDate = ref.watch(_dateControllerProvider);
+                currentDate = ref.watch(dateControllerProvider);
               }
               final DateTime? date = await pickDate(context, currentDate);
 
@@ -57,7 +68,7 @@ class AddSchedule extends ConsumerWidget {
                 if (_startTimeController.text.isEmpty) {
                   currentTime = TimeOfDay.now();
                 } else {
-                  currentTime = ref.watch(_startTimeControllerProvider);
+                  currentTime = ref.watch(startTimeControllerProvider);
                 }
                 final TimeOfDay? time = await pickTime(context, currentTime);
                 print("TIME: $time");
@@ -87,7 +98,7 @@ class AddSchedule extends ConsumerWidget {
                 if (_endTimeController.text.isEmpty) {
                   currentTime = TimeOfDay.now();
                 } else {
-                  currentTime = ref.watch(_endTimeControllerProvider);
+                  currentTime = ref.watch(endTimeControllerProvider);
                 }
                 final TimeOfDay? time = await pickTime(context, currentTime);
                 print("TIME: $time");
@@ -108,7 +119,52 @@ class AddSchedule extends ConsumerWidget {
           ),
           RoundedButtonWithProgress(
             text: "Schedule Class",
-            onTap: null,
+            onTap: () async {
+              ref.read(isLoadingProvider.notifier).state = true;
+
+              bool? isSuccess;
+              if (_dateController.text.isNotEmpty &&
+                  _startTimeController.text.isNotEmpty &&
+                  _endTimeController.text.isNotEmpty) {
+                isSuccess = await ref.read(tutorSchedulesProvider).addSchedule(
+                      ref.watch(dateControllerProvider),
+                      ref.watch(startTimeControllerProvider).toString(),
+                      ref.watch(endTimeControllerProvider).toString(),
+                      tutorId,
+                      classId,
+                      ref.watch(setGlobalUniversityId),
+                    );
+
+                if (isSuccess) {
+                  informationSnackBar(
+                    context,
+                    Icons.notification_add,
+                    "The schedule has been added",
+                  );
+
+                  _endTimeController.clear();
+                  _startTimeController.clear();
+                  _dateController.clear();
+                }
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Schedule Creation Failed'),
+                    content: const Text('Make sure all fields are filled in.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Okay'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              ref.read(isLoadingProvider.notifier).state = false;
+            },
             margin: const EdgeInsets.symmetric(horizontal: 20),
             color: Theme.of(context).colorScheme.tertiaryContainer,
             textcolor: Theme.of(context).colorScheme.background,
@@ -118,13 +174,3 @@ class AddSchedule extends ConsumerWidget {
     );
   }
 }
-
-final _dateControllerProvider = StateProvider<DateTime>(
-  (ref) => DateTime.now(),
-);
-final _startTimeControllerProvider = StateProvider<TimeOfDay>(
-  (ref) => TimeOfDay.now(),
-);
-final _endTimeControllerProvider = StateProvider<TimeOfDay>(
-  (ref) => TimeOfDay.now(),
-);

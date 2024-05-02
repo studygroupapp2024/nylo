@@ -54,8 +54,9 @@ class ViewSchedule extends ConsumerWidget {
                       startTime: sched.startTime,
                       endTime: sched.endTime,
                       status: sched.status,
-                      tuteeName: sched.tuteeId,
+                      tuteeId: sched.tuteeId,
                       isChat: false,
+                      classId: classId,
                     );
                   },
                 );

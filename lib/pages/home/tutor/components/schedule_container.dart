@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/member_request_decision_container.dart';
+import 'package:nylo/components/information_snackbar.dart';
+import 'package:nylo/structure/providers/create_group_chat_providers.dart';
+import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
+import 'package:nylo/structure/providers/university_provider.dart';
 
-class ScheduleContainer extends StatelessWidget {
+class ScheduleContainer extends ConsumerWidget {
   final String date;
   final String startTime;
   final String endTime;
   final String status;
-  final String? tuteeName;
+  final String? tuteeId;
   final bool? isChat;
+  final String? scheduleId;
+  final String classId;
   const ScheduleContainer({
     super.key,
     required this.date,
     required this.startTime,
     required this.endTime,
     required this.status,
-    required this.tuteeName,
+    required this.tuteeId,
     required this.isChat,
+    this.scheduleId,
+    required this.classId,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return IntrinsicHeight(
       child: Container(
         decoration: BoxDecoration(
@@ -88,7 +97,7 @@ class ScheduleContainer extends StatelessWidget {
                 )
               ],
             ),
-            if (tuteeName != null || isChat == true)
+            if (tuteeId != null || isChat == true)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -100,7 +109,7 @@ class ScheduleContainer extends StatelessWidget {
                   //   height: 4,
                   // ),
                   if (!isChat!)
-                    Text("$tuteeName would like to be your students."),
+                    Text("$tuteeId would like to be your students."),
                   if (!isChat!)
                     const SizedBox(
                       height: 8,
@@ -125,7 +134,32 @@ class ScheduleContainer extends StatelessWidget {
                         ),
                       MemberRequestDecisionContainer(
                         text: isChat! ? "Book" : "Accept",
-                        onTap: null,
+                        onTap: () async {
+                          ref
+                              .read(isLoadingProvider.notifier)
+                              .update((state) => true);
+                          final result = await ref
+                              .read(tutorSchedulesProvider)
+                              .bookSchedule(
+                                scheduleId!,
+                                tuteeId!,
+                                ref.watch(setGlobalUniversityId),
+                                classId,
+                              );
+
+                          await Future.delayed(
+                              const Duration(seconds: 1)); // Loggin in
+                          ref
+                              .read(isLoadingProvider.notifier)
+                              .update((state) => false);
+                          if (result) {
+                            informationSnackBar(
+                              context,
+                              Icons.notifications,
+                              "The request has been sent to the tutor.",
+                            );
+                          }
+                        },
                         backgroundColor:
                             Theme.of(context).colorScheme.tertiaryContainer,
                         iconColor: Theme.of(context).colorScheme.background,

@@ -57,6 +57,17 @@ class MemberRequestDecisionContainer extends ConsumerWidget {
             ),
           ),
         ),
+        if (isLoading)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 5,
+            ),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.background,
+              ),
+            ),
+          ),
       ],
     );
   }

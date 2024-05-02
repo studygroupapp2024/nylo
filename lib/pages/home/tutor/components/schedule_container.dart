@@ -8,6 +8,7 @@ class ScheduleContainer extends StatelessWidget {
   final String endTime;
   final String status;
   final String? tuteeName;
+  final bool? isChat;
   const ScheduleContainer({
     super.key,
     required this.date,
@@ -15,6 +16,7 @@ class ScheduleContainer extends StatelessWidget {
     required this.endTime,
     required this.status,
     required this.tuteeName,
+    required this.isChat,
   });
 
   @override
@@ -86,7 +88,7 @@ class ScheduleContainer extends StatelessWidget {
                 )
               ],
             ),
-            if (tuteeName != null)
+            if (tuteeName != null || isChat == true)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -97,32 +99,40 @@ class ScheduleContainer extends StatelessWidget {
                   // const SizedBox(
                   //   height: 4,
                   // ),
-                  Text("$tuteeName would like to be your students."),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  if (!isChat!)
+                    Text("$tuteeName would like to be your students."),
+                  if (!isChat!)
+                    const SizedBox(
+                      height: 8,
+                    ),
                   Row(
                     children: [
+                      if (!isChat!)
+                        MemberRequestDecisionContainer(
+                          text: "Decline",
+                          onTap: null,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
+                          iconColor:
+                              Theme.of(context).colorScheme.inversePrimary,
+                          textColor:
+                              Theme.of(context).colorScheme.inversePrimary,
+                          icon: Icons.remove_circle_outline,
+                        ),
+                      if (!isChat!)
+                        const SizedBox(
+                          width: 4,
+                        ),
                       MemberRequestDecisionContainer(
-                        text: "Decline",
-                        onTap: null,
-                        backgroundColor:
-                            Theme.of(context).colorScheme.background,
-                        iconColor: Theme.of(context).colorScheme.inversePrimary,
-                        textColor: Theme.of(context).colorScheme.inversePrimary,
-                        icon: Icons.remove_circle_outline,
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      MemberRequestDecisionContainer(
-                        text: "Accept",
+                        text: isChat! ? "Book" : "Accept",
                         onTap: null,
                         backgroundColor:
                             Theme.of(context).colorScheme.tertiaryContainer,
                         iconColor: Theme.of(context).colorScheme.background,
                         textColor: Theme.of(context).colorScheme.background,
-                        icon: Icons.check_circle_outline,
+                        icon: isChat!
+                            ? Icons.approval
+                            : Icons.check_circle_outline,
                       ),
                     ],
                   )

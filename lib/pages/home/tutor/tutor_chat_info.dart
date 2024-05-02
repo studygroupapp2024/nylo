@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nylo/components/containers/chat_info_container.dart';
 import 'package:nylo/components/containers/chat_info_containers/chat_info_container_with_switch.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
+import 'package:nylo/pages/home/tutor/scheduler/set_schedule.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
@@ -27,7 +29,7 @@ class TutorChatInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final image = ref.watch(userInfoProvider(creator));
-
+    print("classId: $classId");
     final subjectMatterInfo = ref.watch(directMessageInfoProvider(classId));
     return Scaffold(
       appBar: AppBar(
@@ -217,10 +219,32 @@ class TutorChatInfo extends ConsumerWidget {
                 const SizedBox(
                   height: 20,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
-                  "Chat",
+                  "Schedule",
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ChatInfoContainer(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SetSchedule(
+                          classId: classId,
+                          tutorId: creator,
+                        ),
+                      ),
+                    );
+                  },
+                  title: "Set a meeting",
+                  icon: Icons.schedule,
+                  chevron: true,
                 ),
                 const SizedBox(
                   height: 10,

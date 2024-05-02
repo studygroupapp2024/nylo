@@ -6,7 +6,7 @@ import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/pages/home/tutor/components/tutor_courses_chip.dart';
 import 'package:nylo/pages/home/tutor/edit_class.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
-import 'package:nylo/pages/home/tutor/view_schedule.dart';
+import 'package:nylo/pages/home/tutor/scheduler/view_schedule.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';

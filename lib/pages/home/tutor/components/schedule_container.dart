@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nylo/components/containers/member_request_decision_container.dart';
 
 class ScheduleContainer extends StatelessWidget {
   final String date;
@@ -55,10 +56,14 @@ class ScheduleContainer extends StatelessWidget {
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: 3,
                     ),
                     Text(
                       "$startTime - $endTime",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 ),
@@ -81,7 +86,48 @@ class ScheduleContainer extends StatelessWidget {
                 )
               ],
             ),
-            if (tuteeName != null) Text(tuteeName!),
+            if (tuteeName != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Divider(
+                    thickness: .3,
+                    color: ScheduleStatus.setColor(status),
+                  ),
+                  // const SizedBox(
+                  //   height: 4,
+                  // ),
+                  Text("$tuteeName would like to be your students."),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      MemberRequestDecisionContainer(
+                        text: "Decline",
+                        onTap: null,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                        iconColor: Theme.of(context).colorScheme.inversePrimary,
+                        textColor: Theme.of(context).colorScheme.inversePrimary,
+                        icon: Icons.remove_circle_outline,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      MemberRequestDecisionContainer(
+                        text: "Accept",
+                        onTap: null,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.tertiaryContainer,
+                        iconColor: Theme.of(context).colorScheme.background,
+                        textColor: Theme.of(context).colorScheme.background,
+                        icon: Icons.check_circle_outline,
+                      ),
+                    ],
+                  )
+                ],
+              )
           ],
         ),
       ),

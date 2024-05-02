@@ -56,7 +56,7 @@ class TutorScheduleModel {
   factory TutorScheduleModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
     return TutorScheduleModel(
-      date: doc['date'],
+      date: DateTime.fromMillisecondsSinceEpoch(doc['date'] as int),
       startTime: doc['startTime'],
       endTime: doc['endTime'],
       tuteeId: doc['tuteeId'],

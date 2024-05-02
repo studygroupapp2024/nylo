@@ -5,6 +5,7 @@ import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
 import 'package:nylo/pages/home/tutor/components/pick_date_time.dart';
+import 'package:nylo/pages/home/tutor/functions/time_formatter.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
@@ -73,15 +74,8 @@ class AddSchedule extends ConsumerWidget {
                 final TimeOfDay? time = await pickTime(context, currentTime);
                 print("TIME: $time");
                 if (time != null) {
-                  final DateTime dateTime = DateTime.utc(
-                      DateTime.now().year,
-                      DateTime.now().month,
-                      DateTime.now().day,
-                      time.hour,
-                      time.minute);
-                  final DateFormat formatter = DateFormat('h:mm a');
-                  final String formattedTime = formatter.format(dateTime);
-                  _startTimeController.text = formattedTime;
+                  formatTime(time);
+                  _startTimeController.text = formatTime(time);
                 }
               }),
           const SizedBox(
@@ -103,15 +97,7 @@ class AddSchedule extends ConsumerWidget {
                 final TimeOfDay? time = await pickTime(context, currentTime);
                 print("TIME: $time");
                 if (time != null) {
-                  final DateTime dateTime = DateTime.utc(
-                      DateTime.now().year,
-                      DateTime.now().month,
-                      DateTime.now().day,
-                      time.hour,
-                      time.minute);
-                  final DateFormat formatter = DateFormat('h:mm a');
-                  final String formattedTime = formatter.format(dateTime);
-                  _endTimeController.text = formattedTime;
+                  _endTimeController.text = formatTime(time);
                 }
               }),
           const SizedBox(
@@ -128,8 +114,8 @@ class AddSchedule extends ConsumerWidget {
                   _endTimeController.text.isNotEmpty) {
                 isSuccess = await ref.read(tutorSchedulesProvider).addSchedule(
                       ref.watch(dateControllerProvider),
-                      ref.watch(startTimeControllerProvider).toString(),
-                      ref.watch(endTimeControllerProvider).toString(),
+                      _startTimeController.text,
+                      _endTimeController.text,
                       tutorId,
                       classId,
                       ref.watch(setGlobalUniversityId),

@@ -50,4 +50,26 @@ class TutorScheduleService {
 
     return true;
   }
+
+  Future<bool> bookSchedule(
+    String scheduleId,
+    String tuteeId,
+    String institutionId,
+    String classId,
+  ) async {
+    await _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection("subject_matters")
+        .doc(classId)
+        .collection("schedules")
+        .doc(scheduleId)
+        .update(
+      {
+        'tuteeId': tuteeId,
+        'status': "booked",
+      },
+    );
+    return true;
+  }
 }

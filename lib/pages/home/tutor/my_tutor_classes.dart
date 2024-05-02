@@ -184,7 +184,7 @@ class TutorClassses extends ConsumerWidget {
                             ),
                           );
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 10),
                               child: Consumer(

@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nylo/structure/messaging/message_api.dart';
 import 'package:nylo/structure/models/schedule_model.dart';
+import 'package:nylo/structure/services/user_service.dart';
 
 class TutorScheduleService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  final FirebaseMessage _firebaseMessage = FirebaseMessage();
+  final UserInformation _users = UserInformation();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   // Add Schedule
   Future<bool> addSchedule(
     DateTime date,
@@ -56,6 +61,7 @@ class TutorScheduleService {
     String tuteeId,
     String institutionId,
     String classId,
+    String? tutorId,
   ) async {
     await _firestore
         .collection("institution")
@@ -68,6 +74,71 @@ class TutorScheduleService {
       {
         'tuteeId': tuteeId,
         'status': "booked",
+      },
+    );
+
+    // current user Info
+    final userInfo = await _users.getUserInfo(
+      _firebaseAuth.currentUser!.uid,
+      institutionId,
+    );
+
+    final userInfodata = userInfo.data();
+
+    final fcmtoken = userInfodata!['fcmtoken'];
+    final userName = userInfodata['name'];
+    print("FCM TOKEN: $fcmtoken");
+    print("USER NAME: $userName");
+    _firebaseMessage.sendPushMessage(
+      recipientToken: fcmtoken,
+      title: "Appointment Notification",
+      body: "$userName has book a tutorial session with you.",
+      route: 'appointment',
+      tutorId: tutorId,
+      classId: classId,
+    );
+    return true;
+  }
+
+  Future<bool> acceptBooking(
+    String scheduleId,
+    String tuteeId,
+    String institutionId,
+    String classId,
+  ) async {
+    await _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection("subject_matters")
+        .doc(classId)
+        .collection("schedules")
+        .doc(scheduleId)
+        .update(
+      {
+        'tuteeId': tuteeId,
+        'status': "occupied",
+      },
+    );
+    return true;
+  }
+
+  Future<bool> rejectBooking(
+    String scheduleId,
+    String tuteeId,
+    String institutionId,
+    String classId,
+  ) async {
+    await _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection("subject_matters")
+        .doc(classId)
+        .collection("schedules")
+        .doc(scheduleId)
+        .update(
+      {
+        'tuteeId': null,
+        'status': "available",
       },
     );
     return true;

@@ -339,8 +339,11 @@ class ChatInfo extends ConsumerWidget {
                                     .popUntil(
                                   ModalRoute.withName("/ChatOption"),
                                 );
+                                final ScaffoldMessengerState messenger =
+                                    ScaffoldMessenger.of(context);
                                 informationSnackBar(
                                   context,
+                                  messenger,
                                   Icons.notifications,
                                   "$groupChatTitle has been deleted.",
                                 );
@@ -378,8 +381,11 @@ class ChatInfo extends ConsumerWidget {
                                     .popUntil(
                                   ModalRoute.withName("/ChatOption"),
                                 );
+                                final ScaffoldMessengerState messenger =
+                                    ScaffoldMessenger.of(context);
                                 informationSnackBar(
                                   context,
+                                  messenger,
                                   Icons.notifications,
                                   "You have left the $groupChatTitle",
                                 );

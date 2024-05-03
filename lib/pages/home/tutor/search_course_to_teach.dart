@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/no_data_holder.dart';
-import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_button.dart';
+import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip_with_button.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
@@ -97,6 +97,8 @@ class SearchCourseToTeach extends ConsumerWidget {
                         return ListView.builder(
                           itemCount: courses.length,
                           itemBuilder: (context, index) {
+                            final ScaffoldMessengerState messenger =
+                                ScaffoldMessenger.of(context);
                             final course = courses[index];
                             return GestureDetector(
                               onTap: () async {
@@ -106,11 +108,13 @@ class SearchCourseToTeach extends ConsumerWidget {
 
                                 final selectedCourse =
                                     ref.watch(selectedCoursesToTeachProvider);
-
+                                final ScaffoldMessengerState messenger =
+                                    ScaffoldMessenger.of(context);
                                 for (final course in selectedCourse) {
                                   if (course.subjectId.contains(subjectId)) {
                                     informationSnackBar(
                                       context,
+                                      messenger,
                                       Icons.notifications,
                                       "$subjectCode is already added.",
                                     );
@@ -130,6 +134,7 @@ class SearchCourseToTeach extends ConsumerWidget {
                                     );
                                 informationSnackBar(
                                   context,
+                                  messenger,
                                   Icons.notifications,
                                   "$subjectCode has been added.",
                                 );

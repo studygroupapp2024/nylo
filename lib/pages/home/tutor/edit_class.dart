@@ -5,7 +5,7 @@ import 'package:nylo/components/dialogs/create_group.dart';
 import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
-import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_button.dart';
+import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip_with_button.dart';
 import 'package:nylo/pages/home/tutor/search_course_to_teach.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
@@ -195,9 +195,11 @@ class EditClass extends ConsumerWidget {
                           _nameController.clear();
                           _descriptionController.clear();
                           Navigator.pop(context);
-
+                          final ScaffoldMessengerState messenger =
+                              ScaffoldMessenger.of(context);
                           informationSnackBar(
                             context,
+                            messenger,
                             Icons.notifications,
                             "Class has been updated.",
                           );

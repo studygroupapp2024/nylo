@@ -5,12 +5,14 @@ import 'package:intl/intl.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
-import 'package:nylo/pages/home/tutor/components/tutor_courses_chip_with_name.dart';
+import 'package:nylo/pages/home/tutor/components/chips/schedule_chip_with_name.dart';
+import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip_with_name.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/tutor_class_provider.dart';
+import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 import 'package:nylo/structure/services/chat_services.dart';
@@ -515,6 +517,24 @@ class TutorClassses extends ConsumerWidget {
                                                           }
                                                         },
                                                       ),
+                                                      if (myTutor)
+                                                        Consumer(builder:
+                                                            (context, ref,
+                                                                child) {
+                                                          final schedules =
+                                                              ref.watch(
+                                                            userSchedulesProvider((
+                                                              classId: chatIds
+                                                                  .classId,
+                                                              tuteeId: chatIds
+                                                                  .tuteeId
+                                                            )),
+                                                          );
+                                                          return ScheduleChipWithName(
+                                                            schedules:
+                                                                schedules,
+                                                          );
+                                                        }),
                                                     ],
                                                   ),
                                                 ),

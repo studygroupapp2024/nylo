@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nylo/pages/home/tutor/components/tutor_courses_chip.dart';
+import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
 
 class TutorCoursesChipWithName extends ConsumerWidget {

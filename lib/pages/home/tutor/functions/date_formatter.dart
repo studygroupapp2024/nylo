@@ -8,3 +8,9 @@ String formatDate(DateTime date) {
   final String formattedDate = formatter.format(dateTimeValue);
   return formattedDate;
 }
+
+String formatDateShort(DateTime date) {
+  final DateFormat formatter = DateFormat('E, MMM d');
+  final String formattedDate = formatter.format(date);
+  return formattedDate;
+}

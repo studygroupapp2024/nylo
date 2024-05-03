@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/member_request_decision_container.dart';
-import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
@@ -170,16 +169,16 @@ class ScheduleContainer extends ConsumerWidget {
                                 );
                                 loadingNotifier.update((state) => false);
 
-                                final ScaffoldMessengerState messenger =
-                                    ScaffoldMessenger.of(context);
-                                if (result) {
-                                  informationSnackBar(
-                                    context,
-                                    messenger,
-                                    Icons.notifications,
-                                    "The request has been sent to the tutor.",
-                                  );
-                                }
+                                // final ScaffoldMessengerState messenger =
+                                //     ScaffoldMessenger.of(context);
+                                // if (result) {
+                                //   informationSnackBar(
+                                //     context,
+                                //     messenger,
+                                //     Icons.notifications,
+                                //     "The request has been sent to the tutor.",
+                                //   );
+                                // }
                               }
                             : () async {
                                 ref

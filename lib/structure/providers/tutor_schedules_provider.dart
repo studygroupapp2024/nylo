@@ -68,3 +68,28 @@ final selectedschedulesProvider =
       );
   return schedules;
 });
+
+final userSchedulesProvider =
+    StreamProvider.family<List<TutorScheduleModel>, ScheduleData>(
+        (ref, scheduleData) {
+  final institutionId = ref.watch(setGlobalUniversityId);
+  final schedules = _firestore
+      .collection("institution")
+      .doc(institutionId)
+      .collection("subject_matters")
+      .doc(scheduleData.classId)
+      .collection("schedules")
+      .where("tuteeId", isEqualTo: scheduleData.tuteeId)
+      .where("status", isEqualTo: "occupied")
+      .snapshots()
+      .map(
+        (querySnapshot) => querySnapshot.docs
+            .map(
+              (snapshot) => TutorScheduleModel.fromSnapshot(snapshot),
+            )
+            .toList(),
+      );
+  return schedules;
+});
+
+typedef ScheduleData = ({String classId, String tuteeId});

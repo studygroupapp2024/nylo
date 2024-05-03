@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/no_data_holder.dart';
-import 'package:nylo/pages/home/tutor/components/tutor_courses_chip.dart';
+import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';

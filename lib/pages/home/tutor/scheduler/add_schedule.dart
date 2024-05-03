@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
-import 'package:nylo/pages/home/tutor/components/pick_date_time.dart';
+import 'package:nylo/pages/home/tutor/components/scheduling/pick_date_time.dart';
 import 'package:nylo/pages/home/tutor/functions/time_formatter.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
@@ -122,8 +122,11 @@ class AddSchedule extends ConsumerWidget {
                     );
 
                 if (isSuccess) {
+                  final ScaffoldMessengerState messenger =
+                      ScaffoldMessenger.of(context);
                   informationSnackBar(
                     context,
+                    messenger,
                     Icons.notification_add,
                     "The schedule has been added",
                   );

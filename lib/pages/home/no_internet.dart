@@ -58,8 +58,11 @@ class NoInternet extends StatelessWidget {
                     if (result) {
                       Navigator.of(context).pop();
                     } else {
+                      final ScaffoldMessengerState messenger =
+                          ScaffoldMessenger.of(context);
                       informationSnackBar(
                           context,
+                          messenger,
                           Icons.signal_wifi_connected_no_internet_4_outlined,
                           "No internet connection found");
                     }

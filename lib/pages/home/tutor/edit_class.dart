@@ -195,9 +195,11 @@ class EditClass extends ConsumerWidget {
                           _nameController.clear();
                           _descriptionController.clear();
                           Navigator.pop(context);
-
+                          final ScaffoldMessengerState messenger =
+                              ScaffoldMessenger.of(context);
                           informationSnackBar(
                             context,
+                            messenger,
                             Icons.notifications,
                             "Class has been updated.",
                           );

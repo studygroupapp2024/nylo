@@ -97,6 +97,8 @@ class SearchCourseToTeach extends ConsumerWidget {
                         return ListView.builder(
                           itemCount: courses.length,
                           itemBuilder: (context, index) {
+                            final ScaffoldMessengerState messenger =
+                                ScaffoldMessenger.of(context);
                             final course = courses[index];
                             return GestureDetector(
                               onTap: () async {
@@ -106,11 +108,13 @@ class SearchCourseToTeach extends ConsumerWidget {
 
                                 final selectedCourse =
                                     ref.watch(selectedCoursesToTeachProvider);
-
+                                final ScaffoldMessengerState messenger =
+                                    ScaffoldMessenger.of(context);
                                 for (final course in selectedCourse) {
                                   if (course.subjectId.contains(subjectId)) {
                                     informationSnackBar(
                                       context,
+                                      messenger,
                                       Icons.notifications,
                                       "$subjectCode is already added.",
                                     );
@@ -130,6 +134,7 @@ class SearchCourseToTeach extends ConsumerWidget {
                                     );
                                 informationSnackBar(
                                   context,
+                                  messenger,
                                   Icons.notifications,
                                   "$subjectCode has been added.",
                                 );

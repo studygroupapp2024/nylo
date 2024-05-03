@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 // Information SnackBar, used to show information using a snackbar
 void informationSnackBar(
   BuildContext context,
+  ScaffoldMessengerState messenger,
   IconData icon,
   String text,
 ) {
-  ScaffoldMessenger.of(context).showSnackBar(
+  messenger.showSnackBar(
     SnackBar(
       content: Row(
         children: [

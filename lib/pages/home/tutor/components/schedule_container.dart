@@ -135,26 +135,27 @@ class ScheduleContainer extends ConsumerWidget {
                       MemberRequestDecisionContainer(
                         text: isChat! ? "Book" : "Accept",
                         onTap: () async {
-                          ref
-                              .read(isLoadingProvider.notifier)
-                              .update((state) => true);
-                          final result = await ref
-                              .read(tutorSchedulesProvider)
-                              .bookSchedule(
-                                scheduleId!,
-                                tuteeId!,
-                                ref.watch(setGlobalUniversityId),
-                                classId,
-                              );
+                          final loadingNotifier =
+                              ref.read(isLoadingProvider.notifier);
+                          final schedulesProvider =
+                              ref.read(tutorSchedulesProvider);
+                          final globalUniversitySetter =
+                              ref.watch(setGlobalUniversityId);
 
-                          await Future.delayed(
-                              const Duration(seconds: 1)); // Loggin in
-                          ref
-                              .read(isLoadingProvider.notifier)
-                              .update((state) => false);
+                          loadingNotifier.update((state) => true);
+                          final result = await schedulesProvider.bookSchedule(
+                              scheduleId!,
+                              tuteeId!,
+                              globalUniversitySetter,
+                              classId);
+                          loadingNotifier.update((state) => false);
+
+                          final ScaffoldMessengerState messenger =
+                              ScaffoldMessenger.of(context);
                           if (result) {
                             informationSnackBar(
                               context,
+                              messenger,
                               Icons.notifications,
                               "The request has been sent to the tutor.",
                             );

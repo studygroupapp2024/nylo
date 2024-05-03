@@ -72,4 +72,48 @@ class TutorScheduleService {
     );
     return true;
   }
+
+  Future<bool> acceptBooking(
+    String scheduleId,
+    String tuteeId,
+    String institutionId,
+    String classId,
+  ) async {
+    await _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection("subject_matters")
+        .doc(classId)
+        .collection("schedules")
+        .doc(scheduleId)
+        .update(
+      {
+        'tuteeId': tuteeId,
+        'status': "occupied",
+      },
+    );
+    return true;
+  }
+
+  Future<bool> rejectBooking(
+    String scheduleId,
+    String tuteeId,
+    String institutionId,
+    String classId,
+  ) async {
+    await _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection("subject_matters")
+        .doc(classId)
+        .collection("schedules")
+        .doc(scheduleId)
+        .update(
+      {
+        'tuteeId': null,
+        'status': "available",
+      },
+    );
+    return true;
+  }
 }

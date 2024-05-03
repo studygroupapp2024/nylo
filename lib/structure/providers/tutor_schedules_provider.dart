@@ -30,7 +30,10 @@ final schedulesProvider =
       .collection("subject_matters")
       .doc(classId)
       .collection("schedules")
+      // .where('status', isNotEqualTo: 'occupied')
+      .orderBy("status", descending: true)
       .orderBy("date", descending: true)
+      .orderBy("__name__", descending: true)
       .snapshots()
       .map(
         (querySnapshot) => querySnapshot.docs

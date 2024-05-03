@@ -97,7 +97,7 @@ class ScheduleContainer extends ConsumerWidget {
                 )
               ],
             ),
-            if (tuteeId != null || isChat == true)
+            if ((tuteeId != null && status == "booked") || isChat == true)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -108,8 +108,7 @@ class ScheduleContainer extends ConsumerWidget {
                   // const SizedBox(
                   //   height: 4,
                   // ),
-                  if (!isChat!)
-                    Text("$tuteeId would like to be your students."),
+                  if (!isChat!) Text("$tuteeId would like to be your student."),
                   if (!isChat!)
                     const SizedBox(
                       height: 8,
@@ -119,7 +118,22 @@ class ScheduleContainer extends ConsumerWidget {
                       if (!isChat!)
                         MemberRequestDecisionContainer(
                           text: "Decline",
-                          onTap: null,
+                          onTap: () async {
+                            ref
+                                .read(isLoadingProvider.notifier)
+                                .update((state) => true);
+                            await ref
+                                .read(tutorSchedulesProvider)
+                                .rejectBooking(
+                                  scheduleId!,
+                                  tuteeId!,
+                                  ref.watch(setGlobalUniversityId),
+                                  classId,
+                                );
+                            ref
+                                .read(isLoadingProvider.notifier)
+                                .update((state) => false);
+                          },
                           backgroundColor:
                               Theme.of(context).colorScheme.background,
                           iconColor:
@@ -134,33 +148,52 @@ class ScheduleContainer extends ConsumerWidget {
                         ),
                       MemberRequestDecisionContainer(
                         text: isChat! ? "Book" : "Accept",
-                        onTap: () async {
-                          final loadingNotifier =
-                              ref.read(isLoadingProvider.notifier);
-                          final schedulesProvider =
-                              ref.read(tutorSchedulesProvider);
-                          final globalUniversitySetter =
-                              ref.watch(setGlobalUniversityId);
+                        onTap: isChat!
+                            ? () async {
+                                final loadingNotifier =
+                                    ref.read(isLoadingProvider.notifier);
+                                final schedulesProvider =
+                                    ref.read(tutorSchedulesProvider);
+                                final globalUniversitySetter =
+                                    ref.watch(setGlobalUniversityId);
 
-                          loadingNotifier.update((state) => true);
-                          final result = await schedulesProvider.bookSchedule(
-                              scheduleId!,
-                              tuteeId!,
-                              globalUniversitySetter,
-                              classId);
-                          loadingNotifier.update((state) => false);
+                                loadingNotifier.update((state) => true);
+                                final result =
+                                    await schedulesProvider.bookSchedule(
+                                  scheduleId!,
+                                  tuteeId!,
+                                  globalUniversitySetter,
+                                  classId,
+                                );
+                                loadingNotifier.update((state) => false);
 
-                          final ScaffoldMessengerState messenger =
-                              ScaffoldMessenger.of(context);
-                          if (result) {
-                            informationSnackBar(
-                              context,
-                              messenger,
-                              Icons.notifications,
-                              "The request has been sent to the tutor.",
-                            );
-                          }
-                        },
+                                final ScaffoldMessengerState messenger =
+                                    ScaffoldMessenger.of(context);
+                                if (result) {
+                                  informationSnackBar(
+                                    context,
+                                    messenger,
+                                    Icons.notifications,
+                                    "The request has been sent to the tutor.",
+                                  );
+                                }
+                              }
+                            : () async {
+                                ref
+                                    .read(isLoadingProvider.notifier)
+                                    .update((state) => true);
+                                await ref
+                                    .read(tutorSchedulesProvider)
+                                    .acceptBooking(
+                                      scheduleId!,
+                                      tuteeId!,
+                                      ref.watch(setGlobalUniversityId),
+                                      classId,
+                                    );
+                                ref
+                                    .read(isLoadingProvider.notifier)
+                                    .update((state) => false);
+                              },
                         backgroundColor:
                             Theme.of(context).colorScheme.tertiaryContainer,
                         iconColor: Theme.of(context).colorScheme.background,

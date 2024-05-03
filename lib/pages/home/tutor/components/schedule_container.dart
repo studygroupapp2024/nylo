@@ -16,6 +16,7 @@ class ScheduleContainer extends ConsumerWidget {
   final bool? isChat;
   final String? scheduleId;
   final String classId;
+  final String? tutorId;
   const ScheduleContainer({
     super.key,
     required this.date,
@@ -26,6 +27,7 @@ class ScheduleContainer extends ConsumerWidget {
     required this.isChat,
     this.scheduleId,
     required this.classId,
+    this.tutorId,
   });
 
   @override
@@ -164,6 +166,7 @@ class ScheduleContainer extends ConsumerWidget {
                                   tuteeId!,
                                   globalUniversitySetter,
                                   classId,
+                                  tutorId,
                                 );
                                 loadingNotifier.update((state) => false);
 

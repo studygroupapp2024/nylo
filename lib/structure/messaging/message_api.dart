@@ -12,6 +12,7 @@ import 'package:nylo/config/app_environments.dart';
 import 'package:nylo/main_production.dart';
 import 'package:nylo/pages/home/study_group/my_study_groups.dart';
 import 'package:nylo/pages/home/tutor/my_tutor_classes.dart';
+import 'package:nylo/pages/home/tutor/scheduler/set_schedule.dart';
 
 @pragma("vm:entry-point")
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
@@ -159,6 +160,17 @@ class FirebaseMessage {
                           ),
                         )
                       }
+                    else if (value.data['route'] == "appointment")
+                      {
+                        MainApp.navigatorKey.currentState?.push(
+                          MaterialPageRoute(
+                            builder: (_) => SetSchedule(
+                              classId: value.data['classId'],
+                              tutorId: value.data['tutorId'],
+                            ),
+                          ),
+                        )
+                      }
                     else
                       {
                         MainApp.navigatorKey.currentState?.push(
@@ -204,6 +216,8 @@ class FirebaseMessage {
     required String title,
     required String body,
     required String route,
+    String? classId,
+    String? tutorId,
   }) async {
     String path;
     String senderId;
@@ -242,6 +256,8 @@ class FirebaseMessage {
           "route": route,
           'title': title,
           'body': body,
+          'classId': classId ?? '',
+          'tutorId': tutorId ?? '',
         },
       },
     };

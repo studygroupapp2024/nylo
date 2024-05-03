@@ -56,6 +56,7 @@ class SetSchedule extends ConsumerWidget {
                             isChat: true,
                             scheduleId: sched.scheduleId!,
                             classId: classId,
+                            tutorId: tutorId,
                           );
                         },
                       );

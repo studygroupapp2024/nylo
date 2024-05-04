@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/pages/home/tutor/components/containers/schedule_container.dart';
+import 'package:nylo/pages/home/tutor/components/status_options.dart';
 import 'package:nylo/pages/home/tutor/functions/date_formatter.dart';
 import 'package:nylo/pages/home/tutor/scheduler/add_schedule.dart';
 import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
@@ -41,6 +42,7 @@ class ViewSchedule extends ConsumerWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const StatusOption(),
           Expanded(
             child: getSchedule.when(
               data: (schedules) {

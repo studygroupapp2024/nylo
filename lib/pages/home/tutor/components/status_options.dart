@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nylo/structure/providers/course_provider.dart';
 
 class StatusOption extends ConsumerWidget {
   const StatusOption({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final completedOrNot = ref.watch(isNotCompleted);
+    print("AVAILABLE: ${ref.watch(selectedAvailable)}");
+    print("BOOKED: ${ref.watch(selectedBooked)}");
+    print("OCCUPIED: ${ref.watch(selectedOccupied)}");
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 15,
@@ -15,27 +16,81 @@ class StatusOption extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Option(ref, completedOrNot, context, "Occupied"),
+          Option(
+            ref,
+            context,
+            "Occupied",
+            Icons.done,
+            () {
+              ref.read(selectedAvailable.notifier).state = false;
+              ref.read(selectedBooked.notifier).state = false;
+              ref.read(selectedOccupied.notifier).state = true;
+            },
+            ref.watch(selectedAvailable),
+            ref.watch(selectedBooked),
+            ref.watch(selectedOccupied),
+            ref.watch(selectedOccupied)
+                ? Theme.of(context).colorScheme.tertiaryContainer
+                : Theme.of(context).colorScheme.background,
+          ),
           const SizedBox(
             width: 5,
           ),
-          Option(ref, completedOrNot, context, "Booked"),
+          Option(
+            ref,
+            context,
+            "Booked",
+            Icons.book_online,
+            () {
+              ref.read(selectedAvailable.notifier).state = false;
+              ref.read(selectedBooked.notifier).state = true;
+              ref.read(selectedOccupied.notifier).state = false;
+            },
+            ref.watch(selectedAvailable),
+            ref.watch(selectedBooked),
+            ref.watch(selectedOccupied),
+            ref.watch(selectedBooked)
+                ? Theme.of(context).colorScheme.tertiaryContainer
+                : Theme.of(context).colorScheme.background,
+          ),
           const SizedBox(
             width: 5,
           ),
-          Option(ref, completedOrNot, context, "Available"),
+          Option(
+            ref,
+            context,
+            "Available",
+            Icons.event_available,
+            () {
+              ref.read(selectedAvailable.notifier).state = true;
+              ref.read(selectedBooked.notifier).state = false;
+              ref.read(selectedOccupied.notifier).state = false;
+            },
+            ref.watch(selectedAvailable),
+            ref.watch(selectedBooked),
+            ref.watch(selectedOccupied),
+            ref.watch(selectedAvailable)
+                ? Theme.of(context).colorScheme.tertiaryContainer
+                : Theme.of(context).colorScheme.background,
+          ),
         ],
       ),
     );
   }
 
   Expanded Option(
-      WidgetRef ref, bool completedOrNot, BuildContext context, String text) {
+      WidgetRef ref,
+      BuildContext context,
+      String text,
+      IconData icon,
+      void Function() onTap,
+      bool available,
+      bool booked,
+      bool occupied,
+      Color? color) {
     return Expanded(
       child: GestureDetector(
-        onTap: () {
-          ref.read(isNotCompleted.notifier).state = true;
-        },
+        onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(5),
           margin: const EdgeInsets.only(
@@ -44,18 +99,20 @@ class StatusOption extends ConsumerWidget {
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: completedOrNot
-                ? Theme.of(context).colorScheme.tertiaryContainer
-                : null,
+            color: color ?? Theme.of(context).colorScheme.tertiaryContainer,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                Icons.subject_outlined,
-                color: completedOrNot
+                icon,
+                color: available
                     ? Theme.of(context).colorScheme.background
-                    : Theme.of(context).colorScheme.primary,
+                    : booked
+                        ? Theme.of(context).colorScheme.background
+                        : occupied
+                            ? Theme.of(context).colorScheme.background
+                            : Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(
                 width: 5,
@@ -65,9 +122,13 @@ class StatusOption extends ConsumerWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: completedOrNot
+                  color: available
                       ? Theme.of(context).colorScheme.background
-                      : Theme.of(context).colorScheme.primary,
+                      : occupied
+                          ? Theme.of(context).colorScheme.background
+                          : booked
+                              ? Theme.of(context).colorScheme.background
+                              : Theme.of(context).colorScheme.primary,
                 ),
               ),
             ],
@@ -77,3 +138,7 @@ class StatusOption extends ConsumerWidget {
     );
   }
 }
+
+final selectedOccupied = StateProvider<bool>((ref) => true);
+final selectedBooked = StateProvider<bool>((ref) => false);
+final selectedAvailable = StateProvider<bool>((ref) => false);

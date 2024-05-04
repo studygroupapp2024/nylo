@@ -30,7 +30,6 @@ final schedulesProvider =
       .collection("subject_matters")
       .doc(classId)
       .collection("schedules")
-      // .where('status', isNotEqualTo: 'occupied')
       .where('date', isGreaterThan: currentTimestamp)
       .orderBy("status", descending: true)
       .orderBy("date", descending: true)
@@ -56,7 +55,7 @@ final selectedschedulesProvider =
       .doc(classId)
       .collection("schedules")
       .where("status", isEqualTo: "available")
-      .where('date', isGreaterThan: Timestamp.now())
+      .where('date', isGreaterThan: currentTimestamp)
       .orderBy("status", descending: true)
       .orderBy("date", descending: true)
       .orderBy("__name__", descending: true)
@@ -87,6 +86,10 @@ final userSchedulesProvider =
       .where("tuteeId", isEqualTo: scheduleData.tuteeId)
       .where("status", isEqualTo: "occupied")
       .where('date', isGreaterThan: currentTimestamp)
+      .orderBy("tuteeId", descending: true)
+      .orderBy("status", descending: true)
+      .orderBy("date", descending: true)
+      .orderBy("__name__", descending: true)
       .snapshots()
       .map(
         (querySnapshot) => querySnapshot.docs

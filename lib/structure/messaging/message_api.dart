@@ -195,6 +195,15 @@ class FirebaseMessage {
                 builder: (_) => FindPage(),
               ),
             );
+          } else if (message.data['route'] == "appointment") {
+            MainApp.navigatorKey.currentState?.push(
+              MaterialPageRoute(
+                builder: (_) => SetSchedule(
+                  classId: message.data['classId'],
+                  tutorId: message.data['tutorId'],
+                ),
+              ),
+            );
           } else {
             MainApp.navigatorKey.currentState?.push(
               MaterialPageRoute(

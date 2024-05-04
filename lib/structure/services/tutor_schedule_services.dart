@@ -87,8 +87,7 @@ class TutorScheduleService {
 
     final fcmtoken = userInfodata!['fcmtoken'];
     final userName = userInfodata['name'];
-    print("FCM TOKEN: $fcmtoken");
-    print("USER NAME: $userName");
+
     _firebaseMessage.sendPushMessage(
       recipientToken: fcmtoken,
       title: "Appointment Notification",
@@ -119,6 +118,35 @@ class TutorScheduleService {
         'status': "occupied",
       },
     );
+
+    // tuteee Info
+    final userInfo = await _users.getUserInfo(
+      tuteeId,
+      institutionId,
+    );
+
+    final userInfodata = userInfo.data();
+
+    final fcmtoken = userInfodata!['fcmtoken'];
+
+    // current user Info
+    final currentUserInfo = await _users.getUserInfo(
+      _firebaseAuth.currentUser!.uid,
+      institutionId,
+    );
+
+    final currentUserInfodata = currentUserInfo.data();
+
+    final currentUserName = currentUserInfodata!['name'];
+
+    _firebaseMessage.sendPushMessage(
+      recipientToken: fcmtoken,
+      title: "Appointment Notification",
+      body:
+          "Your request for tutorial session with $currentUserName has been accepted.",
+      route: 'appointment',
+    );
+
     return true;
   }
 
@@ -140,6 +168,34 @@ class TutorScheduleService {
         'tuteeId': null,
         'status': "available",
       },
+    );
+
+    // tuteee Info
+    final userInfo = await _users.getUserInfo(
+      tuteeId,
+      institutionId,
+    );
+
+    final userInfodata = userInfo.data();
+
+    final fcmtoken = userInfodata!['fcmtoken'];
+
+    // current user Info
+    final currentUserInfo = await _users.getUserInfo(
+      _firebaseAuth.currentUser!.uid,
+      institutionId,
+    );
+
+    final currentUserInfodata = currentUserInfo.data();
+
+    final currentUserName = currentUserInfodata!['name'];
+
+    _firebaseMessage.sendPushMessage(
+      recipientToken: fcmtoken,
+      title: "Appointment Notification",
+      body:
+          "Your request for tutorial session with $currentUserName has been rejected.",
+      route: 'appointment',
     );
     return true;
   }

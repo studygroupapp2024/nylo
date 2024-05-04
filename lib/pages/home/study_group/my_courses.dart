@@ -47,97 +47,7 @@ class FindCourses extends ConsumerWidget {
       ),
       body: ListView(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    ref.read(isNotCompleted.notifier).state = true;
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.only(
-                      left: 10,
-                      top: 5,
-                      bottom: 5,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: completedOrNot
-                          ? Theme.of(context).colorScheme.tertiaryContainer
-                          : null,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.subject_outlined,
-                          color: completedOrNot
-                              ? Theme.of(context).colorScheme.background
-                              : Theme.of(context).colorScheme.primary,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "My Courses",
-                          style: TextStyle(
-                            color: completedOrNot
-                                ? Theme.of(context).colorScheme.background
-                                : Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    ref.read(isNotCompleted.notifier).state = false;
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.only(
-                      top: 5,
-                      bottom: 5,
-                      right: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: completedOrNot
-                          ? null
-                          : Theme.of(context).colorScheme.tertiaryContainer,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.done_all_rounded,
-                          color: completedOrNot
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.background,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "Completed",
-                          style: TextStyle(
-                            color: completedOrNot
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).colorScheme.background,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          ListViewOption(ref, completedOrNot, context),
           if (completedOrNot)
             Column(
               children: [
@@ -248,6 +158,100 @@ class FindCourses extends ConsumerWidget {
             ),
         ],
       ),
+    );
+  }
+
+  Row ListViewOption(WidgetRef ref, bool completedOrNot, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              ref.read(isNotCompleted.notifier).state = true;
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(
+                left: 10,
+                top: 5,
+                bottom: 5,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: completedOrNot
+                    ? Theme.of(context).colorScheme.tertiaryContainer
+                    : null,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.subject_outlined,
+                    color: completedOrNot
+                        ? Theme.of(context).colorScheme.background
+                        : Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "My Courses",
+                    style: TextStyle(
+                      color: completedOrNot
+                          ? Theme.of(context).colorScheme.background
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              ref.read(isNotCompleted.notifier).state = false;
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(
+                top: 5,
+                bottom: 5,
+                right: 10,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: completedOrNot
+                    ? null
+                    : Theme.of(context).colorScheme.tertiaryContainer,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.done_all_rounded,
+                    color: completedOrNot
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.background,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Completed",
+                    style: TextStyle(
+                      color: completedOrNot
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.background,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

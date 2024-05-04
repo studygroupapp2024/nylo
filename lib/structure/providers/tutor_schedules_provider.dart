@@ -31,6 +31,7 @@ final schedulesProvider =
       .doc(classId)
       .collection("schedules")
       // .where('status', isNotEqualTo: 'occupied')
+      .where('date', isGreaterThan: currentTimestamp)
       .orderBy("status", descending: true)
       .orderBy("date", descending: true)
       .orderBy("__name__", descending: true)
@@ -55,6 +56,7 @@ final selectedschedulesProvider =
       .doc(classId)
       .collection("schedules")
       .where("status", isEqualTo: "available")
+      .where('date', isGreaterThan: Timestamp.now())
       .orderBy("status", descending: true)
       .orderBy("date", descending: true)
       .orderBy("__name__", descending: true)
@@ -69,6 +71,9 @@ final selectedschedulesProvider =
   return schedules;
 });
 
+// Get the current timestamp
+int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+
 final userSchedulesProvider =
     StreamProvider.family<List<TutorScheduleModel>, ScheduleData>(
         (ref, scheduleData) {
@@ -81,6 +86,7 @@ final userSchedulesProvider =
       .collection("schedules")
       .where("tuteeId", isEqualTo: scheduleData.tuteeId)
       .where("status", isEqualTo: "occupied")
+      .where('date', isGreaterThan: currentTimestamp)
       .snapshots()
       .map(
         (querySnapshot) => querySnapshot.docs

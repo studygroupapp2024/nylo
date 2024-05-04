@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/chat_info_container.dart';
@@ -16,7 +17,7 @@ class TutorChatInfo extends ConsumerWidget {
   final String classId;
 
   final List<dynamic> members;
-  const TutorChatInfo({
+  TutorChatInfo({
     super.key,
     required this.groupChatId,
     required this.creator,
@@ -26,6 +27,7 @@ class TutorChatInfo extends ConsumerWidget {
     required this.classId,
   });
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final image = ref.watch(userInfoProvider(creator));
@@ -219,36 +221,38 @@ class TutorChatInfo extends ConsumerWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Schedule",
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ChatInfoContainer(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SetSchedule(
-                          classId: classId,
-                          tutorId: creator,
-                        ),
+                if (_auth.currentUser!.uid != creator)
+                  Column(
+                    children: [
+                      Text(
+                        "Schedule",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
                       ),
-                    );
-                  },
-                  title: "Set a meeting",
-                  icon: Icons.schedule,
-                  chevron: true,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ChatInfoContainer(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SetSchedule(
+                                classId: classId,
+                                tutorId: creator,
+                              ),
+                            ),
+                          );
+                        },
+                        title: "Set a meeting",
+                        icon: Icons.schedule,
+                        chevron: true,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

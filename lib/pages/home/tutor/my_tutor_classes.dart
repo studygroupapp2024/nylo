@@ -517,24 +517,22 @@ class TutorClassses extends ConsumerWidget {
                                                           }
                                                         },
                                                       ),
-                                                      if (myTutor)
-                                                        Consumer(builder:
-                                                            (context, ref,
-                                                                child) {
-                                                          final schedules =
-                                                              ref.watch(
-                                                            userSchedulesProvider((
-                                                              classId: chatIds
-                                                                  .classId,
-                                                              tuteeId: chatIds
-                                                                  .tuteeId
-                                                            )),
-                                                          );
-                                                          return ScheduleChipWithName(
-                                                            schedules:
-                                                                schedules,
-                                                          );
-                                                        }),
+                                                      Consumer(builder:
+                                                          (context, ref,
+                                                              child) {
+                                                        final schedules =
+                                                            ref.watch(
+                                                          userSchedulesProvider((
+                                                            classId:
+                                                                chatIds.classId,
+                                                            tuteeId:
+                                                                chatIds.tuteeId
+                                                          )),
+                                                        );
+                                                        return ScheduleChipWithName(
+                                                          schedules: schedules,
+                                                        );
+                                                      }),
                                                     ],
                                                   ),
                                                 ),

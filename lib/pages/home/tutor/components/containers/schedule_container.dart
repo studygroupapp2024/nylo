@@ -16,6 +16,7 @@ class ScheduleContainer extends ConsumerWidget {
   final String? scheduleId;
   final String classId;
   final String? tutorId;
+  final String? tuteeName;
   const ScheduleContainer({
     super.key,
     required this.date,
@@ -27,6 +28,7 @@ class ScheduleContainer extends ConsumerWidget {
     this.scheduleId,
     required this.classId,
     this.tutorId,
+    this.tuteeName,
   });
 
   @override
@@ -109,7 +111,8 @@ class ScheduleContainer extends ConsumerWidget {
                   // const SizedBox(
                   //   height: 4,
                   // ),
-                  if (!isChat!) Text("$tuteeId would like to be your student."),
+                  if (!isChat!)
+                    Text("$tuteeName would like to be your student."),
                   if (!isChat!)
                     const SizedBox(
                       height: 8,

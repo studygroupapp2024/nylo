@@ -18,6 +18,7 @@ class TutorScheduleModel {
   final String status;
   final String classId;
   final String? scheduleId;
+  final String? tuteeName;
 
   TutorScheduleModel({
     required this.date,
@@ -27,6 +28,7 @@ class TutorScheduleModel {
     required this.status,
     required this.classId,
     this.scheduleId,
+    this.tuteeName,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,6 +40,7 @@ class TutorScheduleModel {
       'status': status,
       'classId': classId,
       'scheduleId': scheduleId,
+      'tuteeName': tuteeName
     };
   }
 
@@ -50,6 +53,7 @@ class TutorScheduleModel {
       status: map['status'] as String,
       classId: map['classId'] as String,
       scheduleId: map['scheduleId'] as String,
+      tuteeName: map['tuteeName'] as String,
     );
   }
 
@@ -63,6 +67,7 @@ class TutorScheduleModel {
       status: doc['status'],
       classId: doc['classId'],
       scheduleId: doc['scheduleId'],
+      tuteeName: doc['tuteeName'],
     );
   }
 }

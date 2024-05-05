@@ -74,6 +74,7 @@ class ViewSchedule extends ConsumerWidget {
                         isChat: false,
                         classId: classId,
                         scheduleId: sched.scheduleId,
+                        tuteeName: sched.tuteeName,
                       );
                     },
                   );

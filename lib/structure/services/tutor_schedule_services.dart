@@ -63,6 +63,17 @@ class TutorScheduleService {
     String classId,
     String? tutorId,
   ) async {
+    // current user Info
+    final userInfo = await _users.getUserInfo(
+      _firebaseAuth.currentUser!.uid,
+      institutionId,
+    );
+
+    final userInfodata = userInfo.data();
+
+    final fcmtoken = userInfodata!['fcmtoken'];
+    final userName = userInfodata['name'];
+
     await _firestore
         .collection("institution")
         .doc(institutionId)
@@ -74,19 +85,9 @@ class TutorScheduleService {
       {
         'tuteeId': tuteeId,
         'status': "booked",
+        'tuteeName': userName,
       },
     );
-
-    // current user Info
-    final userInfo = await _users.getUserInfo(
-      _firebaseAuth.currentUser!.uid,
-      institutionId,
-    );
-
-    final userInfodata = userInfo.data();
-
-    final fcmtoken = userInfodata!['fcmtoken'];
-    final userName = userInfodata['name'];
 
     _firebaseMessage.sendPushMessage(
       recipientToken: fcmtoken,

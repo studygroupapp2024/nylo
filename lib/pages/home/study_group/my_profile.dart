@@ -120,7 +120,7 @@ class ProfilePage extends ConsumerWidget {
                     ref
                         .read(isLoadingProvider.notifier)
                         .update((state) => true);
-                    await ref.watch(authProvider).signOut();
+                    ref.watch(authProvider).signOut();
 
                     ref
                         .read(isLoadingProvider.notifier)

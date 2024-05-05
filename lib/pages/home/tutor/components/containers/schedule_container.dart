@@ -159,8 +159,8 @@ class ScheduleContainer extends ConsumerWidget {
                                     ref.watch(setGlobalUniversityId);
 
                                 loadingNotifier.update((state) => true);
-                                final result =
-                                    await schedulesProvider.bookSchedule(
+
+                                await schedulesProvider.bookSchedule(
                                   scheduleId!,
                                   tuteeId!,
                                   globalUniversitySetter,

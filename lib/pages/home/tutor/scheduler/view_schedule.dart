@@ -4,6 +4,7 @@ import 'package:nylo/pages/home/tutor/components/containers/schedule_container.d
 import 'package:nylo/pages/home/tutor/components/status_options.dart';
 import 'package:nylo/pages/home/tutor/functions/date_formatter.dart';
 import 'package:nylo/pages/home/tutor/scheduler/add_schedule.dart';
+import 'package:nylo/structure/models/schedule_model.dart';
 import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
 
 class ViewSchedule extends ConsumerWidget {
@@ -17,7 +18,6 @@ class ViewSchedule extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final getSchedule = ref.watch(schedulesProvider(classId));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Schedule"),
@@ -43,35 +43,50 @@ class ViewSchedule extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const StatusOption(),
-          Expanded(
-            child: getSchedule.when(
-              data: (schedules) {
-                return ListView.builder(
-                  itemCount: schedules.length,
-                  itemBuilder: (context, index) {
-                    final sched = schedules[index];
+          Expanded(child: Consumer(
+            builder: (context, ref, child) {
+              final AsyncValue<List<TutorScheduleModel>> getSchedule;
 
-                    return ScheduleContainer(
-                      date: formatDate(sched.date),
-                      startTime: sched.startTime,
-                      endTime: sched.endTime,
-                      status: sched.status,
-                      tuteeId: sched.tuteeId,
-                      isChat: false,
-                      classId: classId,
-                      scheduleId: sched.scheduleId,
-                    );
-                  },
-                );
-              },
-              error: (error, stackTrace) => Text(
-                error.toString(),
-              ),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          )
+              if (ref.watch(selectedAvailable)) {
+                getSchedule = ref.watch(filteredSchedulesProvider(
+                    (classId: classId, status: 'available')));
+              } else if (ref.watch(selectedBooked)) {
+                getSchedule = ref.watch(filteredSchedulesProvider(
+                    (classId: classId, status: 'booked')));
+              } else {
+                getSchedule = ref.watch(filteredSchedulesProvider(
+                  (classId: classId, status: 'occupied'),
+                ));
+              }
+              return getSchedule.when(
+                data: (schedules) {
+                  return ListView.builder(
+                    itemCount: schedules.length,
+                    itemBuilder: (context, index) {
+                      final sched = schedules[index];
+
+                      return ScheduleContainer(
+                        date: formatDate(sched.date),
+                        startTime: sched.startTime,
+                        endTime: sched.endTime,
+                        status: sched.status,
+                        tuteeId: sched.tuteeId,
+                        isChat: false,
+                        classId: classId,
+                        scheduleId: sched.scheduleId,
+                      );
+                    },
+                  );
+                },
+                error: (error, stackTrace) => Text(
+                  error.toString(),
+                ),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            },
+          ))
         ],
       ),
     );

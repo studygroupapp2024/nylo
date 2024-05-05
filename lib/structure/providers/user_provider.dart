@@ -10,7 +10,7 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 // Define a model for the user data
 final userInfoProvider =
-    StreamProvider.family<UserModel, String>((ref, userId) {
+    StreamProvider.family.autoDispose<UserModel, String>((ref, userId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final document = _firestore
       .collection("institution")

@@ -3,21 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/chat_info_container.dart';
 import 'package:nylo/pages/home/study_group/edit_my_profile.dart';
-import 'package:nylo/structure/auth/auth_service.dart';
+import 'package:nylo/structure/providers/auth_provider.dart';
+import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final AuthService _auth = AuthService();
 
   ProfilePage({
     super.key,
   });
-
-  void logout(BuildContext context) {
-    _auth.signOut();
-//    Navigator.pop(context);
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -121,8 +116,15 @@ class ProfilePage extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(20),
               child: ChatInfoContainer(
-                  onTap: () {
-                    logout(context);
+                  onTap: () async {
+                    ref
+                        .read(isLoadingProvider.notifier)
+                        .update((state) => true);
+                    await ref.watch(authProvider).signOut();
+
+                    ref
+                        .read(isLoadingProvider.notifier)
+                        .update((state) => false);
                     Navigator.popUntil(context, ModalRoute.withName("/"));
                   },
                   title: "Logout",

@@ -123,20 +123,23 @@ class ScheduleContainer extends ConsumerWidget {
                         MemberRequestDecisionContainer(
                           text: "Decline",
                           onTap: () async {
-                            ref
-                                .read(isLoadingProvider.notifier)
-                                .update((state) => true);
-                            await ref
-                                .read(tutorSchedulesProvider)
-                                .rejectBooking(
-                                  scheduleId!,
-                                  tuteeId!,
-                                  ref.watch(setGlobalUniversityId),
-                                  classId,
-                                );
-                            ref
-                                .read(isLoadingProvider.notifier)
-                                .update((state) => false);
+                            final loadingNotifier =
+                                ref.read(isLoadingProvider.notifier);
+                            final schedulesProvider =
+                                ref.read(tutorSchedulesProvider);
+                            final globalUniversitySetter =
+                                ref.watch(setGlobalUniversityId);
+
+                            loadingNotifier.update((state) => true);
+
+                            await schedulesProvider.rejectBooking(
+                              scheduleId!,
+                              tuteeId!,
+                              globalUniversitySetter,
+                              classId,
+                            );
+
+                            loadingNotifier.update((state) => false);
                           },
                           backgroundColor:
                               Theme.of(context).colorScheme.background,
@@ -184,20 +187,23 @@ class ScheduleContainer extends ConsumerWidget {
                                 // }
                               }
                             : () async {
-                                ref
-                                    .read(isLoadingProvider.notifier)
-                                    .update((state) => true);
-                                await ref
-                                    .read(tutorSchedulesProvider)
-                                    .acceptBooking(
-                                      scheduleId!,
-                                      tuteeId!,
-                                      ref.watch(setGlobalUniversityId),
-                                      classId,
-                                    );
-                                ref
-                                    .read(isLoadingProvider.notifier)
-                                    .update((state) => false);
+                                final loadingNotifier =
+                                    ref.read(isLoadingProvider.notifier);
+                                final schedulesProvider =
+                                    ref.read(tutorSchedulesProvider);
+                                final globalUniversitySetter =
+                                    ref.watch(setGlobalUniversityId);
+
+                                loadingNotifier.update((state) => true);
+
+                                await schedulesProvider.acceptBooking(
+                                  scheduleId!,
+                                  tuteeId!,
+                                  globalUniversitySetter,
+                                  classId,
+                                );
+
+                                loadingNotifier.update((state) => false);
                               },
                         backgroundColor:
                             Theme.of(context).colorScheme.tertiaryContainer,

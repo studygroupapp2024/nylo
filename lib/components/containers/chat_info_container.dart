@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 
-class ChatInfoContainer extends StatelessWidget {
+class ChatInfoContainer extends ConsumerWidget {
   const ChatInfoContainer({
     super.key,
     required this.onTap,
@@ -15,9 +17,10 @@ class ChatInfoContainer extends StatelessWidget {
   final bool chevron;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(isLoadingProvider);
     return GestureDetector(
-      onTap: onTap,
+      onTap: isLoading ? () {} : onTap,
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondary,

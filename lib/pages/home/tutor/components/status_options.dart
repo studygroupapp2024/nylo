@@ -32,6 +32,12 @@ class StatusOption extends ConsumerWidget {
             ref.watch(selectedOccupied)
                 ? Theme.of(context).colorScheme.tertiaryContainer
                 : Theme.of(context).colorScheme.background,
+            ref.watch(selectedOccupied)
+                ? Theme.of(context).colorScheme.background
+                : Theme.of(context).colorScheme.tertiaryContainer,
+            ref.watch(selectedOccupied)
+                ? Theme.of(context).colorScheme.background
+                : Theme.of(context).colorScheme.tertiaryContainer,
           ),
           const SizedBox(
             width: 5,
@@ -52,6 +58,12 @@ class StatusOption extends ConsumerWidget {
             ref.watch(selectedBooked)
                 ? Theme.of(context).colorScheme.tertiaryContainer
                 : Theme.of(context).colorScheme.background,
+            ref.watch(selectedBooked)
+                ? Theme.of(context).colorScheme.background
+                : Theme.of(context).colorScheme.tertiaryContainer,
+            ref.watch(selectedBooked)
+                ? Theme.of(context).colorScheme.background
+                : Theme.of(context).colorScheme.tertiaryContainer,
           ),
           const SizedBox(
             width: 5,
@@ -72,6 +84,12 @@ class StatusOption extends ConsumerWidget {
             ref.watch(selectedAvailable)
                 ? Theme.of(context).colorScheme.tertiaryContainer
                 : Theme.of(context).colorScheme.background,
+            ref.watch(selectedAvailable)
+                ? Theme.of(context).colorScheme.background
+                : Theme.of(context).colorScheme.tertiaryContainer,
+            ref.watch(selectedAvailable)
+                ? Theme.of(context).colorScheme.background
+                : Theme.of(context).colorScheme.tertiaryContainer,
           ),
         ],
       ),
@@ -79,15 +97,18 @@ class StatusOption extends ConsumerWidget {
   }
 
   Expanded Option(
-      WidgetRef ref,
-      BuildContext context,
-      String text,
-      IconData icon,
-      void Function() onTap,
-      bool available,
-      bool booked,
-      bool occupied,
-      Color? color) {
+    WidgetRef ref,
+    BuildContext context,
+    String text,
+    IconData icon,
+    void Function() onTap,
+    bool available,
+    bool booked,
+    bool occupied,
+    Color? color,
+    Color? iconColor,
+    Color? textColor,
+  ) {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
@@ -106,13 +127,8 @@ class StatusOption extends ConsumerWidget {
             children: [
               Icon(
                 icon,
-                color: available
-                    ? Theme.of(context).colorScheme.background
-                    : booked
-                        ? Theme.of(context).colorScheme.background
-                        : occupied
-                            ? Theme.of(context).colorScheme.background
-                            : Theme.of(context).colorScheme.primary,
+                color: iconColor ??
+                    Theme.of(context).colorScheme.tertiaryContainer,
               ),
               const SizedBox(
                 width: 5,
@@ -122,13 +138,8 @@ class StatusOption extends ConsumerWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: available
-                      ? Theme.of(context).colorScheme.background
-                      : occupied
-                          ? Theme.of(context).colorScheme.background
-                          : booked
-                              ? Theme.of(context).colorScheme.background
-                              : Theme.of(context).colorScheme.primary,
+                  color: textColor ??
+                      Theme.of(context).colorScheme.tertiaryContainer,
                 ),
               ),
             ],

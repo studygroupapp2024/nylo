@@ -16,6 +16,7 @@ class ScheduleContainer extends ConsumerWidget {
   final String? scheduleId;
   final String classId;
   final String? tutorId;
+  final String? tuteeName;
   const ScheduleContainer({
     super.key,
     required this.date,
@@ -27,6 +28,7 @@ class ScheduleContainer extends ConsumerWidget {
     this.scheduleId,
     required this.classId,
     this.tutorId,
+    this.tuteeName,
   });
 
   @override
@@ -109,7 +111,8 @@ class ScheduleContainer extends ConsumerWidget {
                   // const SizedBox(
                   //   height: 4,
                   // ),
-                  if (!isChat!) Text("$tuteeId would like to be your student."),
+                  if (!isChat!)
+                    Text("$tuteeName would like to be your student."),
                   if (!isChat!)
                     const SizedBox(
                       height: 8,
@@ -120,20 +123,23 @@ class ScheduleContainer extends ConsumerWidget {
                         MemberRequestDecisionContainer(
                           text: "Decline",
                           onTap: () async {
-                            ref
-                                .read(isLoadingProvider.notifier)
-                                .update((state) => true);
-                            await ref
-                                .read(tutorSchedulesProvider)
-                                .rejectBooking(
-                                  scheduleId!,
-                                  tuteeId!,
-                                  ref.watch(setGlobalUniversityId),
-                                  classId,
-                                );
-                            ref
-                                .read(isLoadingProvider.notifier)
-                                .update((state) => false);
+                            final loadingNotifier =
+                                ref.read(isLoadingProvider.notifier);
+                            final schedulesProvider =
+                                ref.read(tutorSchedulesProvider);
+                            final globalUniversitySetter =
+                                ref.watch(setGlobalUniversityId);
+
+                            loadingNotifier.update((state) => true);
+
+                            await schedulesProvider.rejectBooking(
+                              scheduleId!,
+                              tuteeId!,
+                              globalUniversitySetter,
+                              classId,
+                            );
+
+                            loadingNotifier.update((state) => false);
                           },
                           backgroundColor:
                               Theme.of(context).colorScheme.background,
@@ -159,8 +165,8 @@ class ScheduleContainer extends ConsumerWidget {
                                     ref.watch(setGlobalUniversityId);
 
                                 loadingNotifier.update((state) => true);
-                                final result =
-                                    await schedulesProvider.bookSchedule(
+
+                                await schedulesProvider.bookSchedule(
                                   scheduleId!,
                                   tuteeId!,
                                   globalUniversitySetter,
@@ -181,20 +187,23 @@ class ScheduleContainer extends ConsumerWidget {
                                 // }
                               }
                             : () async {
-                                ref
-                                    .read(isLoadingProvider.notifier)
-                                    .update((state) => true);
-                                await ref
-                                    .read(tutorSchedulesProvider)
-                                    .acceptBooking(
-                                      scheduleId!,
-                                      tuteeId!,
-                                      ref.watch(setGlobalUniversityId),
-                                      classId,
-                                    );
-                                ref
-                                    .read(isLoadingProvider.notifier)
-                                    .update((state) => false);
+                                final loadingNotifier =
+                                    ref.read(isLoadingProvider.notifier);
+                                final schedulesProvider =
+                                    ref.read(tutorSchedulesProvider);
+                                final globalUniversitySetter =
+                                    ref.watch(setGlobalUniversityId);
+
+                                loadingNotifier.update((state) => true);
+
+                                await schedulesProvider.acceptBooking(
+                                  scheduleId!,
+                                  tuteeId!,
+                                  globalUniversitySetter,
+                                  classId,
+                                );
+
+                                loadingNotifier.update((state) => false);
                               },
                         backgroundColor:
                             Theme.of(context).colorScheme.tertiaryContainer,

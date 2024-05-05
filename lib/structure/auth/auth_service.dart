@@ -7,16 +7,13 @@ import 'package:nylo/error/firebaseauth_exception_error_extension.dart';
 import 'package:nylo/error/login_response.dart';
 import 'package:nylo/structure/messaging/message_api.dart';
 import 'package:nylo/structure/models/user_model.dart';
-import 'package:nylo/structure/services/university_service.dart';
-import 'package:nylo/structure/services/user_service.dart';
 
 class AuthService {
   // instance of Auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseMessage _firebaseMessage = FirebaseMessage();
-  final UniversityInfo _universityInfo = UniversityInfo();
-  final UserInformation _userInfo = UserInformation();
+
   // signin
 // signin
   Future<LoginResponse> signInWithEmailPassword(

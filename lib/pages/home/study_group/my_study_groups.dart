@@ -108,7 +108,8 @@ class FindPage extends ConsumerWidget {
                                 );
                               },
                               child: Container(
-                                padding: const EdgeInsets.all(10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 height: 100,
                                 decoration: data.lastMessageIdRead ==
                                         chatIds.lastMessageId

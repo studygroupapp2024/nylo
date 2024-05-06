@@ -85,7 +85,6 @@ class GroupChat {
     print("userInfodata: $userInfodata");
 
     final userName = userInfodata!['name'];
-    final imageUrl = userInfodata['imageUrl'];
 
     try {
       if (title.isNotEmpty && description.isNotEmpty && course.isNotEmpty) {
@@ -105,8 +104,6 @@ class GroupChat {
               .ref(
                   'groupChatHeaders/$filename') // Use the same path for consistency
               .getDownloadURL();
-
-          print("downloadUrl: $downloadUrl");
 
           GroupChatModel newGroupChat = GroupChatModel(
             docID: '',

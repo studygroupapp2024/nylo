@@ -23,10 +23,6 @@ class AuthService {
       List<Map<String, dynamic>> idAndUni) async {
     try {
       final userDomain = email.split('@').last;
-      print("userDomain: @$userDomain");
-
-      // final uni = await _universityInfo.getUniversityId("@$userDomain");
-      // print("UNIVERSITY ID: $uni");
 
       String? uni;
       for (final entry in idAndUni) {

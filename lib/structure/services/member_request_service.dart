@@ -103,9 +103,6 @@ class MemberRequest {
           'membersId': FieldValue.arrayUnion(
             [userId],
           ),
-          // 'membersId': FieldValue.arrayUnion(
-          //   [userId],
-          //     // ),
         },
       );
 

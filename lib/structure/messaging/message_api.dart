@@ -114,9 +114,6 @@ class FirebaseMessage {
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
       if (message.notification != null) {
         int id = Random().nextInt(1000000);
         await AwesomeNotifications().createNotification(
@@ -186,8 +183,6 @@ class FirebaseMessage {
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {
-        print("MESSAGE DATA: ${message.data}");
-        print("MESSAGE DATA ROUTE: ${message.data['route']}");
         if (message.data['navigate'] == "true") {
           if (message.data['route'] == "groupchats") {
             MainApp.navigatorKey.currentState?.push(

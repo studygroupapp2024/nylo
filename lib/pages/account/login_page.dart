@@ -67,10 +67,6 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final domains = ref.watch(universityDomainNamesProvider).value;
-
-    //   print("domains: $domains");
-
     final asyncData = ref.watch(listOfDomains);
     final List<Map<String, dynamic>> idAndUnis = [];
 
@@ -87,7 +83,6 @@ class LoginPage extends ConsumerWidget {
       }
     }
 
-    print("idAndUnis: $idAndUnis");
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(

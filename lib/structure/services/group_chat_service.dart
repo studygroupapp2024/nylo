@@ -82,7 +82,6 @@ class GroupChat {
         await _users.getUserInfo(_auth.currentUser!.uid, institutionId);
 
     final userInfodata = userInfo.data();
-    print("userInfodata: $userInfodata");
 
     final userName = userInfodata!['name'];
 
@@ -264,7 +263,6 @@ class GroupChat {
         return false;
       }
     } catch (e) {
-      print("ERROR: $e");
       return false;
     }
   }

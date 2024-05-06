@@ -37,8 +37,7 @@ class FindTutor extends ConsumerWidget {
                   ref
                       .read(findTutorSearchQueryLengthProvider.notifier)
                       .update((state) => value.length);
-                  print("VALUE: $value");
-                  print("Value: ${ref.watch(findTutorSearchQueryProvider)}");
+
                   ref
                       .read(findTutorSearchQueryProvider.notifier)
                       .update((state) => value);

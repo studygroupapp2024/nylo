@@ -132,7 +132,7 @@ class DirectMessage {
 
       // Send a message to the direct message
       var type = "announcement";
-      var message = "$userName has created the study group.";
+      var message = "$userName has started a conversation with you.";
       await _chatService.sendAnnouncementMessage(
         directMessageId,
         message,

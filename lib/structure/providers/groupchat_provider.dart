@@ -103,8 +103,7 @@ final selectedGroupChatInformationProvider = StreamProvider.family
   final searchQuery = ref.watch(searchQueryProvider);
   final coursesTaken = ref.watch(courseIdProvider(userId)).value;
   final institutionId = ref.watch(setGlobalUniversityId);
-  print("coursesTaken: $coursesTaken");
-  print("INSTITUTION ID: $institutionId");
+
   final getStudyGroups = _firestore
       .collection("institution")
       .doc(institutionId)

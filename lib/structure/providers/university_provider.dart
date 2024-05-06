@@ -66,29 +66,19 @@ final searchUniversityProvier =
   return searchUniversities;
 });
 
-final getUniversityId = FutureProvider.family<String, String>(
+final getUniversityIdProvider =
+    FutureProvider.family.autoDispose<String, String>(
   (ref, userId) async {
     // Introducing a delay of 2 seconds
-    await Future.delayed(const Duration(seconds: 4));
+    // await Future.delayed(const Duration(seconds: 4));
     final snapshot = await _firestore
         .collection('institution')
         .where('students', arrayContains: userId)
         .get();
 
-    // Process the snapshot to extract the university ID
-    // For example:
     if (snapshot.docs.isNotEmpty) {
       final uniId = snapshot.docs.first.data()['uniId'];
-      // if (uniId!= null && uniId is String) {
-      // final setUserData = await _userInformation.getUserInfo(userId, uniId);
-      //   // Set the global university ID state and UserInfo
 
-      // ref.read(currentUserName.notifier).state = setUserData['name'];
-      // ref.read(currentUserNameFCMToken.notifier).state =
-      //     setUserData['fcmtoken'];
-      // ref.read(currentUserImageURL.notifier).state = setUserData['imageUrl'];
-      // ref.read(currentUserEmail.notifier).state = setUserData['email'];
-      // ref.read(currentUserUID.notifier).state = userId;
       ref.read(setGlobalUniversityId.notifier).state = uniId;
 
       return uniId;

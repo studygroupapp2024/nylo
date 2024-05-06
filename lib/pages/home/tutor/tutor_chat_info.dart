@@ -223,6 +223,7 @@ class TutorChatInfo extends ConsumerWidget {
                 ),
                 if (_auth.currentUser!.uid != creator)
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Schedule",

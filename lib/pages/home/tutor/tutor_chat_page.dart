@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nylo/components/buttons/send_button.dart';
 import 'package:nylo/components/containers/chat_bubble.dart';
 import 'package:nylo/components/textfields/chat_textfield.dart';
+import 'package:nylo/pages/chat/chat_page.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_info.dart';
 import 'package:nylo/pages/home/tutor/tutor_special_message.dart';
 import 'package:nylo/structure/providers/chat_provider.dart';
@@ -410,14 +411,4 @@ class TutorChatPage extends ConsumerWidget {
       ),
     );
   }
-}
-
-String formatName(String name) {
-  final String fullName = name;
-  final List<String> nameParts = fullName.split(' ');
-  final String firstName = nameParts[0];
-  final String format = firstName.substring(0, 1).toUpperCase() +
-      firstName.substring(1).toLowerCase();
-
-  return format;
 }

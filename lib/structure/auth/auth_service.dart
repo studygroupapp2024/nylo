@@ -23,10 +23,6 @@ class AuthService {
       List<Map<String, dynamic>> idAndUni) async {
     try {
       final userDomain = email.split('@').last;
-      print("userDomain: @$userDomain");
-
-      // final uni = await _universityInfo.getUniversityId("@$userDomain");
-      // print("UNIVERSITY ID: $uni");
 
       String? uni;
       for (final entry in idAndUni) {
@@ -35,8 +31,6 @@ class AuthService {
           break;
         }
       }
-
-      print('uniId: $uni');
 
       final fcmtoken = await _firebaseMessage.getFCMToken();
 
@@ -173,9 +167,7 @@ class AuthService {
         final userId = userCredential.user!.uid;
         final userEmail = userCredential.user!.email!;
         final userDomain = userEmail.split('@').last;
-        print("userDomain: @$userDomain");
-        print("userId: $userId");
-        print("userEmail: $userEmail");
+
         // Check if the user's domain is in the list of allowed domains
         String? uni;
         String? uniName;
@@ -228,7 +220,6 @@ class AuthService {
         return userCredential;
       }
     } catch (e) {
-      print("Error: $e");
       await signOut(); // Sign out the user
       final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
       informationSnackBar(

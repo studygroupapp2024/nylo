@@ -61,7 +61,7 @@ class MemberRequest {
     final userInfo = await _users.getUserInfo(userId, institutionId);
 
     final userInfodata = userInfo.data();
-    print("userInfodata: $userInfodata");
+
     final uid = userInfodata!['uid'];
     final userName = userInfodata['name'];
 
@@ -103,9 +103,6 @@ class MemberRequest {
           'membersId': FieldValue.arrayUnion(
             [userId],
           ),
-          // 'membersId': FieldValue.arrayUnion(
-          //   [userId],
-          //     // ),
         },
       );
 

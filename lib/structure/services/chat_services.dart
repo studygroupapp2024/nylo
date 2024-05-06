@@ -13,6 +13,8 @@ class ChatService {
   final UserInformation _users = UserInformation();
   final FirebaseMessage _firebaseMessage = FirebaseMessage();
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+  // get chat members whose notification is on
   Future<List<String>> membersWithNotificationOn(
     String groupChatId,
     String institutionId,
@@ -57,6 +59,7 @@ class ChatService {
     }
   }
 
+  // send chat message
   Future<bool> sendMessage(
     String groupChatid,
     String message,
@@ -124,7 +127,7 @@ class ChatService {
     );
 
     if (isGroup) {
-// add new message to database
+      // add new message to database
       DocumentReference newMessageRef = await _firestore
           .collection("institution")
           .doc(institutionId)
@@ -221,6 +224,7 @@ class ChatService {
     }
   }
 
+  // send announcement
   Future<bool> sendAnnouncementMessage(
     String groupChatid,
     String message,
@@ -315,6 +319,7 @@ class ChatService {
     }
   }
 
+  // send content
   Future<bool> sendContentMessage(
     String filePath,
     String fileName,
@@ -368,6 +373,7 @@ class ChatService {
     }
   }
 
+  // update the user last message read
   Future<void> updateUserLastMessageIdRead(
     String groupChatId,
     String institutionId,

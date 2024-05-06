@@ -10,8 +10,8 @@ class InitializeData extends ConsumerWidget {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue hehe =
-        ref.watch(getUniversityId(_firebaseAuth.currentUser!.uid));
+    final hehe =
+        ref.watch(getUniversityIdProvider(_firebaseAuth.currentUser!.uid));
 
     return Scaffold(
       body: Center(
@@ -30,7 +30,25 @@ class InitializeData extends ConsumerWidget {
                 });
                 return Container();
               },
-              error: (error, stackTrace) => Text(error.toString()),
+              error: (error, stackTrace) {
+                return Column(
+                  children: [
+                    Text(error.toString()),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Refresh the page
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => InitializeData(),
+                          ),
+                        );
+                      },
+                      child: const Text('Refresh'),
+                    ),
+                  ],
+                );
+              },
               loading: () => const CircularProgressIndicator(),
             ),
           ],

@@ -82,10 +82,8 @@ class GroupChat {
         await _users.getUserInfo(_auth.currentUser!.uid, institutionId);
 
     final userInfodata = userInfo.data();
-    print("userInfodata: $userInfodata");
 
     final userName = userInfodata!['name'];
-    final imageUrl = userInfodata['imageUrl'];
 
     try {
       if (title.isNotEmpty && description.isNotEmpty && course.isNotEmpty) {
@@ -105,8 +103,6 @@ class GroupChat {
               .ref(
                   'groupChatHeaders/$filename') // Use the same path for consistency
               .getDownloadURL();
-
-          print("downloadUrl: $downloadUrl");
 
           GroupChatModel newGroupChat = GroupChatModel(
             docID: '',
@@ -267,7 +263,6 @@ class GroupChat {
         return false;
       }
     } catch (e) {
-      print("ERROR: $e");
       return false;
     }
   }

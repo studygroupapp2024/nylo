@@ -315,6 +315,14 @@ class ChatService {
           'lastMessageId': messageId
         },
       );
+
+      await updateUserLastMessageIdRead(
+        groupChatid,
+        institutionId,
+        messageId,
+        _firebaseAuth.currentUser!.uid,
+        false,
+      );
       return true;
     }
   }

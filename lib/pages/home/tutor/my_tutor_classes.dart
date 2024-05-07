@@ -7,6 +7,7 @@ import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/components/chips/schedule_chip_with_name.dart';
 import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip_with_name.dart';
+import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
@@ -137,19 +138,35 @@ class TutorClassses extends ConsumerWidget {
                 return connections.when(
                   data: (ids) {
                     if (ids.isEmpty) {
-                      return NoContent(
-                          icon: 'assets/icons/search-phone_svgrepo.com.svg',
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FindStudyGroup(),
-                              ),
-                            );
-                          },
-                          description:
-                              "It seems like you have no tutors groups yet. Do you want to find one?",
-                          buttonText: "Find Study Group");
+                      if (myTutor) {
+                        return NoContent(
+                            icon: 'assets/icons/search-phone_svgrepo.com.svg',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FindStudyGroup(),
+                                ),
+                              );
+                            },
+                            description:
+                                "It seems like you have no tutors groups yet. Do you want to find one?",
+                            buttonText: "Find Study Group");
+                      } else {
+                        return NoContent(
+                            icon: 'assets/icons/search-phone_svgrepo.com.svg',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterAsTutorPage(),
+                                ),
+                              );
+                            },
+                            description:
+                                "You do not have any student to tutor yet.",
+                            buttonText: 'Create Tutor Class');
+                      }
                     } else {
                       return ListView.builder(
                         itemCount: ids.length,

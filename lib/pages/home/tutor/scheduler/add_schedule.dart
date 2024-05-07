@@ -47,17 +47,14 @@ class AddSchedule extends ConsumerWidget {
                 currentDate = ref.watch(dateControllerProvider);
               }
               final DateTime? date = await pickDate(context, currentDate);
-              print("date: $date");
-              print("currentDate: $currentDate");
 
-              ref.read(dateControllerProvider.notifier).state = date!;
-// Get the current timestamp
-              int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+              if (date != null) {
+                ref.read(dateControllerProvider.notifier).state = date;
 
-              print("currentTimestamp: $currentTimestamp");
-              final DateFormat formatter = DateFormat('EEEE, MMMM d, y');
-              final String formattedDate = formatter.format(date);
-              _dateController.text = formattedDate;
+                final DateFormat formatter = DateFormat('EEEE, MMMM d, y');
+                final String formattedDate = formatter.format(date);
+                _dateController.text = formattedDate;
+              }
             },
           ),
           const SizedBox(
@@ -77,7 +74,7 @@ class AddSchedule extends ConsumerWidget {
                   currentTime = ref.watch(startTimeControllerProvider);
                 }
                 final TimeOfDay? time = await pickTime(context, currentTime);
-                print("TIME: $time");
+
                 if (time != null) {
                   formatTime(time);
                   _startTimeController.text = formatTime(time);

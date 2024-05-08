@@ -3,12 +3,12 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/pages/home/study_group/create_study_group.dart';
-import 'package:nylo/pages/home/study_group/my_courses.dart';
 import 'package:nylo/pages/home/study_group/my_study_groups.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/find_tutor.dart';
 import 'package:nylo/pages/home/tutor/my_tutor.dart';
 import 'package:nylo/pages/home/tutor/my_tutor_classes.dart';
+import 'package:nylo/pages/home/tutor/paginations/chat_list_view.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
@@ -107,7 +107,7 @@ class CategoryModel {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => FindCourses(),
+              builder: (context) => const ChatView(), //FindCourses(),
             ),
           );
         },

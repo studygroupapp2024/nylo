@@ -24,7 +24,10 @@ class FireStoreRepository {
     return _chatController.stream;
   }
 
-  void _requestChats() {
+  void _requestChats() async {
+    print("REQUESTING CHATS...");
+    print("TEXT");
+    await Future.delayed(const Duration(seconds: 2));
     var pagechatQuery = _chatCollectionReference.limit(chatLimit);
 
     if (_lastDocument != null) {

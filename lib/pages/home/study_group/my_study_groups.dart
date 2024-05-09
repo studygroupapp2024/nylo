@@ -102,6 +102,8 @@ class FindPage extends ConsumerWidget {
                                             chatIds.studyGroupCourseName,
                                         courseTitle: chatIds.courseTitle,
                                         members: chatIds.membersId,
+                                        institutionId:
+                                            ref.watch(setGlobalUniversityId),
                                       );
                                     },
                                   ),

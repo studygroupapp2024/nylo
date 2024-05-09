@@ -4,11 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/category_container.dart';
 import 'package:nylo/components/skeletons/home_loading.dart';
+import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/pages/home/study_group/my_profile.dart';
 import 'package:nylo/structure/models/category_model.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/homepage_providers.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomePage extends ConsumerWidget {
   HomePage({super.key});
@@ -63,8 +65,18 @@ class HomePage extends ConsumerWidget {
                   );
                 },
                 loading: () {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[400]!,
+                    highlightColor: Colors.grey[300]!,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: const Skeleton(
+                          width: 150,
+                          height: 15,
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),
@@ -98,8 +110,12 @@ class HomePage extends ConsumerWidget {
                   },
                   loading: () {
                     return Center(
-                      child: CircleAvatar(
-                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[400]!,
+                        highlightColor: Colors.grey[300]!,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.black.withOpacity(.15),
+                        ),
                       ),
                     );
                   },

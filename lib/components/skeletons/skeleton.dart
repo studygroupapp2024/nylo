@@ -14,10 +14,9 @@ class Skeleton extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(.15),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(5),
       ),
     );
   }

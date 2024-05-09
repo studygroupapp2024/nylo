@@ -2,14 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/pages/home/tutor/paginations/test_pagination.dart';
-import 'package:nylo/structure/models/subject_model.dart';
+import 'package:nylo/structure/models/chat_model.dart';
 
 final isRequestingProvider = StateProvider<bool>((ref) => false);
 
 class ChatView extends HookConsumerWidget {
-  ChatView({super.key});
+  final String chatId;
+  final String institutionId;
+  ChatView({
+    super.key,
+    required this.chatId,
+    required this.institutionId,
+  });
+
   final FireStoreRepository fireStoreRepository = FireStoreRepository();
   final ScrollController listScrollController = ScrollController();
+  late final Stream<dynamic> subjects;
+
+  Stream<dynamic> _requestChats(String chatId, String institutionId) {
+    subjects = fireStoreRepository.listenToChatsRealTime(chatId, institutionId);
+    return subjects;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,33 +36,38 @@ class ChatView extends HookConsumerWidget {
       },
       [],
     );
+
+    useEffect(() {
+      _requestChats(chatId, institutionId);
+      return null;
+    }, []);
+
     final isRequesting = ref.watch(isRequestingProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: isRequesting ? const Text("Loading...") : const Text("Chats"),
+        title: const Text("Chats"),
       ),
       body: Column(
         children: [
           Flexible(
             child: StreamBuilder(
-              stream: fireStoreRepository.listenToChatsRealTime(),
+              stream: subjects,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
                   return ListView.builder(
+                    reverse: true,
                     controller: listScrollController,
                     itemCount: snapshot.data!.length + (isRequesting ? 1 : 0),
                     itemBuilder: (context, index) {
-                      print(
-                          "IS REQUESTING: $isRequesting, LENGTH: ${snapshot.data!.length}");
-
                       if (index == snapshot.data!.length) {
                         // This is the last item, and we're fetching more
                         if (isRequesting) {
                           // Display a loading indicator
                           return const Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.symmetric(vertical: 10),
                             child: Center(
                               child: CircularProgressIndicator(),
                             ),
@@ -60,11 +78,11 @@ class ChatView extends HookConsumerWidget {
                               .shrink(); // Or you can return null
                         }
                       }
-                      final SubjectModel chat = snapshot.data![index];
+                      final MessageModel chat = snapshot.data![index];
                       return IntrinsicHeight(
                         child: Container(
                           child: ListTile(
-                            title: Text(chat.subject_title),
+                            title: Text(chat.message),
                           ),
                         ),
                       );
@@ -74,31 +92,22 @@ class ChatView extends HookConsumerWidget {
               },
             ),
           ),
-          // if (isRequesting)
-          //   const IntrinsicHeight(
-          //     child: SizedBox(
-          //       height: 50,
-          //       child: Center(
-          //         child: CircularProgressIndicator(),
-          //       ),
-          //     ),
-          //   ),
         ],
       ),
     );
   }
 
   void scrollListener(BuildContext context, WidgetRef ref) async {
+    final isRequestingNotifier = ref.read(isRequestingProvider.notifier);
     if (listScrollController.offset >=
             listScrollController.position.maxScrollExtent &&
         !listScrollController.position.outOfRange) {
-      ref.read(isRequestingProvider.notifier).state = true;
-      print("IS REQUESTING 1: ${ref.watch(isRequestingProvider)}");
-      fireStoreRepository.requestMoreData();
-      print("Fetching more data...");
+      isRequestingNotifier.update((state) => true);
+
+      fireStoreRepository.requestMoreData(chatId, institutionId);
+
       await Future.delayed(const Duration(seconds: 2));
-      ref.read(isRequestingProvider.notifier).state = false;
-      print("IS REQUESTING 2: ${ref.watch(isRequestingProvider)}");
+      isRequestingNotifier.update((state) => false);
     }
   }
 }

@@ -251,6 +251,8 @@ class TutorClassses extends ConsumerWidget {
                                                   dateCreated: formattedDate,
                                                   members: chatIds.membersId,
                                                   classId: chatIds.classId,
+                                                  institutionId: ref.watch(
+                                                      setGlobalUniversityId),
                                                 );
                                               },
                                             ),

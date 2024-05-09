@@ -107,7 +107,10 @@ class CategoryModel {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChatView(), //FindCourses(),
+              builder: (context) => ChatView(
+                chatId: "K2YItBcouvpMVHfo4rsE",
+                institutionId: "EZBnoEJUgUd4dZU8aWRD",
+              ), //FindCourses(),
             ),
           );
         },

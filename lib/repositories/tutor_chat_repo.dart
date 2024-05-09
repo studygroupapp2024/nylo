@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nylo/structure/models/chat_model.dart';
 
-class FireStoreRepository {
+class TutorChatRepository {
   final CollectionReference _chatCollectionReference =
       FirebaseFirestore.instance.collection('institution');
 

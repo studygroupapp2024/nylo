@@ -258,6 +258,9 @@ class FindTutor extends ConsumerWidget {
                                                                 'membersId'],
                                                             classId: getData[
                                                                 'classId'],
+                                                            institutionId:
+                                                                ref.watch(
+                                                                    setGlobalUniversityId),
                                                           ),
                                                         ),
                                                       );

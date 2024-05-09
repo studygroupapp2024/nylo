@@ -80,9 +80,6 @@ class ChatPage extends HookConsumerWidget {
       return null;
     }, []);
 
-    // final chats = ref.watch(
-    //   studyGroupMessageProvider(groupChatId),
-    // );
     final groupChatMembers = ref.watch(
       groupChatMembersProvider(groupChatId),
     );

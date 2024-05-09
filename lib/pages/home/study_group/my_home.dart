@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/category_container.dart';
+import 'package:nylo/components/skeletons/home_loading.dart';
 import 'package:nylo/pages/home/study_group/my_profile.dart';
 import 'package:nylo/structure/models/category_model.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
@@ -273,8 +274,18 @@ class HomePage extends ConsumerWidget {
                           );
                         },
                         loading: () {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Container(
+                            height: 400,
+                            margin: const EdgeInsets.all(10),
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              shrinkWrap: true,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              children: List.generate(4, (index) {
+                                return const HomeCategoryLoading();
+                              }),
+                            ),
                           );
                         },
                       ),
@@ -312,8 +323,18 @@ class HomePage extends ConsumerWidget {
                           );
                         },
                         loading: () {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Container(
+                            margin: const EdgeInsets.all(10),
+                            height: 400,
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              shrinkWrap: true,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              children: List.generate(4, (index) {
+                                return const HomeCategoryLoading();
+                              }),
+                            ),
                           );
                         },
                       ),

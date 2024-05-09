@@ -10,15 +10,14 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 // Define a model for the user data
 final userInfoProvider =
-    StreamProvider.family<UserModel, String>((ref, userId) async* {
-  await Future.delayed(const Duration(seconds: 10));
+    StreamProvider.family<UserModel, String>((ref, userId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final document = _firestore
       .collection("institution")
       .doc(institutionId)
       .collection("students")
       .doc(userId);
-  yield* document.snapshots().map(
+  return document.snapshots().map(
         (snapshot) => UserModel.fromSnapshot(snapshot),
       );
 });

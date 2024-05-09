@@ -175,8 +175,7 @@ final userLastChatProvider =
 );
 
 final userHasStudyGroupRequest = StreamProvider.family<bool, String>(
-  (ref, userId) async* {
-    await Future.delayed(const Duration(seconds: 10));
+  (ref, userId) {
     final institutionId = ref.watch(setGlobalUniversityId);
     final decision = _firestore
         .collection("institution")
@@ -189,7 +188,7 @@ final userHasStudyGroupRequest = StreamProvider.family<bool, String>(
               (snapshot) => GroupChatModel.fromSnapshot(snapshot),
             )
             .any((group) => group.membersRequestId.isNotEmpty));
-    yield* decision;
+    return decision;
   },
 );
 

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nylo/structure/models/chat_model.dart';
 
-class TutorChatRepository {
+class ChatRepository {
   final CollectionReference _chatCollectionReference =
       FirebaseFirestore.instance.collection('institution');
 
@@ -16,23 +16,36 @@ class TutorChatRepository {
   DocumentSnapshot? _lastDocument;
   bool _hasMoreData = true;
 
-  Stream listenToChatsRealTime(String chatId, String institutionId) {
-    _requestChats(chatId, institutionId);
+  Stream listenToChatsRealTime(
+      String chatId, String institutionId, bool isGroupChat) {
+    _requestChats(chatId, institutionId, isGroupChat);
     return _chatController.stream;
   }
 
   void _requestChats(
     String chatId,
     String institutionId,
+    bool isGroupChat,
   ) async {
-    print("chatId: $chatId, institutionId: $institutionId");
-    var pagechatQuery = _chatCollectionReference
-        .doc(institutionId)
-        .collection("direct_messages")
-        .doc(chatId)
-        .collection("messages")
-        .orderBy("timestamp", descending: true)
-        .limit(chatLimit);
+    Query<Map<String, dynamic>>? pagechatQuery;
+
+    if (isGroupChat) {
+      pagechatQuery = _chatCollectionReference
+          .doc(institutionId)
+          .collection("study_groups")
+          .doc(chatId)
+          .collection("messages")
+          .orderBy("timestamp", descending: true)
+          .limit(chatLimit);
+    } else {
+      pagechatQuery = _chatCollectionReference
+          .doc(institutionId)
+          .collection("direct_messages")
+          .doc(chatId)
+          .collection("messages")
+          .orderBy("timestamp", descending: true)
+          .limit(chatLimit);
+    }
 
     if (_lastDocument != null) {
       pagechatQuery = pagechatQuery.startAfterDocument(_lastDocument!);
@@ -72,6 +85,6 @@ class TutorChatRepository {
     );
   }
 
-  void requestMoreData(chatId, institutionId) =>
-      _requestChats(chatId, institutionId);
+  void requestMoreData(chatId, institutionId, isGroupChat) =>
+      _requestChats(chatId, institutionId, isGroupChat);
 }

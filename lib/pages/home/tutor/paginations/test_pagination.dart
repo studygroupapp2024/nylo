@@ -25,7 +25,6 @@ class FireStoreRepository {
     String chatId,
     String institutionId,
   ) async {
-    print("chatId: $chatId, institutionId: $institutionId");
     var pagechatQuery = _chatCollectionReference
         .doc(institutionId)
         .collection("direct_messages")

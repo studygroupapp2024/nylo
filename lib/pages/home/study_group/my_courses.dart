@@ -17,14 +17,6 @@ class FindCourses extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final currentCourses = ref.watch(
-    //   currentStudentCoursesInformationProvider(_auth.currentUser!.uid),
-    // );
-
-    // final completedCourses = ref.watch(
-    //   completedStudentCoursesInformationProvider(_auth.currentUser!.uid),
-    // );
-
     AsyncValue<List<StudentCoursesModel>>? courses;
 
     final completedOrNot = ref.watch(isNotCompleted);

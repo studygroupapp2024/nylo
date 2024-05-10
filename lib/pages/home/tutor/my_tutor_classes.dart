@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/components/skeletons/my_tutor_chat_loading.dart';
 import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/components/chips/schedule_chip_with_name.dart';
@@ -17,6 +18,7 @@ import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 import 'package:nylo/structure/services/chat_services.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TutorClassses extends ConsumerWidget {
   TutorClassses({super.key});
@@ -451,15 +453,29 @@ class TutorClassses extends ConsumerWidget {
                                                                   ],
                                                                 );
                                                               },
-                                                              loading: () =>
-                                                                  CircleAvatar(
-                                                                backgroundColor:
-                                                                    Theme.of(
-                                                                            context)
-                                                                        .colorScheme
-                                                                        .primary,
-                                                                radius: 30,
-                                                              ),
+                                                              loading: () {
+                                                                return Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          top:
+                                                                              5),
+                                                                  child: Shimmer
+                                                                      .fromColors(
+                                                                    baseColor:
+                                                                        Colors.grey[
+                                                                            400]!,
+                                                                    highlightColor:
+                                                                        Colors.grey[
+                                                                            300]!,
+                                                                    child: const Skeleton(
+                                                                        height:
+                                                                            30,
+                                                                        width:
+                                                                            80),
+                                                                  ),
+                                                                );
+                                                              },
                                                               error: (error,
                                                                       stackTrace) =>
                                                                   const Text(
@@ -526,8 +542,29 @@ class TutorClassses extends ConsumerWidget {
                                                                   ],
                                                                 );
                                                               },
-                                                              loading: () =>
-                                                                  const CircularProgressIndicator(),
+                                                              loading: () {
+                                                                return Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          top:
+                                                                              5),
+                                                                  child: Shimmer
+                                                                      .fromColors(
+                                                                    baseColor:
+                                                                        Colors.grey[
+                                                                            400]!,
+                                                                    highlightColor:
+                                                                        Colors.grey[
+                                                                            300]!,
+                                                                    child: const Skeleton(
+                                                                        height:
+                                                                            30,
+                                                                        width:
+                                                                            80),
+                                                                  ),
+                                                                );
+                                                              },
                                                               error: (error,
                                                                       stackTrace) =>
                                                                   const Text(
@@ -568,9 +605,13 @@ class TutorClassses extends ConsumerWidget {
                                       );
                                     },
                                     loading: () {
-                                      return const Skeleton(
-                                        height: 125,
-                                        width: double.infinity,
+                                      return const Padding(
+                                        padding: EdgeInsets.only(top: 20),
+                                        child: SizedBox(
+                                          height: 150,
+                                          width: double.infinity,
+                                          child: TutorChatLoading(),
+                                        ),
                                       );
                                     },
                                   );
@@ -588,15 +629,8 @@ class TutorClassses extends ConsumerWidget {
                     );
                   },
                   loading: () {
-                    return Expanded(
-                      child: ListView.separated(
-                        itemBuilder: (context, index) =>
-                            const Skeleton(height: 125, width: double.infinity),
-                        itemCount: 5,
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 10,
-                        ),
-                      ),
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
                   },
                 );

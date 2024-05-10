@@ -64,11 +64,8 @@ class CreateStudyGroup extends ConsumerWidget {
                           );
 
                           if (result == null) {
-                            final ScaffoldMessengerState messenger =
-                                ScaffoldMessenger.of(context);
                             informationSnackBar(
                               context,
-                              messenger,
                               Icons.info_outline,
                               "No image has been selected.",
                             );

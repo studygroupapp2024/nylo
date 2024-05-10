@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TutorCoursesChip extends ConsumerWidget {
   final SubjectMatterModel groupChats;
@@ -53,16 +54,12 @@ class TutorCoursesChip extends ConsumerWidget {
                     );
                   },
                   loading: () {
-                    return const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Wrap(
-                        spacing: 10,
-                        children: [
-                          Skeleton(height: 30, width: 100),
-                          Skeleton(height: 30, width: 80),
-                          Skeleton(height: 30, width: 50),
-                          Skeleton(height: 30, width: 90),
-                        ],
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[400]!,
+                        highlightColor: Colors.grey[300]!,
+                        child: const Skeleton(height: 30, width: 80),
                       ),
                     );
                   },

@@ -4,6 +4,7 @@ import 'package:nylo/components/containers/members_container.dart';
 import 'package:nylo/components/dialogs/alert_dialog.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
+import 'package:nylo/structure/providers/user_provider.dart';
 
 class Members extends ConsumerWidget {
   final String groupChatId;
@@ -36,34 +37,47 @@ class Members extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   final members = membersList[index];
 
-                  return MembersContainer(
-                    member: "TEST",
-                    role: members.isAdmin ? "Admin" : "Member",
-                    image: "TEST",
-                    isAdmin: members.isAdmin,
-                    creatorId: creatorId,
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return ConfirmationDialog(
-                            confirm: () async {
-                              ref.read(groupChatProvider).removeMember(
-                                    groupChatId,
-                                    members.userId,
-                                    ref.watch(setGlobalUniversityId),
-                                    "kick",
-                                    "TEST",
-                                    groupChatTitle,
-                                    creatorId,
+                  return Consumer(
+                    builder: (context, ref, child) {
+                      final userInfo =
+                          ref.watch(userInfoProvider(members.userId));
+
+                      return userInfo.when(
+                        data: (info) {
+                          return MembersContainer(
+                            member: info.name,
+                            role: members.isAdmin ? "Admin" : "Member",
+                            image: info.imageUrl,
+                            isAdmin: members.isAdmin,
+                            creatorId: creatorId,
+                            onPressed: () async {
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return ConfirmationDialog(
+                                    confirm: () async {
+                                      ref.read(groupChatProvider).removeMember(
+                                            groupChatId,
+                                            members.userId,
+                                            ref.watch(setGlobalUniversityId),
+                                            "kick",
+                                            info.name,
+                                            groupChatTitle,
+                                            creatorId,
+                                          );
+                                    },
+                                    content:
+                                        "Are you sure you want to remove this member?",
+                                    title: "Confirmation",
+                                    type: "Yes",
                                   );
+                                },
+                              );
                             },
-                            content:
-                                "Are you sure you want to remove this member?",
-                            title: "Confirmation",
-                            type: "Yes",
                           );
                         },
+                        error: (error, stackTrace) => Text(error.toString()),
+                        loading: () => const CircularProgressIndicator(),
                       );
                     },
                   );

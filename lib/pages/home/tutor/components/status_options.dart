@@ -20,7 +20,7 @@ class StatusOption extends ConsumerWidget {
             ref,
             context,
             "Occupied",
-            Icons.done,
+            Icons.sensor_occupied,
             () {
               ref.read(selectedAvailable.notifier).state = false;
               ref.read(selectedBooked.notifier).state = false;
@@ -34,10 +34,10 @@ class StatusOption extends ConsumerWidget {
                 : Theme.of(context).colorScheme.background,
             ref.watch(selectedOccupied)
                 ? Theme.of(context).colorScheme.background
-                : Theme.of(context).colorScheme.tertiaryContainer,
+                : Theme.of(context).colorScheme.primary,
             ref.watch(selectedOccupied)
                 ? Theme.of(context).colorScheme.background
-                : Theme.of(context).colorScheme.tertiaryContainer,
+                : Theme.of(context).colorScheme.primary,
           ),
           const SizedBox(
             width: 5,
@@ -46,7 +46,7 @@ class StatusOption extends ConsumerWidget {
             ref,
             context,
             "Booked",
-            Icons.book_online,
+            Icons.bookmark_add,
             () {
               ref.read(selectedAvailable.notifier).state = false;
               ref.read(selectedBooked.notifier).state = true;
@@ -60,10 +60,10 @@ class StatusOption extends ConsumerWidget {
                 : Theme.of(context).colorScheme.background,
             ref.watch(selectedBooked)
                 ? Theme.of(context).colorScheme.background
-                : Theme.of(context).colorScheme.tertiaryContainer,
+                : Theme.of(context).colorScheme.primary,
             ref.watch(selectedBooked)
                 ? Theme.of(context).colorScheme.background
-                : Theme.of(context).colorScheme.tertiaryContainer,
+                : Theme.of(context).colorScheme.primary,
           ),
           const SizedBox(
             width: 5,
@@ -72,7 +72,7 @@ class StatusOption extends ConsumerWidget {
             ref,
             context,
             "Available",
-            Icons.event_available,
+            Icons.check_rounded,
             () {
               ref.read(selectedAvailable.notifier).state = true;
               ref.read(selectedBooked.notifier).state = false;
@@ -86,10 +86,10 @@ class StatusOption extends ConsumerWidget {
                 : Theme.of(context).colorScheme.background,
             ref.watch(selectedAvailable)
                 ? Theme.of(context).colorScheme.background
-                : Theme.of(context).colorScheme.tertiaryContainer,
+                : Theme.of(context).colorScheme.primary,
             ref.watch(selectedAvailable)
                 ? Theme.of(context).colorScheme.background
-                : Theme.of(context).colorScheme.tertiaryContainer,
+                : Theme.of(context).colorScheme.primary,
           ),
         ],
       ),

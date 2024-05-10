@@ -174,17 +174,6 @@ class ScheduleContainer extends ConsumerWidget {
                                   tutorId,
                                 );
                                 loadingNotifier.update((state) => false);
-
-                                // final ScaffoldMessengerState messenger =
-                                //     ScaffoldMessenger.of(context);
-                                // if (result) {
-                                //   informationSnackBar(
-                                //     context,
-                                //     messenger,
-                                //     Icons.notifications,
-                                //     "The request has been sent to the tutor.",
-                                //   );
-                                // }
                               }
                             : () async {
                                 final loadingNotifier =

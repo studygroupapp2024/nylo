@@ -44,9 +44,7 @@ class ScheduleChipWithName extends ConsumerWidget {
             );
           },
           loading: () {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Container();
           },
         );
       },

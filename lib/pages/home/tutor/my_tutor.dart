@@ -76,7 +76,6 @@ class RegisterAsTutor extends ConsumerWidget {
                         horizontal: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
@@ -260,8 +259,8 @@ class RegisterAsTutor extends ConsumerWidget {
                         builder: (context) => RegisterAsTutorPage(),
                       ),
                     );
-                    ref.read(selectedCoursesToTeachProvider.notifier).state =
-                        [];
+                    // ref.read(selectedCoursesToTeachProvider.notifier).state =
+                    //     [];
                     ref.read(courseSearchQueryProvider.notifier).state = "";
                     ref.read(courseSearchQueryLengthProvider.notifier).state =
                         0;

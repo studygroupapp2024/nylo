@@ -80,10 +80,8 @@ class AuthService {
         // Email does not match the required domain
         await signOut(); // Sign out the user
 
-        final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
         informationSnackBar(
           context,
-          messenger,
           Icons.info_outline,
           'There is no domain match',
         );
@@ -181,11 +179,9 @@ class AuthService {
 
         if (uni == null || uniName == null) {
           await signOut(); // Sign out the user
-          final ScaffoldMessengerState messenger =
-              ScaffoldMessenger.of(context);
+
           informationSnackBar(
             context,
-            messenger,
             Icons.info_outline,
             'Email domain is not allowed.',
           );
@@ -221,10 +217,9 @@ class AuthService {
       }
     } catch (e) {
       await signOut(); // Sign out the user
-      final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+
       informationSnackBar(
         context,
-        messenger,
         Icons.info_outline,
         'Email domain is not allowed.',
       );

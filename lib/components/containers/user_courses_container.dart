@@ -18,7 +18,6 @@ class MyCoursesContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         right: 10,
-        bottom: 10,
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -28,7 +27,6 @@ class MyCoursesContainer extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(
             top: 15,
-            bottom: 15,
             left: 15,
           ),
           child: Row(

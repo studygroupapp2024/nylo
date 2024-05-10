@@ -290,12 +290,6 @@ class FindTutor extends ConsumerWidget {
                                 },
                                 child: IntrinsicHeight(
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
                                     margin: const EdgeInsets.all(20),
                                     child: Padding(
                                       padding: const EdgeInsets.all(

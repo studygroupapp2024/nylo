@@ -76,7 +76,6 @@ class RegisterAsTutor extends ConsumerWidget {
                         horizontal: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(

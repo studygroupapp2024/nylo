@@ -82,10 +82,10 @@ class SearchCourseToTeach extends ConsumerWidget {
               Expanded(
                 child: Consumer(
                   builder: (context, ref, child) {
-                    final unenrolledCourses = ref.watch(
-                      unenrolledCoursesProvider(_auth.currentUser!.uid),
+                    final courses = ref.watch(
+                      searchCoursesProvider(_auth.currentUser!.uid),
                     );
-                    return unenrolledCourses.when(data: (courses) {
+                    return courses.when(data: (courses) {
                       if (courses.isEmpty) {
                         return const NoContent(
                             icon: 'assets/icons/study-student_svgrepo.com.svg',
@@ -97,8 +97,6 @@ class SearchCourseToTeach extends ConsumerWidget {
                         return ListView.builder(
                           itemCount: courses.length,
                           itemBuilder: (context, index) {
-                            final ScaffoldMessengerState messenger =
-                                ScaffoldMessenger.of(context);
                             final course = courses[index];
                             return GestureDetector(
                               onTap: () async {
@@ -108,13 +106,11 @@ class SearchCourseToTeach extends ConsumerWidget {
 
                                 final selectedCourse =
                                     ref.watch(selectedCoursesToTeachProvider);
-                                final ScaffoldMessengerState messenger =
-                                    ScaffoldMessenger.of(context);
+
                                 for (final course in selectedCourse) {
                                   if (course.subjectId.contains(subjectId)) {
                                     informationSnackBar(
                                       context,
-                                      messenger,
                                       Icons.notifications,
                                       "$subjectCode is already added.",
                                     );
@@ -134,7 +130,6 @@ class SearchCourseToTeach extends ConsumerWidget {
                                     );
                                 informationSnackBar(
                                   context,
-                                  messenger,
                                   Icons.notifications,
                                   "$subjectCode has been added.",
                                 );

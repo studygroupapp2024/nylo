@@ -124,11 +124,8 @@ class AddSchedule extends ConsumerWidget {
                     );
 
                 if (isSuccess) {
-                  final ScaffoldMessengerState messenger =
-                      ScaffoldMessenger.of(context);
                   informationSnackBar(
                     context,
-                    messenger,
                     Icons.notification_add,
                     "The schedule has been added",
                   );

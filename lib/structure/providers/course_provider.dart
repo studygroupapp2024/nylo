@@ -108,6 +108,37 @@ final unenrolledCoursesProvider = StreamProvider.autoDispose
   return stream;
 });
 
+// search course
+final searchCoursesProvider = StreamProvider.autoDispose
+    .family<List<Map<String, dynamic>>, String>((ref, userId) {
+  final searchQuery = ref.watch(courseSearchQueryProvider);
+  final institutionId = ref.watch(setGlobalUniversityId);
+
+  final stream = _firestore
+      .collection("institution")
+      .doc(institutionId)
+      .collection("subjects")
+      .limit(10)
+      .snapshots()
+      .map((querySnapshot) => querySnapshot.docs
+          .map((snapshot) => {
+                'subjectId': snapshot.id,
+                'subject_code': snapshot.data()['subject_code'],
+                'subject_title': snapshot.data()['subject_title'],
+                'studentId': snapshot.data()['studentId'],
+              })
+          .where((group) => (group['subject_code']
+                  .toLowerCase()
+                  .contains(searchQuery.toLowerCase()) ||
+              group['subject_title']
+                  .toLowerCase()
+                  .contains(searchQuery.toLowerCase()) ||
+              searchQuery.isEmpty))
+          .toList());
+
+  return stream;
+});
+
 // ======================= STATE PROVIDERS =============================
 
 final courseSearchQueryProvider = StateProvider<String>((ref) => '');

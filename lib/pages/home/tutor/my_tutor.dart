@@ -259,8 +259,8 @@ class RegisterAsTutor extends ConsumerWidget {
                         builder: (context) => RegisterAsTutorPage(),
                       ),
                     );
-                    ref.read(selectedCoursesToTeachProvider.notifier).state =
-                        [];
+                    // ref.read(selectedCoursesToTeachProvider.notifier).state =
+                    //     [];
                     ref.read(courseSearchQueryProvider.notifier).state = "";
                     ref.read(courseSearchQueryLengthProvider.notifier).state =
                         0;

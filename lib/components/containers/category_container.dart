@@ -81,11 +81,8 @@ class Category extends StatelessWidget {
                 alignment: Alignment.topRight,
                 child: GestureDetector(
                   onTap: () {
-                    final ScaffoldMessengerState messenger =
-                        ScaffoldMessenger.of(context);
                     informationSnackBar(
                       context,
-                      messenger,
                       Icons.notifications,
                       "There is a pending member request.",
                     );

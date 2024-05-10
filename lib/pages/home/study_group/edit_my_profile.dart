@@ -32,11 +32,8 @@ class EditProfilePage extends ConsumerWidget {
               FocusScope.of(context).unfocus();
 
               if (_nameController.text.isEmpty) {
-                final ScaffoldMessengerState messenger =
-                    ScaffoldMessenger.of(context);
                 informationSnackBar(
                   context,
-                  messenger,
                   Icons.notifications,
                   "Please enter your name",
                 );
@@ -48,11 +45,9 @@ class EditProfilePage extends ConsumerWidget {
                       ref.watch(setGlobalUniversityId),
                       _nameController.text,
                     );
-                final ScaffoldMessengerState messenger =
-                    ScaffoldMessenger.of(context);
+
                 informationSnackBar(
                   context,
-                  messenger,
                   Icons.notifications,
                   "Your profile picture has been updated",
                 );
@@ -100,11 +95,8 @@ class EditProfilePage extends ConsumerWidget {
                         );
 
                         if (result == null) {
-                          final ScaffoldMessengerState messenger =
-                              ScaffoldMessenger.of(context);
                           informationSnackBar(
                             context,
-                            messenger,
                             Icons.info_outline,
                             "No image has been selected.",
                           );

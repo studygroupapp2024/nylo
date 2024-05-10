@@ -231,12 +231,10 @@ class RegisterAsTutorPage extends ConsumerWidget {
                         if (success) {
                           _nameController.clear();
                           _descriptionController.clear();
-                          final ScaffoldMessengerState messenger =
-                              ScaffoldMessenger.of(context);
+
                           Navigator.pop(context);
                           informationSnackBar(
                             context,
-                            messenger,
                             Icons.notifications,
                             "Class has been created.",
                           );

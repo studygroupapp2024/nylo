@@ -69,11 +69,8 @@ class SendSpecialMessage extends ConsumerWidget {
                 );
 
                 if (result == null) {
-                  final ScaffoldMessengerState messenger =
-                      ScaffoldMessenger.of(context);
                   informationSnackBar(
                     context,
-                    messenger,
                     Icons.info_outline,
                     "No item has been selected.",
                   );
@@ -96,9 +93,9 @@ class SendSpecialMessage extends ConsumerWidget {
                     filename.toLowerCase().endsWith('.docx')) {
                   ref.read(documentTypeProvider.notifier).state = 'document';
                 } else {
-                  print("The file type is unknown.");
+                  informationSnackBar(
+                      context, Icons.warning, "Unknown file type");
                 }
-                print("DOCUMENT TYPE: ${ref.watch(documentTypeProvider)}");
               },
               child: Container(
                 height: 50,

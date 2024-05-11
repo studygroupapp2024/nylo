@@ -104,6 +104,7 @@ class FindStudyGroup extends ConsumerWidget {
                                   .toList();
 
                               return StudyGroupContainer(
+                                groupChatImage: groupChats.groupChatImage ?? '',
                                 onTap: membersRequestList
                                         .contains(_auth.currentUser!.uid)
                                     ? null

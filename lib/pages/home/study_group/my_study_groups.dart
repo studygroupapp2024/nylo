@@ -109,8 +109,10 @@ class FindPage extends ConsumerWidget {
                                 );
                               },
                               child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 10,
+                                ),
                                 height: 100,
                                 decoration: data.lastMessageIdRead ==
                                         chatIds.lastMessageId
@@ -140,56 +142,54 @@ class FindPage extends ConsumerWidget {
                                   children: [
                                     Stack(
                                       children: [
-                                        chatIds.groupChatImage != ''
-                                            ? Container(
-                                                height: 70,
-                                                width: 70,
-                                                padding:
-                                                    const EdgeInsets.all(5),
-                                                child: CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                      chatIds.groupChatImage!),
-                                                  radius: 30,
-                                                ),
-                                              )
-                                            : ImagePlaceholder(
-                                                title: chatIds
-                                                    .studyGroupCourseName,
-                                                subtitle: "Study Group",
-                                                titleFontSize: 8,
-                                                subtitleFontSize: 6,
-                                                color: data.lastMessageIdRead ==
-                                                        chatIds.lastMessageId
-                                                    ? Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary
-                                                    : Colors.white,
-                                                textColor:
-                                                    data.lastMessageIdRead !=
-                                                            chatIds
-                                                                .lastMessageId
-                                                        ? Theme.of(context)
-                                                            .colorScheme
-                                                            .inversePrimary
-                                                        : Theme.of(context)
-                                                            .colorScheme
-                                                            .inversePrimary,
-                                              ),
                                         if (chatIds
                                                 .membersRequestId.isNotEmpty &&
                                             _auth.currentUser!.uid ==
                                                 chatIds.creatorId)
-                                          const SizedBox(
-                                            height: 53,
-                                            width: 54,
-                                            child: Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: CircleAvatar(
-                                                backgroundColor: Colors.red,
-                                                radius: 7,
-                                              ),
+                                          Center(
+                                            child: CircleAvatar(
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiaryContainer,
+                                              radius: 30,
                                             ),
                                           ),
+                                        chatIds.groupChatImage != ''
+                                            ? CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    chatIds.groupChatImage!),
+                                                radius: 30,
+                                              )
+                                            : Center(
+                                                child: ImagePlaceholder(
+                                                  height: 70,
+                                                  width: 70,
+                                                  radius: 30,
+                                                  title: chatIds
+                                                      .studyGroupCourseName,
+                                                  subtitle: "Study Group",
+                                                  titleFontSize: 8,
+                                                  subtitleFontSize: 6,
+                                                  color:
+                                                      data.lastMessageIdRead ==
+                                                              chatIds
+                                                                  .lastMessageId
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary
+                                                          : Colors.white,
+                                                  textColor:
+                                                      data.lastMessageIdRead !=
+                                                              chatIds
+                                                                  .lastMessageId
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .inversePrimary
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .inversePrimary,
+                                                ),
+                                              )
                                       ],
                                     ),
                                     const SizedBox(

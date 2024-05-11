@@ -81,10 +81,11 @@ class TutorChatInfo extends ConsumerWidget {
                                             radius: 58,
                                           )
                                         : ImagePlaceholder(
-                                            title: "HAHA",
-                                            subtitle: "Study Group",
+                                            height: 60,
+                                            width: 60,
+                                            radius: 60,
+                                            title: "NYLO",
                                             titleFontSize: 12,
-                                            subtitleFontSize: 10,
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .tertiaryContainer,

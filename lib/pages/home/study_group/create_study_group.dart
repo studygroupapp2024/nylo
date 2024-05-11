@@ -94,6 +94,9 @@ class CreateStudyGroup extends ConsumerWidget {
                                   .colorScheme
                                   .tertiaryContainer,
                               child: ImagePlaceholder(
+                                height: 60,
+                                width: 60,
+                                radius: 60,
                                 textColor: Colors.white,
                                 title: ref.watch(selectedCourseProvider) != ''
                                     ? ref

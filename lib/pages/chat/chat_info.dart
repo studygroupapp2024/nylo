@@ -111,9 +111,10 @@ class ChatInfo extends ConsumerWidget {
                                               .background,
                                           backgroundImage: NetworkImage(
                                               image.groupChatImage!),
-                                          radius: 58,
+                                          radius: 60,
                                         )
                                       : ImagePlaceholder(
+                                          radius: 60,
                                           textColor: Colors.white,
                                           title: courseCode,
                                           subtitle: "Study Group",

@@ -17,10 +17,6 @@ class StudyGroupChatLoading extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           return Container(
-            margin: const EdgeInsets.only(
-              left: 20,
-              right: 50,
-            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,

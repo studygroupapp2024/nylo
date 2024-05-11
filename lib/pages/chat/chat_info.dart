@@ -11,6 +11,7 @@ import 'package:nylo/pages/chat/members.dart';
 import 'package:nylo/pages/chat/members_request.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ChatInfo extends ConsumerWidget {
   final String groupChatId;
@@ -146,8 +147,15 @@ class ChatInfo extends ConsumerWidget {
                           );
                         },
                         loading: () {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Center(
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[400]!,
+                              highlightColor: Colors.grey[300]!,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black.withOpacity(.15),
+                                radius: 60,
+                              ),
+                            ),
                           );
                         },
                       ),

@@ -274,7 +274,14 @@ class FindPage extends ConsumerWidget {
                           }, error: (error, stackTrace) {
                             return Container();
                           }, loading: () {
-                            return Container();
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 20),
+                              child: SizedBox(
+                                height: 590,
+                                width: double.infinity,
+                                child: StudyGroupChatLoading(),
+                              ),
+                            );
                           });
                         }),
                       ),
@@ -289,13 +296,8 @@ class FindPage extends ConsumerWidget {
               );
             },
             loading: () {
-              return const Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: SizedBox(
-                  height: 590,
-                  width: double.infinity,
-                  child: StudyGroupChatLoading(),
-                ),
+              return const Center(
+                child: CircularProgressIndicator(),
               );
             },
           );

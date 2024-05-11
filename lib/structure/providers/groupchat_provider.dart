@@ -129,8 +129,7 @@ final selectedGroupChatInformationProvider = StreamProvider.family
 });
 // get User Study Groups
 final userChatIdsProvider = StreamProvider.family<List<GroupChatModel>, String>(
-  (ref, userId) async* {
-    await Future.delayed(const Duration(seconds: 5));
+  (ref, userId) {
     final institutionId = ref.watch(setGlobalUniversityId);
     final userStudyGroups = _firestore
         .collection("institution")
@@ -149,7 +148,7 @@ final userChatIdsProvider = StreamProvider.family<List<GroupChatModel>, String>(
               .where((group) => group.membersId.contains(userId))
               .toList(),
         );
-    yield* userStudyGroups;
+    return userStudyGroups;
   },
 );
 

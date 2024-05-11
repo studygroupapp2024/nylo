@@ -30,7 +30,9 @@ final multipleStudentCoursesInformationProvider =
 });
 
 final currentStudentCoursesInformationProvider =
-    StreamProvider.family<List<StudentCoursesModel>, String>((ref, userId) {
+    StreamProvider.family<List<StudentCoursesModel>, String>(
+        (ref, userId) async* {
+  await Future.delayed(const Duration(seconds: 5));
   final institutionId = ref.watch(setGlobalUniversityId);
 
   final getCurrentUserCourses = _firestore
@@ -49,7 +51,7 @@ final currentStudentCoursesInformationProvider =
             .toList(),
       );
 
-  return getCurrentUserCourses;
+  yield* getCurrentUserCourses;
 });
 
 final completedStudentCoursesInformationProvider =

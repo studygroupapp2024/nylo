@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nylo/components/image_placeholder/image_placeholder.dart';
 
 import '../buttons/rounded_button_with_progress.dart';
 
@@ -12,6 +13,7 @@ class StudyGroupContainer extends ConsumerWidget {
   final String? image;
   final String subjectCode;
   final String subjectTitle;
+  final String groupChatImage;
 
   const StudyGroupContainer({
     super.key,
@@ -23,6 +25,7 @@ class StudyGroupContainer extends ConsumerWidget {
     required this.image,
     required this.subjectCode,
     required this.subjectTitle,
+    required this.groupChatImage,
   });
 
   @override
@@ -52,12 +55,34 @@ class StudyGroupContainer extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            backgroundImage:
-                                image != null ? NetworkImage(image!) : null,
-                            radius: 45,
-                          ),
+                          groupChatImage != ''
+                              ? Container(
+                                  height: 100,
+                                  width: 100,
+                                  padding: const EdgeInsets.all(5),
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(groupChatImage),
+                                    radius: 100,
+                                  ),
+                                )
+                              : ImagePlaceholder(
+                                  width: 100,
+                                  height: 100,
+                                  radius: 100,
+                                  title: subjectCode,
+                                  subtitle: "Study Group",
+                                  titleFontSize: 8,
+                                  subtitleFontSize: 6,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  textColor: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                ),
                           const SizedBox(
                             width: 10,
                           ),

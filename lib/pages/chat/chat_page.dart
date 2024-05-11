@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nylo/components/buttons/send_button.dart';
 import 'package:nylo/components/containers/chat_bubble.dart';
+import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/components/textfields/chat_textfield.dart';
 import 'package:nylo/pages/chat/chat_info.dart';
 import 'package:nylo/pages/chat/special_message.dart';
@@ -17,6 +18,7 @@ import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/storage_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ChatPage extends HookConsumerWidget {
   final String groupChatId;
@@ -207,8 +209,18 @@ class ChatPage extends HookConsumerWidget {
                                             error: (error, stackTrace) => Text(
                                               error.toString(),
                                             ),
-                                            loading: () =>
-                                                const CircularProgressIndicator(),
+                                            loading: () {
+                                              return Shimmer.fromColors(
+                                                baseColor: Colors.grey[400]!,
+                                                highlightColor:
+                                                    Colors.grey[300]!,
+                                                child: CircleAvatar(
+                                                  backgroundColor: Colors.black
+                                                      .withOpacity(.15),
+                                                  radius: 20,
+                                                ),
+                                              );
+                                            },
                                           ),
 
                                           Container(
@@ -250,8 +262,18 @@ class ChatPage extends HookConsumerWidget {
                                                     Text(
                                                   error.toString(),
                                                 ),
-                                                loading: () =>
-                                                    const CircularProgressIndicator(),
+                                                loading: () {
+                                                  return Shimmer.fromColors(
+                                                    baseColor:
+                                                        Colors.grey[400]!,
+                                                    highlightColor:
+                                                        Colors.grey[300]!,
+                                                    child: const Skeleton(
+                                                      height: 15,
+                                                      width: 20,
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                               const SizedBox(
                                                 width: 10,
@@ -444,8 +466,9 @@ class ChatPage extends HookConsumerWidget {
                           child: Text('Error: $error'),
                         );
                       }, loading: () {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return const Align(
+                          alignment: Alignment.center,
+                          child: Icon(Icons.send),
                         );
                       }),
                     ],

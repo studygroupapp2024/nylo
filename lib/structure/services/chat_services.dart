@@ -238,7 +238,6 @@ class ChatService {
         await _users.getUserInfo(_firebaseAuth.currentUser!.uid, institutionId);
 
     final userInfodata = userInfo.data();
-    print("userInfodata: $userInfodata");
 
     final userName = userInfodata!['name'];
 
@@ -339,7 +338,6 @@ class ChatService {
     String institutionId,
     bool isGroup,
   ) async {
-    print("IS GROUP: $isGroup");
     try {
       File file = File(filePath);
       await _firebaseStorage.ref('chatImages/$fileName').putFile(file);

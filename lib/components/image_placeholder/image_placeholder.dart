@@ -2,30 +2,36 @@ import 'package:flutter/material.dart';
 
 class ImagePlaceholder extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final double titleFontSize;
-  final double subtitleFontSize;
+  final double? subtitleFontSize;
   final Color color;
   final Color textColor;
+  final double? height;
+  final double? width;
+  final double radius;
 
   const ImagePlaceholder({
     super.key,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     required this.titleFontSize,
-    required this.subtitleFontSize,
+    this.subtitleFontSize,
     required this.color,
     required this.textColor,
+    this.height,
+    this.width,
+    required this.radius,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
-      width: 70,
+      height: height,
+      width: width,
       padding: const EdgeInsets.all(5),
       child: CircleAvatar(
-        radius: 20,
+        radius: radius,
         backgroundColor: color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +50,7 @@ class ImagePlaceholder extends StatelessWidget {
               ),
             ),
             Text(
-              subtitle,
+              subtitle ?? "",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: subtitleFontSize,

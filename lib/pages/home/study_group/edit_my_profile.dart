@@ -109,8 +109,6 @@ class EditProfilePage extends ConsumerWidget {
                         ref.read(editProfilePathProvider.notifier).state =
                             File(path.toString());
 
-                        print("path: ${path.toString()}");
-
                         ref.read(editProfilePathNameProvider.notifier).state =
                             path.toString();
 

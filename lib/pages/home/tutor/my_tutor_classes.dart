@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/skeletons/my_tutor_chat_loading.dart';
-import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/components/chips/schedule_chip_with_name.dart';
 import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip_with_name.dart';
@@ -18,7 +17,6 @@ import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 import 'package:nylo/structure/services/chat_services.dart';
-import 'package:shimmer/shimmer.dart';
 
 class TutorClassses extends ConsumerWidget {
   TutorClassses({super.key});
@@ -219,9 +217,6 @@ class TutorClassses extends ConsumerWidget {
                                     data: (data) {
                                       return GestureDetector(
                                         onTap: () async {
-                                          print("chat id: ${chatIds.chatId}");
-                                          print(
-                                              "lastMessage id: ${data.lastMessageIdRead}");
                                           await ChatService()
                                               .updateUserLastMessageIdRead(
                                             chatIds.chatId!,
@@ -317,14 +312,7 @@ class TutorClassses extends ConsumerWidget {
                                                               );
                                                             },
                                                             loading: () =>
-                                                                CircleAvatar(
-                                                              backgroundColor:
-                                                                  Theme.of(
-                                                                          context)
-                                                                      .colorScheme
-                                                                      .primary,
-                                                              radius: 30,
-                                                            ),
+                                                                Container(),
                                                             error: (error,
                                                                     stackTrace) =>
                                                                 const Text(
@@ -355,19 +343,13 @@ class TutorClassses extends ConsumerWidget {
                                                                 ],
                                                               );
                                                             },
-                                                            loading: () =>
-                                                                CircleAvatar(
-                                                              backgroundColor:
-                                                                  Theme.of(
-                                                                          context)
-                                                                      .colorScheme
-                                                                      .primary,
-                                                              radius: 30,
-                                                            ),
                                                             error: (error,
                                                                     stackTrace) =>
                                                                 const Text(
                                                                     "Error"),
+                                                            loading: () {
+                                                              return Container();
+                                                            },
                                                           );
                                                         }
                                                       },
@@ -454,27 +436,7 @@ class TutorClassses extends ConsumerWidget {
                                                                 );
                                                               },
                                                               loading: () {
-                                                                return Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .only(
-                                                                          top:
-                                                                              5),
-                                                                  child: Shimmer
-                                                                      .fromColors(
-                                                                    baseColor:
-                                                                        Colors.grey[
-                                                                            400]!,
-                                                                    highlightColor:
-                                                                        Colors.grey[
-                                                                            300]!,
-                                                                    child: const Skeleton(
-                                                                        height:
-                                                                            30,
-                                                                        width:
-                                                                            80),
-                                                                  ),
-                                                                );
+                                                                return Container();
                                                               },
                                                               error: (error,
                                                                       stackTrace) =>
@@ -543,27 +505,7 @@ class TutorClassses extends ConsumerWidget {
                                                                 );
                                                               },
                                                               loading: () {
-                                                                return Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .only(
-                                                                          top:
-                                                                              5),
-                                                                  child: Shimmer
-                                                                      .fromColors(
-                                                                    baseColor:
-                                                                        Colors.grey[
-                                                                            400]!,
-                                                                    highlightColor:
-                                                                        Colors.grey[
-                                                                            300]!,
-                                                                    child: const Skeleton(
-                                                                        height:
-                                                                            30,
-                                                                        width:
-                                                                            80),
-                                                                  ),
-                                                                );
+                                                                return Container();
                                                               },
                                                               error: (error,
                                                                       stackTrace) =>

@@ -77,7 +77,7 @@ class TutorSendSpecialMessage extends ConsumerWidget {
 
                   return;
                 }
-                final path = result.files.single.path;
+
                 final filename = result.files.single.name;
                 ref.read(pathNameProvider.notifier).state =
                     result.files.single.path.toString();
@@ -93,9 +93,9 @@ class TutorSendSpecialMessage extends ConsumerWidget {
                     filename.toLowerCase().endsWith('.docx')) {
                   ref.read(documentTypeProvider.notifier).state = 'document';
                 } else {
-                  print("The file type is unknown.");
+                  informationSnackBar(
+                      context, Icons.warning, "Unknown file type");
                 }
-                print("DOCUMENT TYPE: ${ref.watch(documentTypeProvider)}");
               },
               child: Container(
                 height: 50,

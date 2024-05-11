@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/components/skeletons/my_courses_loading.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/services/course_services.dart';
@@ -132,8 +133,12 @@ class SearchCourse extends ConsumerWidget {
                         child: Text('Error: $error'),
                       );
                     }, loading: () {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: SizedBox(
+                          height: 500,
+                          child: MyCoursesLoading(),
+                        ),
                       );
                     });
                   },

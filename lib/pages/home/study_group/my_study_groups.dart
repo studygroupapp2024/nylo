@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/components/skeletons/my_study_group_loading.dart';
 import 'package:nylo/pages/chat/chat_page.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
@@ -67,8 +68,6 @@ class FindPage extends ConsumerWidget {
                           );
 
                           return groupChatMemberInfo.when(data: (data) {
-                            print("lastReaId: ${chatIds.lastMessageId}");
-                            print("members: ${data.lastMessageIdRead}");
                             return GestureDetector(
                               onTap: () async {
                                 await ChatService().updateUserLastMessageIdRead(
@@ -110,8 +109,10 @@ class FindPage extends ConsumerWidget {
                                 );
                               },
                               child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 10,
+                                ),
                                 height: 100,
                                 decoration: data.lastMessageIdRead ==
                                         chatIds.lastMessageId
@@ -141,56 +142,54 @@ class FindPage extends ConsumerWidget {
                                   children: [
                                     Stack(
                                       children: [
-                                        chatIds.groupChatImage != ''
-                                            ? Container(
-                                                height: 70,
-                                                width: 70,
-                                                padding:
-                                                    const EdgeInsets.all(5),
-                                                child: CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                      chatIds.groupChatImage!),
-                                                  radius: 30,
-                                                ),
-                                              )
-                                            : ImagePlaceholder(
-                                                title: chatIds
-                                                    .studyGroupCourseName,
-                                                subtitle: "Study Group",
-                                                titleFontSize: 8,
-                                                subtitleFontSize: 6,
-                                                color: data.lastMessageIdRead ==
-                                                        chatIds.lastMessageId
-                                                    ? Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary
-                                                    : Colors.white,
-                                                textColor:
-                                                    data.lastMessageIdRead !=
-                                                            chatIds
-                                                                .lastMessageId
-                                                        ? Theme.of(context)
-                                                            .colorScheme
-                                                            .inversePrimary
-                                                        : Theme.of(context)
-                                                            .colorScheme
-                                                            .inversePrimary,
-                                              ),
                                         if (chatIds
                                                 .membersRequestId.isNotEmpty &&
                                             _auth.currentUser!.uid ==
                                                 chatIds.creatorId)
-                                          const SizedBox(
-                                            height: 53,
-                                            width: 54,
-                                            child: Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: CircleAvatar(
-                                                backgroundColor: Colors.red,
-                                                radius: 7,
-                                              ),
+                                          Center(
+                                            child: CircleAvatar(
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiaryContainer,
+                                              radius: 30,
                                             ),
                                           ),
+                                        chatIds.groupChatImage != ''
+                                            ? CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    chatIds.groupChatImage!),
+                                                radius: 30,
+                                              )
+                                            : Center(
+                                                child: ImagePlaceholder(
+                                                  height: 70,
+                                                  width: 70,
+                                                  radius: 30,
+                                                  title: chatIds
+                                                      .studyGroupCourseName,
+                                                  subtitle: "Study Group",
+                                                  titleFontSize: 8,
+                                                  subtitleFontSize: 6,
+                                                  color:
+                                                      data.lastMessageIdRead ==
+                                                              chatIds
+                                                                  .lastMessageId
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary
+                                                          : Colors.white,
+                                                  textColor:
+                                                      data.lastMessageIdRead !=
+                                                              chatIds
+                                                                  .lastMessageId
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .inversePrimary
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .inversePrimary,
+                                                ),
+                                              )
                                       ],
                                     ),
                                     const SizedBox(
@@ -264,17 +263,10 @@ class FindPage extends ConsumerWidget {
                                         ],
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: data.lastMessageIdRead !=
-                                              chatIds.lastMessageId
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .background
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .inversePrimary,
-                                    ),
+                                    Icon(Icons.chevron_right,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .inversePrimary)
                                   ],
                                 ),
                               ),
@@ -282,7 +274,14 @@ class FindPage extends ConsumerWidget {
                           }, error: (error, stackTrace) {
                             return Container();
                           }, loading: () {
-                            return Container();
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 20),
+                              child: SizedBox(
+                                height: 590,
+                                width: double.infinity,
+                                child: StudyGroupChatLoading(),
+                              ),
+                            );
                           });
                         }),
                       ),

@@ -11,6 +11,7 @@ import 'package:nylo/pages/chat/members.dart';
 import 'package:nylo/pages/chat/members_request.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ChatInfo extends ConsumerWidget {
   final String groupChatId;
@@ -37,7 +38,7 @@ class ChatInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final image = ref.watch(singleGroupChatInformationProvider(groupChatId));
-    print("MEMBERS: ${members.length}");
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Chat Info"),
@@ -110,9 +111,10 @@ class ChatInfo extends ConsumerWidget {
                                               .background,
                                           backgroundImage: NetworkImage(
                                               image.groupChatImage!),
-                                          radius: 58,
+                                          radius: 60,
                                         )
                                       : ImagePlaceholder(
+                                          radius: 60,
                                           textColor: Colors.white,
                                           title: courseCode,
                                           subtitle: "Study Group",
@@ -146,8 +148,15 @@ class ChatInfo extends ConsumerWidget {
                           );
                         },
                         loading: () {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Center(
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[400]!,
+                              highlightColor: Colors.grey[300]!,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black.withOpacity(.15),
+                                radius: 60,
+                              ),
+                            ),
                           );
                         },
                       ),

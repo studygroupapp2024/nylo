@@ -6,9 +6,6 @@ class StatusOption extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print("AVAILABLE: ${ref.watch(selectedAvailable)}");
-    print("BOOKED: ${ref.watch(selectedBooked)}");
-    print("OCCUPIED: ${ref.watch(selectedOccupied)}");
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 15,

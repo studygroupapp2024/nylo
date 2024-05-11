@@ -8,6 +8,7 @@ import 'package:nylo/pages/home/tutor/scheduler/set_schedule.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
 import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TutorChatInfo extends ConsumerWidget {
   final String groupChatId;
@@ -31,7 +32,7 @@ class TutorChatInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final image = ref.watch(userInfoProvider(creator));
-    print("classId: $classId");
+
     final subjectMatterInfo = ref.watch(directMessageInfoProvider(classId));
     return Scaffold(
       appBar: AppBar(
@@ -80,10 +81,11 @@ class TutorChatInfo extends ConsumerWidget {
                                             radius: 58,
                                           )
                                         : ImagePlaceholder(
-                                            title: "HAHA",
-                                            subtitle: "Study Group",
+                                            height: 60,
+                                            width: 60,
+                                            radius: 60,
+                                            title: "NYLO",
                                             titleFontSize: 12,
-                                            subtitleFontSize: 10,
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .tertiaryContainer,
@@ -109,8 +111,15 @@ class TutorChatInfo extends ConsumerWidget {
                           );
                         },
                         loading: () {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Center(
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[400]!,
+                              highlightColor: Colors.grey[300]!,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black.withOpacity(.15),
+                                radius: 60,
+                              ),
+                            ),
                           );
                         },
                       ),

@@ -9,12 +9,14 @@ import 'package:nylo/components/dialogs/create_group.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
 import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/components/skeletons/skeleton.dart';
 import 'package:nylo/components/textfields/rounded_textfield_title.dart';
 import 'package:nylo/pages/home/study_group/my_courses.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CreateStudyGroup extends ConsumerWidget {
   CreateStudyGroup({super.key});
@@ -78,8 +80,6 @@ class CreateStudyGroup extends ConsumerWidget {
                           ref.read(editUploadImagePathProvider.notifier).state =
                               File(path.toString());
 
-                          print("path: ${path.toString()}");
-
                           ref
                               .read(editUploadImagePathNameProvider.notifier)
                               .state = path.toString();
@@ -96,6 +96,9 @@ class CreateStudyGroup extends ConsumerWidget {
                                   .colorScheme
                                   .tertiaryContainer,
                               child: ImagePlaceholder(
+                                height: 60,
+                                width: 60,
+                                radius: 60,
                                 textColor: Colors.white,
                                 title: ref.watch(selectedCourseProvider) != ''
                                     ? ref
@@ -236,8 +239,21 @@ class CreateStudyGroup extends ConsumerWidget {
                             child: Text('Error: $error'),
                           );
                         }, loading: () {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[400]!,
+                            highlightColor: Colors.grey[300]!,
+                            child: const SizedBox(
+                              height: 40,
+                              child: Row(
+                                children: [
+                                  Skeleton(height: 40, width: 100),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Skeleton(height: 40, width: 175)
+                                ],
+                              ),
+                            ),
                           );
                         }),
                       ),

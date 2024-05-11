@@ -17,7 +17,6 @@ final selectedClassInformationProvider = StreamProvider.family
   final searchQuery = ref.watch(findTutorSearchQueryProvider);
   final subjectMattersTaken = ref.watch(subjectMatterIdProvider(userId)).value;
 
-  print("subjectMattersTaken: $subjectMattersTaken");
   final institutionId = ref.watch(setGlobalUniversityId);
 
   final getStudyGroups = _firestore

@@ -14,39 +14,35 @@ class ScheduleChipWithName extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Consumer(
       builder: (context, ref, child) {
-        return schedules.when(
-          data: (data) {
-            return data.isEmpty
-                ? Container()
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Divider(
-                        thickness: 0.3,
+        return schedules.when(data: (data) {
+          return data.isEmpty
+              ? Container()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Divider(
+                      thickness: 0.3,
+                    ),
+                    const Text(
+                      "Schedule",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
-                      const Text(
-                        "Schedule",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      ScheduleChip(schedules: data),
-                    ],
-                  );
-          },
-          error: (error, stackTrace) {
-            return Center(
-              child: Text('Error: $error'),
-            );
-          },
-          loading: () {
-            return Container();
-          },
-        );
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    ScheduleChip(schedules: data),
+                  ],
+                );
+        }, error: (error, stackTrace) {
+          return Center(
+            child: Text('Error: $error'),
+          );
+        }, loading: () {
+          return Container();
+        });
       },
     );
   }

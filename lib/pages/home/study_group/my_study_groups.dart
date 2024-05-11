@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/components/skeletons/my_study_group_loading.dart';
 import 'package:nylo/pages/chat/chat_page.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
@@ -262,17 +263,10 @@ class FindPage extends ConsumerWidget {
                                         ],
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                      color: data.lastMessageIdRead !=
-                                              chatIds.lastMessageId
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .background
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .inversePrimary,
-                                    ),
+                                    Icon(Icons.chevron_right,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .inversePrimary)
                                   ],
                                 ),
                               ),
@@ -295,8 +289,13 @@ class FindPage extends ConsumerWidget {
               );
             },
             loading: () {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return const Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  height: 590,
+                  width: double.infinity,
+                  child: StudyGroupChatLoading(),
+                ),
               );
             },
           );

@@ -78,8 +78,6 @@ class CreateStudyGroup extends ConsumerWidget {
                           ref.read(editUploadImagePathProvider.notifier).state =
                               File(path.toString());
 
-                          print("path: ${path.toString()}");
-
                           ref
                               .read(editUploadImagePathNameProvider.notifier)
                               .state = path.toString();

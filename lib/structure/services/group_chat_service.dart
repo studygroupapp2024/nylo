@@ -90,7 +90,6 @@ class GroupChat {
         if (filePath.isNotEmpty && filename.isNotEmpty) {
           final Timestamp timestamp = Timestamp.now();
 
-          print("file");
           File file = File(filePath);
 
           // Upload the file to the 'profileImages' path

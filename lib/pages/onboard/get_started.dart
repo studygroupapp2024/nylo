@@ -5,10 +5,6 @@ import 'package:nylo/structure/auth/login_or_register.dart';
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
 
-  void login() {
-    print("CLICKED");
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

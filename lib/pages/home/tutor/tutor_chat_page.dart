@@ -58,7 +58,7 @@ class TutorChatPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isRequesting = ref.watch(isRequestingProvider);
-    print("ACCESS");
+
     useEffect(
       () {
         listScrollController.addListener(() => scrollListener(context, ref));

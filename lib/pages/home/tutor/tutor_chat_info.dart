@@ -31,7 +31,7 @@ class TutorChatInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final image = ref.watch(userInfoProvider(creator));
-    print("classId: $classId");
+
     final subjectMatterInfo = ref.watch(directMessageInfoProvider(classId));
     return Scaffold(
       appBar: AppBar(

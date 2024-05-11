@@ -219,9 +219,6 @@ class TutorClassses extends ConsumerWidget {
                                     data: (data) {
                                       return GestureDetector(
                                         onTap: () async {
-                                          print("chat id: ${chatIds.chatId}");
-                                          print(
-                                              "lastMessage id: ${data.lastMessageIdRead}");
                                           await ChatService()
                                               .updateUserLastMessageIdRead(
                                             chatIds.chatId!,

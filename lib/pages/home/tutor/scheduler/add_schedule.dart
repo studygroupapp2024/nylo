@@ -97,7 +97,7 @@ class AddSchedule extends ConsumerWidget {
                   currentTime = ref.watch(endTimeControllerProvider);
                 }
                 final TimeOfDay? time = await pickTime(context, currentTime);
-                print("TIME: $time");
+
                 if (time != null) {
                   _endTimeController.text = formatTime(time);
                 }

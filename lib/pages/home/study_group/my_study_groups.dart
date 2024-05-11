@@ -67,8 +67,6 @@ class FindPage extends ConsumerWidget {
                           );
 
                           return groupChatMemberInfo.when(data: (data) {
-                            print("lastReaId: ${chatIds.lastMessageId}");
-                            print("members: ${data.lastMessageIdRead}");
                             return GestureDetector(
                               onTap: () async {
                                 await ChatService().updateUserLastMessageIdRead(

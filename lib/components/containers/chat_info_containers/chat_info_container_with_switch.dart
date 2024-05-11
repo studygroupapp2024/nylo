@@ -85,7 +85,6 @@ class ChatInfoContainerWithSwitch extends ConsumerWidget {
                               value,
                               true,
                             );
-                        print("value: $value");
                       },
                     );
                   },
@@ -127,7 +126,6 @@ class ChatInfoContainerWithSwitch extends ConsumerWidget {
                               value,
                               false,
                             );
-                        print("value: $value");
                       },
                     );
                   },

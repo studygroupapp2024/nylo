@@ -14,11 +14,7 @@ class NetworkController extends GetxController {
   void _updateConnectionStatus(List<ConnectivityResult> connectivityResults) {
     final hasConnection = connectivityResults.contains(ConnectivityResult.none);
     if (hasConnection) {
-      print("DISCONNECTED");
-
       Get.to(const NoInternet());
-    } else {
-      print("CONNECTED");
     }
   }
 }

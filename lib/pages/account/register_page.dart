@@ -182,8 +182,6 @@ class RegisterPage extends ConsumerWidget {
                                     universityItem.domains
                                         .map((domain) => domain.toString())
                                         .toList();
-                                print(
-                                    "dropDownListProvider: ${universityItem.domains}");
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(10),

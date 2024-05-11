@@ -37,7 +37,7 @@ class ChatInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final image = ref.watch(singleGroupChatInformationProvider(groupChatId));
-    print("MEMBERS: ${members.length}");
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Chat Info"),

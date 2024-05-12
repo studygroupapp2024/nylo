@@ -18,7 +18,7 @@ class UserInformation {
         .get();
   }
 
-  Future<void> changeProfilePicture(
+  Future<String?> changeProfilePicture(
     String filePath,
     String filename,
     String userId,
@@ -42,6 +42,7 @@ class UserInformation {
           "imageUrl": downloadUrl,
           "name": name,
         });
+        return downloadUrl;
       } else {
         await _firestore
             .collection("institution")
@@ -53,5 +54,6 @@ class UserInformation {
         });
       }
     } on FirebaseException catch (e) {}
+    return null;
   }
 }

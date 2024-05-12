@@ -101,6 +101,10 @@ class HomePage extends ConsumerWidget {
                           ),
                         ),
                       );
+
+                      ref.read(editProfilePathProvider.notifier).state = null;
+
+                      ref.read(editOrSaveProvider.notifier).state = true;
                     },
                     child: CircleAvatar(
                       radius: 16,

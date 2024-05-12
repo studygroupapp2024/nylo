@@ -26,6 +26,8 @@ final userInfoService = StateProvider.autoDispose<UserInformation>((ref) {
   return UserInformation();
 });
 
+final editOrSaveProvider = StateProvider.autoDispose<bool>((ref) => true);
+
 final nameProvider = StateProvider<String>((ref) => '');
 
 final editProfilePathProvider = StateProvider<File?>((ref) => null);

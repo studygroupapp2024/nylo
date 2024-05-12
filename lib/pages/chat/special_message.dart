@@ -77,7 +77,18 @@ class SendSpecialMessage extends ConsumerWidget {
 
                   return;
                 }
-                final path = result.files.single.path;
+
+                final fileSize = result.files.single.size;
+                print("object: $fileSize");
+                if (fileSize > 10 * 1024 * 1024) {
+                  informationSnackBar(
+                    context,
+                    Icons.info_outline,
+                    "File size exceeds the limit of 10MB.",
+                  );
+                  return;
+                }
+
                 final filename = result.files.single.name;
                 ref.read(pathNameProvider.notifier).state =
                     result.files.single.path.toString();

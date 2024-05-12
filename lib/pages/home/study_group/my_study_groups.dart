@@ -58,7 +58,7 @@ class FindPage extends ConsumerWidget {
                             ? '${firstName.substring(0, 1).toUpperCase()}${firstName.substring(1).toLowerCase()}: ${chatIds.lastMessage}'
                             : '';
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Consumer(builder: (context, ref, child) {
@@ -111,7 +111,6 @@ class FindPage extends ConsumerWidget {
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10,
-                                  horizontal: 10,
                                 ),
                                 height: 100,
                                 decoration: data.lastMessageIdRead ==

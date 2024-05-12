@@ -174,7 +174,8 @@ final userLastChatProvider =
   },
 );
 
-final userHasStudyGroupRequest = StreamProvider.family<bool, String>(
+final userHasStudyGroupRequest =
+    StreamProvider.family.autoDispose<bool, String>(
   (ref, userId) {
     final institutionId = ref.watch(setGlobalUniversityId);
     final decision = _firestore

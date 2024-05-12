@@ -1,24 +1,26 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/chat_info_container.dart';
 import 'package:nylo/pages/home/study_group/edit_my_profile.dart';
+import 'package:nylo/pages/home/study_group/my_home.dart';
+import 'package:nylo/structure/auth/login_or_register.dart';
 import 'package:nylo/structure/providers/auth_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final String imageUrl;
+  final String name;
+  final String university;
 
-  ProfilePage({
-    super.key,
-  });
+  const ProfilePage(
+      {super.key,
+      required this.imageUrl,
+      required this.name,
+      required this.university});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userInfo =
-        ref.watch(userInfoProvider(_firebaseAuth.currentUser!.uid));
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -27,6 +29,18 @@ class ProfilePage extends ConsumerWidget {
           style: TextStyle(
             color: Theme.of(context).colorScheme.inversePrimary,
           ),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            // Replace the ProfilePage with another screen
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(),
+              ),
+            );
+          },
+          icon: const Icon(Icons.chevron_left),
         ),
         actions: [
           IconButton(
@@ -56,61 +70,52 @@ class ProfilePage extends ConsumerWidget {
                 right: 20,
                 bottom: 60,
               ),
-              child: userInfo.when(
-                data: (user) {
-                  return Column(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                    ),
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundImage:
+                          imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Text(
+                    name,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20,
-                        ),
-                        child: CircleAvatar(
-                          radius: 60,
-                          backgroundImage: user.imageUrl.isNotEmpty
-                              ? NetworkImage(user.imageUrl)
-                              : null,
-                        ),
+                      Icon(
+                        Icons.school_outlined,
+                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                        size: 24,
                       ),
                       const SizedBox(
-                        height: 25,
+                        width: 5,
                       ),
                       Text(
-                        user.name,
+                        university,
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.school_outlined,
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                            size: 24,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            user.university,
-                            style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                              fontSize: 12,
-                            ),
-                          )
-                        ],
-                      ),
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          fontSize: 12,
+                        ),
+                      )
                     ],
-                  );
-                },
-                error: (error, stackTrace) => Text(error.toString()),
-                loading: () => const CircularProgressIndicator(),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -125,7 +130,11 @@ class ProfilePage extends ConsumerWidget {
                     ref
                         .read(isLoadingProvider.notifier)
                         .update((state) => false);
-                    Navigator.popUntil(context, ModalRoute.withName("/"));
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginOrRegister()),
+                    );
                   },
                   title: "Logout",
                   icon: Icons.logout,

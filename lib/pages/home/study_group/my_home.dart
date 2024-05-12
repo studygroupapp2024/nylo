@@ -87,39 +87,43 @@ class HomePage extends ConsumerWidget {
               padding: const EdgeInsets.only(
                 right: 10,
               ),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfilePage(),
+              child: userInfo.when(
+                data: (image) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfilePage(
+                            name: image.name,
+                            imageUrl: image.imageUrl,
+                            university: image.university,
+                          ),
+                        ),
+                      );
+                    },
+                    child: CircleAvatar(
+                      radius: 16,
+                      backgroundImage: NetworkImage(image.imageUrl),
                     ),
                   );
                 },
-                child: userInfo.when(
-                  data: (image) {
-                    return CircleAvatar(
-                      radius: 16,
-                      backgroundImage: NetworkImage(image.imageUrl),
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return Center(
-                      child: Text('Error: $error'),
-                    );
-                  },
-                  loading: () {
-                    return Center(
-                      child: Shimmer.fromColors(
-                        baseColor: Colors.grey[400]!,
-                        highlightColor: Colors.grey[300]!,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.black.withOpacity(.15),
-                        ),
+                error: (error, stackTrace) {
+                  return Center(
+                    child: Text('Error: $error'),
+                  );
+                },
+                loading: () {
+                  return Center(
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey[400]!,
+                      highlightColor: Colors.grey[300]!,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black.withOpacity(.15),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

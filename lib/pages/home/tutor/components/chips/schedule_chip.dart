@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nylo/pages/home/tutor/functions/date_formatter.dart';
+import 'package:nylo/functions/date_formatter.dart';
 import 'package:nylo/structure/models/schedule_model.dart';
 
 class ScheduleChip extends ConsumerWidget {

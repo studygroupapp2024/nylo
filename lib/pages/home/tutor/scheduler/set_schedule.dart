@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/functions/date_formatter.dart';
 import 'package:nylo/pages/home/tutor/components/containers/schedule_container.dart';
-import 'package:nylo/pages/home/tutor/functions/date_formatter.dart';
 import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
 
 class SetSchedule extends ConsumerWidget {

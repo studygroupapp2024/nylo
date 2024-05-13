@@ -25,6 +25,7 @@ class Members extends ConsumerWidget {
     );
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("Members"),
       ),
       body: Consumer(
@@ -77,7 +78,8 @@ class Members extends ConsumerWidget {
                           );
                         },
                         error: (error, stackTrace) => Text(error.toString()),
-                        loading: () => const CircularProgressIndicator(),
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
                       );
                     },
                   );

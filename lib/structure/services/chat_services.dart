@@ -114,6 +114,7 @@ class ChatService {
     final String format = firstName.substring(0, 1).toUpperCase() +
         firstName.substring(1).toLowerCase();
 
+    final DateTime date = DateTime.now();
     // create a new message
     MessageModel newMessage = MessageModel(
       senderId: currentUserId,
@@ -124,6 +125,7 @@ class ChatService {
       downloadUrl: downloadUrl,
       category: category,
       filename: filename,
+      date: date,
     );
 
     if (isGroup) {
@@ -246,7 +248,9 @@ class ChatService {
     final String curreUserEmail = userName;
 
     final Timestamp timestamp = Timestamp.now();
+    final DateTime date = DateTime.now();
 
+    print("DATA: $date");
     // create a new message
     MessageModel newMessage = MessageModel(
       senderId: currentUserId,
@@ -257,6 +261,7 @@ class ChatService {
       downloadUrl: downloadUrl,
       category: '',
       filename: '',
+      date: date,
     );
 
     if (isGroupChat) {

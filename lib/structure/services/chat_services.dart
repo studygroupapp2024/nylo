@@ -246,7 +246,9 @@ class ChatService {
     final String curreUserEmail = userName;
 
     final Timestamp timestamp = Timestamp.now();
+    final DateTime date = DateTime.now();
 
+    print("DATA: $date");
     // create a new message
     MessageModel newMessage = MessageModel(
       senderId: currentUserId,

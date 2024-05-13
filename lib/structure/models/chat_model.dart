@@ -10,7 +10,6 @@ class MessageModel {
   final String? downloadUrl;
   final String? category;
   final String? filename;
-  final DateTime? date;
 
   MessageModel({
     required this.senderId,
@@ -21,7 +20,6 @@ class MessageModel {
     this.downloadUrl,
     this.category,
     this.filename,
-    this.date,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,7 +32,6 @@ class MessageModel {
       'downloadUrl': downloadUrl,
       'category': category,
       'filename': filename,
-      'date': date!.millisecondsSinceEpoch
     };
   }
 
@@ -49,7 +46,6 @@ class MessageModel {
       downloadUrl: map['downloadUrl'] as String,
       category: map['category'] as String,
       filename: map['filename'] as String,
-      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
     );
   }
 
@@ -64,7 +60,6 @@ class MessageModel {
       downloadUrl: doc['downloadUrl'],
       category: doc['category'],
       filename: doc['filename'],
-      date: DateTime.fromMillisecondsSinceEpoch(doc['date'] as int),
     );
   }
 }

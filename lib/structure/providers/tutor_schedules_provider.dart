@@ -21,8 +21,8 @@ final tutorSchedulesProvider = StateProvider<TutorScheduleService>((ref) {
   return TutorScheduleService();
 });
 
-final schedulesProvider =
-    StreamProvider.family<List<TutorScheduleModel>, String>((ref, classId) {
+final schedulesProvider = StreamProvider.family
+    .autoDispose<List<TutorScheduleModel>, String>((ref, classId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final schedules = _firestore
       .collection("institution")
@@ -45,8 +45,8 @@ final schedulesProvider =
   return schedules;
 });
 
-final selectedschedulesProvider =
-    StreamProvider.family<List<TutorScheduleModel>, String>((ref, classId) {
+final selectedschedulesProvider = StreamProvider.family
+    .autoDispose<List<TutorScheduleModel>, String>((ref, classId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final schedules = _firestore
       .collection("institution")
@@ -73,9 +73,8 @@ final selectedschedulesProvider =
 // Get the current timestamp
 int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
-final userSchedulesProvider =
-    StreamProvider.family<List<TutorScheduleModel>, ScheduleData>(
-        (ref, scheduleData) {
+final userSchedulesProvider = StreamProvider.family
+    .autoDispose<List<TutorScheduleModel>, ScheduleData>((ref, scheduleData) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final schedules = _firestore
       .collection("institution")
@@ -101,8 +100,8 @@ final userSchedulesProvider =
   return schedules;
 });
 
-final filteredSchedulesProvider =
-    StreamProvider.family<List<TutorScheduleModel>, ScheduleType>((ref, type) {
+final filteredSchedulesProvider = StreamProvider.family
+    .autoDispose<List<TutorScheduleModel>, ScheduleType>((ref, type) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final schedules = _firestore
       .collection("institution")

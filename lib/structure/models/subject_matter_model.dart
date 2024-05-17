@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nylo/structure/services/subject_matter_services.dart';
 
 class SubjectMatterModel {
   final String proctorId;
   final Timestamp dateCreated;
-  final List<dynamic> courseId;
+  Map<String, Subject>? subjects;
   final String className;
   final String description;
   final String? classId;
@@ -15,7 +16,7 @@ class SubjectMatterModel {
   SubjectMatterModel({
     required this.proctorId,
     required this.dateCreated,
-    required this.courseId,
+    this.subjects,
     required this.className,
     required this.description,
     this.classId,
@@ -27,7 +28,8 @@ class SubjectMatterModel {
     return <String, dynamic>{
       'proctorId': proctorId,
       'dateCreated': dateCreated,
-      'courseId': courseId,
+      'subjects':
+          subjects?.map((key, value) => MapEntry(key, value.toMap())) ?? {},
       'className': className,
       'description': description,
       'classId': classId,
@@ -37,11 +39,19 @@ class SubjectMatterModel {
   }
 
   factory SubjectMatterModel.fromMap(Map<String, dynamic> map) {
+    final subjectsMap = <String, Subject>{};
+
+    map.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        subjectsMap[key] = Subject.fromMap(value);
+      }
+    });
+
     return SubjectMatterModel(
       proctorId: map['proctorId'] as String,
       dateCreated:
           Timestamp.fromDate(DateTime.parse(map['timestamp'] as String)),
-      courseId: List<dynamic>.from((map['membersId'] as List<dynamic>)),
+      subjects: subjectsMap,
       className: map['className'] as String,
       description: map['description'] as String,
       classId: map['classId'] as String,
@@ -52,15 +62,29 @@ class SubjectMatterModel {
 
   factory SubjectMatterModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
+    final subjectsMap = doc.data()?['subjects'] as Map<String, dynamic>? ?? {};
     return SubjectMatterModel(
       proctorId: doc['proctorId'],
       dateCreated: doc['dateCreated'],
-      courseId: doc['courseId'],
+      subjects: subjectsMap.map((key, value) =>
+          MapEntry(key, Subject.fromMap(value as Map<String, dynamic>))),
       className: doc['className'],
       description: doc['description'],
       classId: doc['classId'],
       courseCodes: doc['courseCodes'],
       courseTitles: doc['courseTitles'],
     );
+  }
+}
+
+class SubjectMap {
+  Map<String, Subject>? subjects;
+
+  SubjectMap({this.subjects});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'subjects': subjects!.map((key, value) => MapEntry(key, value.toMap())),
+    };
   }
 }

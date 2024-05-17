@@ -1,6 +1,39 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
+import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
+
+class Subject {
+  String subjectTitle;
+  String subjectCode;
+
+  Subject({
+    required this.subjectTitle,
+    required this.subjectCode,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'subjectTitle': subjectTitle,
+      'subjectCode': subjectCode,
+    };
+  }
+
+  factory Subject.fromMap(Map<String, dynamic> map) {
+    return Subject(
+      subjectTitle: map['subjectTitle'] as String,
+      subjectCode: map['subjectCode'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Subject.fromJson(String source) =>
+      Subject.fromMap(json.decode(source) as Map<String, dynamic>);
+}
 
 class SubjectMatter {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -16,10 +49,8 @@ class SubjectMatter {
     try {
       // get current info
       final Timestamp timestamp = Timestamp.now();
+      print("COURSES: $courses");
 
-      // get the SubjectIds Only
-      List<String> courseIds =
-          courses.map((course) => course.subjectId).toList();
       List<String> subjectCode =
           courses.map((course) => course.subjectCode).toList();
       List<String> subjectTitle =
@@ -30,7 +61,6 @@ class SubjectMatter {
       SubjectMatterModel newSubjectMatter = SubjectMatterModel(
         proctorId: proctorId,
         dateCreated: timestamp,
-        courseId: courseIds,
         className: className,
         description: description,
         courseCodes: concatenatedSubjectCode,
@@ -52,6 +82,32 @@ class SubjectMatter {
           .doc(subjectMatterId)
           .update({'classId': subjectMatterId});
 
+      // UPDATING SUBJECTS
+
+      List<SelectedCoursesToTeachModel> subjectsMap =
+          courses.map((course) => course).toList();
+
+      for (var subject in subjectsMap) {
+        print(subject.subjectCode);
+
+        final Subject subjectModel = Subject(
+          subjectCode: subject.subjectCode,
+          subjectTitle: subject.subjectTitle,
+        );
+
+        final SubjectMap addSubject = SubjectMap(
+          subjects: {
+            subject.subjectId: subjectModel,
+          },
+        );
+
+        // Adding a subject
+        await institution
+            .doc(institutionId)
+            .collection("subject_matters")
+            .doc(subjectMatterId)
+            .set(addSubject.toMap(), SetOptions(merge: true));
+      }
       var data = {
         "classId": subjectMatterId,
       };
@@ -62,6 +118,7 @@ class SubjectMatter {
           .collection("subject_matters")
           .doc(subjectMatterId)
           .set(data);
+
       return true;
     } catch (e) {
       return false;
@@ -108,9 +165,8 @@ class SubjectMatter {
     String className,
     String description,
     String institutionId,
+    RemoveCourses removeCourses,
   ) async {
-    List<String> courseIds = courses.map((course) => course.subjectId).toList();
-
     List<String> subjectCode =
         courses.map((course) => course.subjectCode).toList();
     List<String> subjectTitle =
@@ -123,12 +179,46 @@ class SubjectMatter {
         .collection("subject_matters")
         .doc(classId)
         .update({
-      "courseId": courseIds,
       "className": className,
       "description": description,
       "courseCodes": concatenatedSubjectCode,
       "courseTitles": concatenatedSubjectTitle,
     });
+
+    List<SelectedCoursesToTeachModel> subjectsMap =
+        courses.map((course) => course).toList();
+
+    for (var subject in subjectsMap) {
+      final Subject subjectModel = Subject(
+        subjectCode: subject.subjectCode,
+        subjectTitle: subject.subjectTitle,
+      );
+
+      final SubjectMap addSubject = SubjectMap(
+        subjects: {
+          subject.subjectId: subjectModel,
+        },
+      );
+
+      // Subjects to add
+      await institution
+          .doc(institutionId)
+          .collection("subject_matters")
+          .doc(classId)
+          .set(addSubject.toMap(), SetOptions(merge: true));
+    }
+
+    // Subjects to remove
+    for (var subjectId in removeCourses) {
+      await institution
+          .doc(institutionId)
+          .collection("subject_matters")
+          .doc(classId)
+          .update({
+        'subjects.$subjectId': FieldValue.delete(),
+      });
+    }
+
     return true;
   }
 }

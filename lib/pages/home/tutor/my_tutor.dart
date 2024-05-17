@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/dialogs/alert_dialog.dart';
 import 'package:nylo/components/no_data_holder.dart';
-import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip.dart';
+import 'package:nylo/pages/home/tutor/components/chips/subject_chip.dart';
 import 'package:nylo/pages/home/tutor/edit_class.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/scheduler/view_schedule.dart';
@@ -106,7 +106,9 @@ class RegisterAsTutor extends ConsumerWidget {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      TutorCoursesChip(groupChats: classes),
+                                      SubjectChip(
+                                        subjects: classes.subjects!,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -195,15 +197,10 @@ class RegisterAsTutor extends ConsumerWidget {
                                             .read(selectedCoursesToTeachProvider
                                                 .notifier)
                                             .clear();
-                                        for (final item in classes.courseId) {
-                                          final subjectInfo = await ref
-                                              .read(subjectMatterProvider)
-                                              .getSubjectInfo(
-                                                  item,
-                                                  ref.watch(
-                                                      setGlobalUniversityId));
-
-                                          final data = subjectInfo.data();
+                                        for (final item
+                                            in classes.subjects!.entries) {
+                                          final subjectId = item.key;
+                                          final subject = item.value;
 
                                           ref
                                               .read(
@@ -211,11 +208,11 @@ class RegisterAsTutor extends ConsumerWidget {
                                                       .notifier)
                                               .add(
                                                 SelectedCoursesToTeachModel(
-                                                  subjectId: item,
+                                                  subjectId: subjectId,
                                                   subjectTitle:
-                                                      data!['subject_title'],
+                                                      subject.subjectTitle, //
                                                   subjectCode:
-                                                      data['subject_code'],
+                                                      subject.subjectCode,
                                                 ),
                                               );
                                         }
@@ -231,10 +228,15 @@ class RegisterAsTutor extends ConsumerWidget {
                                             ),
                                           ),
                                         );
+                                        ref
+                                            .read(
+                                                removeCoursesProvider.notifier)
+                                            .state = [];
                                       },
                                       child: const Padding(
-                                          padding: EdgeInsets.all(4),
-                                          child: Icon(Icons.edit_note_rounded)),
+                                        padding: EdgeInsets.all(4),
+                                        child: Icon(Icons.edit_note_rounded),
+                                      ),
                                     ),
                                   ],
                                 ),

@@ -33,6 +33,12 @@ class TutorCoursesChipWithButton extends ConsumerWidget {
                   GestureDetector(
                     onTap: () {
                       final courseToRemove = course;
+
+                      ref
+                          .read(removeCoursesProvider.notifier)
+                          .state
+                          .add(courseToRemove.subjectId);
+
                       ref
                           .read(selectedCoursesToTeachProvider.notifier)
                           .remove(courseToRemove);

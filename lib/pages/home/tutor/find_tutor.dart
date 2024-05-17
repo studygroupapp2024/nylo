@@ -62,6 +62,9 @@ class FindTutor extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.primary)),
               ),
             ),
+            const SizedBox(
+              height: 10,
+            ),
             if (ref.watch(findTutorSearchQueryLengthProvider) < 3)
               const Expanded(
                 child: Center(
@@ -101,7 +104,7 @@ class FindTutor extends ConsumerWidget {
                             itemBuilder: (context, index) {
                               final groupChats = groupchats[index];
 
-                              return GestureDetector(
+                              return InkWell(
                                 onTap: () {
                                   showDialog(
                                     context: context,
@@ -290,43 +293,39 @@ class FindTutor extends ConsumerWidget {
                                 },
                                 child: IntrinsicHeight(
                                   child: Container(
-                                    margin: const EdgeInsets.all(20),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(
-                                        10,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Align(
-                                              alignment: Alignment.topLeft,
-                                              child: ProctorImage(groupChats)),
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      groupChats.className,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    child: Row(
+                                      children: [
+                                        Align(
+                                            alignment: Alignment.topLeft,
+                                            child: ProctorImage(groupChats)),
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    groupChats.className,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 250,
+                                                    child: TutorCoursesChip(
+                                                      groupChats: groupChats,
                                                     ),
-                                                    SizedBox(
-                                                      width: 250,
-                                                      child: TutorCoursesChip(
-                                                        groupChats: groupChats,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
-                                          const Icon(Icons.chevron_right),
-                                        ],
-                                      ),
+                                        ),
+                                        const Icon(Icons.chevron_right),
+                                      ],
                                     ),
                                   ),
                                 ),

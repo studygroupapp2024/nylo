@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/structure/models/university_model.dart';
 import 'package:nylo/structure/services/university_service.dart';
-import 'package:nylo/structure/services/user_service.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-final UserInformation _userInformation = UserInformation();
+
 // get all the university
-final universityProvider = StreamProvider<List<UniversityModel>>((ref) {
+final universityProvider =
+    StreamProvider.autoDispose<List<UniversityModel>>((ref) {
   final getUniversities = _firestore.collection("institution").snapshots().map(
         (querySnapshot) => querySnapshot.docs
             .map(
@@ -19,7 +19,8 @@ final universityProvider = StreamProvider<List<UniversityModel>>((ref) {
 });
 
 // get all the university domain
-final universityDomainNamesProvider = StreamProvider<List<String>>((ref) {
+final universityDomainNamesProvider =
+    StreamProvider.autoDispose<List<String>>((ref) {
   return _firestore
       .collection("institution")
       .snapshots()
@@ -29,7 +30,8 @@ final universityDomainNamesProvider = StreamProvider<List<String>>((ref) {
       .asyncMap((courses) => courses);
 });
 
-final listOfDomains = StreamProvider<List<Map<String, dynamic>>>((ref) {
+final listOfDomains =
+    StreamProvider.autoDispose<List<Map<String, dynamic>>>((ref) {
   final domains = _firestore
       .collection("institution")
       .snapshots()
@@ -42,12 +44,7 @@ final listOfDomains = StreamProvider<List<Map<String, dynamic>>>((ref) {
           .toList()); // Added .toList() to convert the map result to a list
   return domains;
 });
-// final listOfDomains = StreamProvider<List<String>>((ref) {
-//   return _firestore.collection("institution").snapshots().map((querySnapshot) =>
-//       querySnapshot.docs
-//           .map((doc) => (doc.data()['emailIndicator'] as List<dynamic>)).toList();
 
-// });
 // search university
 final searchUniversityProvier =
     StreamProvider.autoDispose<List<UniversityModel>>((ref) {

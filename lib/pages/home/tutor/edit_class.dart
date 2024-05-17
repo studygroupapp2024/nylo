@@ -190,8 +190,10 @@ class EditClass extends ConsumerWidget {
                                   _nameController.text,
                                   _descriptionController.text,
                                   ref.watch(setGlobalUniversityId),
+                                  ref.watch(removeCoursesProvider),
                                 );
                         if (success) {
+                          ref.read(removeCoursesProvider.notifier).state = [];
                           _nameController.clear();
                           _descriptionController.clear();
                           Navigator.pop(context);

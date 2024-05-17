@@ -5,12 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class SubjectModel {
   String subject_title;
   String subject_code;
-  List<dynamic> studentId;
+  List<dynamic>? studentId;
 
   SubjectModel({
     required this.subject_title,
     required this.subject_code,
-    required this.studentId,
+    this.studentId,
   });
 
   Map<String, dynamic> toMap() {

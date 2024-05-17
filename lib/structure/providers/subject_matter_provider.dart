@@ -29,13 +29,13 @@ final selectedClassInformationProvider = StreamProvider.family
             .map((snapshot) => SubjectMatterModel.fromSnapshot(snapshot))
             .where((group) =>
                 !subjectMattersTaken!.contains(group.classId) &&
-                (group.courseTitles
+                    group.courseTitles
                         .toLowerCase()
                         .contains(searchQuery.toLowerCase()) ||
-                    group.courseCodes
-                        .toLowerCase()
-                        .contains(searchQuery.toLowerCase()) ||
-                    searchQuery.isEmpty))
+                group.courseCodes
+                    .toLowerCase()
+                    .contains(searchQuery.toLowerCase()) ||
+                searchQuery.isEmpty)
             .toList(),
       );
 
@@ -44,7 +44,7 @@ final selectedClassInformationProvider = StreamProvider.family
 
 // Subject Matters Taken
 final subjectMatterIdProvider =
-    StreamProvider.family<List<String>, String>((ref, userId) {
+    StreamProvider.family.autoDispose<List<String>, String>((ref, userId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   return _firestore
       .collection("institution")

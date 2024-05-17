@@ -28,6 +28,12 @@ class SelectedCoursesToTeachNotifier
   }
 }
 
+typedef RemoveCourses = List<String>;
+
+final removeCoursesProvider = StateProvider<RemoveCourses>((ref) {
+  return [];
+});
+
 final classChatNameProvider = StateProvider<String?>((ref) => '');
 final classChatDescriptionProvider = StateProvider<String?>((ref) => '');
 

@@ -6,7 +6,7 @@ import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/skeletons/my_tutor_chat_loading.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/components/chips/schedule_chip_with_name.dart';
-import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip_with_name.dart';
+import 'package:nylo/pages/home/tutor/components/chips/subject_chip.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
@@ -374,9 +374,21 @@ class TutorClassses extends ConsumerWidget {
                                                                     CrossAxisAlignment
                                                                         .start,
                                                                 children: [
-                                                                  TutorCoursesChipWithName(
-                                                                      asyncTutorCourses:
-                                                                          subjectMatterInfo),
+                                                                  Text(
+                                                                    chatIds
+                                                                        .className,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  SubjectChip(
+                                                                    subjects:
+                                                                        chatIds
+                                                                            .subjects!,
+                                                                  ),
                                                                   Text(
                                                                     data.name,
                                                                     style: const TextStyle(
@@ -443,9 +455,21 @@ class TutorClassses extends ConsumerWidget {
                                                                     CrossAxisAlignment
                                                                         .start,
                                                                 children: [
-                                                                  TutorCoursesChipWithName(
-                                                                      asyncTutorCourses:
-                                                                          subjectMatterInfo),
+                                                                  Text(
+                                                                    chatIds
+                                                                        .className,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  SubjectChip(
+                                                                    subjects:
+                                                                        chatIds
+                                                                            .subjects!,
+                                                                  ),
                                                                   Text(
                                                                     data.name,
                                                                     style: const TextStyle(

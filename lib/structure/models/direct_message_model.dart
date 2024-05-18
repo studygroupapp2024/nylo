@@ -14,7 +14,8 @@ class DirectMessageModel {
   final String classId;
   final String tuteeId;
   final String? lastMessageId;
-  Map<String, Subject>? subjects;
+  final Map<String, Subject>? subjects;
+  final String className;
 
   DirectMessageModel({
     this.chatId,
@@ -29,6 +30,7 @@ class DirectMessageModel {
     required this.tuteeId,
     required this.lastMessageId,
     this.subjects,
+    required this.className,
   });
 
   Map<String, dynamic> toMap() {
@@ -46,6 +48,7 @@ class DirectMessageModel {
       'lastMessageId': lastMessageId,
       'subjects':
           subjects?.map((key, value) => MapEntry(key, value.toMap())) ?? {},
+      'className': className,
     };
   }
 
@@ -76,6 +79,7 @@ class DirectMessageModel {
       tuteeId: map['tuteeId'] as String,
       lastMessageId: map['lastMessageId'] as String,
       subjects: subjectsMap,
+      className: map['className'] as String,
     );
   }
 
@@ -96,6 +100,7 @@ class DirectMessageModel {
       lastMessageId: doc['lastMessageId'],
       subjects: subjectsMap.map((key, value) =>
           MapEntry(key, Subject.fromMap(value as Map<String, dynamic>))),
+      className: doc['className'],
     );
   }
 }

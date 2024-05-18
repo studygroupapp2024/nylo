@@ -265,6 +265,7 @@ class FindTutor extends ConsumerWidget {
                                                           groupChats.classId!,
                                                           ref.watch(
                                                               selectedCoursesToTeachProvider),
+                                                          groupChats.className,
                                                         );
 
                                                     if (getData['isSuccess']) {

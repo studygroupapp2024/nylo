@@ -185,6 +185,21 @@ class SubjectMatter {
       "courseTitles": concatenatedSubjectTitle,
     });
 
+    // Update Class Name in Direct Messages
+
+    final querySnapshot = await _firestore
+        .collection("institution")
+        .doc(institutionId)
+        .collection("direct_messages")
+        .where("classId", isEqualTo: classId)
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.update({
+        "className": className,
+      });
+    }
+
     List<SelectedCoursesToTeachModel> subjectsMap =
         courses.map((course) => course).toList();
 
@@ -200,13 +215,32 @@ class SubjectMatter {
         },
       );
 
+      // Update Subject in Subject Matters
       // Subjects to add
-      await institution
+      await _firestore
+          .collection("institution")
           .doc(institutionId)
           .collection("subject_matters")
           .doc(classId)
           .set(addSubject.toMap(), SetOptions(merge: true));
+
+      // Update Subject in Direct Messages
+      // Subjects to add
+
+      final querySnapshot = await _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("direct_messages")
+          .where("classId", isEqualTo: classId)
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.update({
+          'subjects.${subject.subjectId}': subjectModel.toMap(),
+        });
+      }
     }
+    // Remove Subject in Subject Matters
 
     // Subjects to remove
     for (var subjectId in removeCourses) {
@@ -217,6 +251,23 @@ class SubjectMatter {
           .update({
         'subjects.$subjectId': FieldValue.delete(),
       });
+    }
+
+    // Remove Subject in DirectMessages
+
+    for (var subjectId in removeCourses) {
+      final querySnapshot = await _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("direct_messages")
+          .where("classId", isEqualTo: classId)
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.update({
+          'subjects.$subjectId': FieldValue.delete(),
+        });
+      }
     }
 
     return true;

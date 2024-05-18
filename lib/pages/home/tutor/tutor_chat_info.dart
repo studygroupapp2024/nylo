@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/chat_info_container.dart';
 import 'package:nylo/components/containers/chat_info_containers/chat_info_container_with_switch.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
+import 'package:nylo/pages/home/tutor/components/chips/subject_chip.dart';
 import 'package:nylo/pages/home/tutor/scheduler/set_schedule.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
@@ -157,40 +158,7 @@ class TutorChatInfo extends ConsumerWidget {
                         const SizedBox(
                           height: 5,
                         ),
-                        // Wrap(
-                        //   spacing: 10,
-                        //   children: data.courseId
-                        //       .map(
-                        //         (e) => Consumer(
-                        //           builder: (context, ref, child) {
-                        //             final course = ref.watch(getSubjectInfo(e));
-
-                        //             return course.when(
-                        //               data: (data) {
-                        //                 return Chip(
-                        //                   label: Text(
-                        //                     data.subject_code,
-                        //                     style:
-                        //                         const TextStyle(fontSize: 10),
-                        //                   ),
-                        //                 );
-                        //               },
-                        //               error: (error, stackTrace) {
-                        //                 return Center(
-                        //                   child: Text('Error: $error'),
-                        //                 );
-                        //               },
-                        //               loading: () {
-                        //                 return const Center(
-                        //                   child: CircularProgressIndicator(),
-                        //                 );
-                        //               },
-                        //             );
-                        //           },
-                        //         ),
-                        //       )
-                        //       .toList(),
-                        // ),
+                        SubjectChip(subjects: data.subjects!),
                         const SizedBox(
                           height: 10,
                         ),

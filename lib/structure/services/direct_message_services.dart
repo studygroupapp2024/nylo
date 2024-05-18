@@ -22,6 +22,7 @@ class DirectMessage {
     String proctorId,
     String subjectMatterId,
     List<SelectedCoursesToTeachModel> courses,
+    String className,
   ) async {
     //get student data
     final userInfo =
@@ -48,6 +49,7 @@ class DirectMessage {
         classId: subjectMatterId,
         tuteeId: _auth.currentUser!.uid,
         lastMessageId: null,
+        className: className,
       );
 
       DocumentReference newDirectMessageRef = await institution

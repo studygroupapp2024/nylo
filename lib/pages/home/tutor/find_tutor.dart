@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/buttons/rounded_button_with_progress.dart';
 import 'package:nylo/components/no_data_holder.dart';
-import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip.dart';
+import 'package:nylo/pages/home/tutor/components/chips/subject_chip.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
+import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
+import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
@@ -106,6 +108,28 @@ class FindTutor extends ConsumerWidget {
 
                               return InkWell(
                                 onTap: () {
+                                  ref
+                                      .read(selectedCoursesToTeachProvider
+                                          .notifier)
+                                      .clear();
+                                  for (final item
+                                      in groupChats.subjects!.entries) {
+                                    final subjectId = item.key;
+                                    final subject = item.value;
+
+                                    ref
+                                        .read(selectedCoursesToTeachProvider
+                                            .notifier)
+                                        .add(
+                                          SelectedCoursesToTeachModel(
+                                            subjectId: subjectId,
+                                            subjectTitle:
+                                                subject.subjectTitle, //
+                                            subjectCode: subject.subjectCode,
+                                          ),
+                                        );
+                                  }
+
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -153,19 +177,6 @@ class FindTutor extends ConsumerWidget {
                                                                           .start,
                                                                   children: [
                                                                     Text(
-                                                                      groupChats
-                                                                          .className,
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                        fontSize:
-                                                                            24,
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
                                                                       userData
                                                                           .name,
                                                                       style:
@@ -192,6 +203,20 @@ class FindTutor extends ConsumerWidget {
                                                             const SizedBox(
                                                               height: 10,
                                                             ),
+                                                            Text(
+                                                              groupChats
+                                                                  .className,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 24,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 5,
+                                                            ),
                                                             Text(groupChats
                                                                 .description),
                                                           ],
@@ -214,12 +239,11 @@ class FindTutor extends ConsumerWidget {
                                                   },
                                                 ),
                                                 const SizedBox(
-                                                  height: 15,
+                                                  height: 5,
                                                 ),
-                                                const Text("Course"),
-                                                TutorCoursesChip(
-                                                  groupChats: groupChats,
-                                                ),
+                                                SubjectChip(
+                                                    subjects:
+                                                        groupChats.subjects!),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
@@ -239,6 +263,8 @@ class FindTutor extends ConsumerWidget {
                                                               setGlobalUniversityId),
                                                           groupChats.proctorId,
                                                           groupChats.classId!,
+                                                          ref.watch(
+                                                              selectedCoursesToTeachProvider),
                                                         );
 
                                                     if (getData['isSuccess']) {
@@ -313,10 +339,14 @@ class FindTutor extends ConsumerWidget {
                                                   Text(
                                                     groupChats.className,
                                                   ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
                                                   SizedBox(
                                                     width: 250,
-                                                    child: TutorCoursesChip(
-                                                      groupChats: groupChats,
+                                                    child: SubjectChip(
+                                                      subjects:
+                                                          groupChats.subjects!,
                                                     ),
                                                   ),
                                                 ],

@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nylo/structure/models/chat_members_model.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
+import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
+import 'package:nylo/structure/models/subject_matter_model.dart';
 import 'package:nylo/structure/services/chat_services.dart';
+import 'package:nylo/structure/services/subject_matter_services.dart';
 import 'package:nylo/structure/services/user_service.dart';
 
 class DirectMessage {
@@ -18,6 +21,7 @@ class DirectMessage {
     String institutionId,
     String proctorId,
     String subjectMatterId,
+    List<SelectedCoursesToTeachModel> courses,
   ) async {
     //get student data
     final userInfo =
@@ -141,6 +145,30 @@ class DirectMessage {
         institutionId,
         false,
       );
+
+      //ADD SUBJECTS
+      List<SelectedCoursesToTeachModel> subjectsMap =
+          courses.map((course) => course).toList();
+
+      for (var subject in subjectsMap) {
+        final Subject subjectModel = Subject(
+          subjectCode: subject.subjectCode,
+          subjectTitle: subject.subjectTitle,
+        );
+
+        final SubjectMap addSubject = SubjectMap(
+          subjects: {
+            subject.subjectId: subjectModel,
+          },
+        );
+
+        // Subjects to add
+        await institution
+            .doc(institutionId)
+            .collection("direct_messages")
+            .doc(directMessageId)
+            .set(addSubject.toMap(), SetOptions(merge: true));
+      }
 
       Map<String, dynamic> createMap() {
         Map<String, dynamic> myMap = {

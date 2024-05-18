@@ -14,6 +14,7 @@ import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class FindTutor extends ConsumerWidget {
   FindTutor({super.key});
@@ -230,9 +231,22 @@ class FindTutor extends ConsumerWidget {
                                                         );
                                                       },
                                                       loading: () {
-                                                        return const Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
+                                                        return Center(
+                                                          child: Shimmer
+                                                              .fromColors(
+                                                            baseColor: Colors
+                                                                .grey[400]!,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .grey[300]!,
+                                                            child: CircleAvatar(
+                                                              backgroundColor:
+                                                                  Colors.black
+                                                                      .withOpacity(
+                                                                          .15),
+                                                              radius: 40,
+                                                            ),
+                                                          ),
                                                         );
                                                       },
                                                     );

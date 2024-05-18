@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/skeletons/my_tutor_chat_loading.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
-import 'package:nylo/pages/home/tutor/components/chips/schedule_chip_with_name.dart';
 import 'package:nylo/pages/home/tutor/components/chips/subject_chip.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
@@ -13,7 +12,6 @@ import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/providers/direct_message_provider.dart';
 import 'package:nylo/structure/providers/subject_matter_provider.dart';
 import 'package:nylo/structure/providers/tutor_class_provider.dart';
-import 'package:nylo/structure/providers/tutor_schedules_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 import 'package:nylo/structure/services/chat_services.dart';
@@ -197,11 +195,7 @@ class TutorClassses extends ConsumerWidget {
                           final tuteeInfo = ref.watch(
                             userInfoProvider(chatIds.tuteeId),
                           );
-                          final subjectMatterInfo = ref.watch(
-                            directMessageInfoProvider(
-                              chatIds.classId,
-                            ),
-                          );
+
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Consumer(
@@ -531,21 +525,6 @@ class TutorClassses extends ConsumerWidget {
                                                         }
                                                       },
                                                     ),
-                                                    Consumer(builder:
-                                                        (context, ref, child) {
-                                                      final schedules =
-                                                          ref.watch(
-                                                        userSchedulesProvider((
-                                                          classId:
-                                                              chatIds.classId,
-                                                          tuteeId:
-                                                              chatIds.tuteeId
-                                                        )),
-                                                      );
-                                                      return ScheduleChipWithName(
-                                                        schedules: schedules,
-                                                      );
-                                                    }),
                                                   ],
                                                 ),
                                               ),
@@ -585,8 +564,13 @@ class TutorClassses extends ConsumerWidget {
                     );
                   },
                   loading: () {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: SizedBox(
+                        height: 150,
+                        width: double.infinity,
+                        child: TutorChatLoading(),
+                      ),
                     );
                   },
                 );

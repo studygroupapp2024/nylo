@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nylo/structure/services/subject_matter_services.dart';
 
 class DirectMessageModel {
   final String? chatId;
@@ -13,6 +14,8 @@ class DirectMessageModel {
   final String classId;
   final String tuteeId;
   final String? lastMessageId;
+  final Map<String, Subject>? subjects;
+  final String className;
 
   DirectMessageModel({
     this.chatId,
@@ -26,6 +29,8 @@ class DirectMessageModel {
     required this.classId,
     required this.tuteeId,
     required this.lastMessageId,
+    this.subjects,
+    required this.className,
   });
 
   Map<String, dynamic> toMap() {
@@ -40,11 +45,22 @@ class DirectMessageModel {
       'proctorId': proctorId,
       'classId': classId,
       'tuteeId': tuteeId,
-      'lastMessageId': lastMessageId
+      'lastMessageId': lastMessageId,
+      'subjects':
+          subjects?.map((key, value) => MapEntry(key, value.toMap())) ?? {},
+      'className': className,
     };
   }
 
   factory DirectMessageModel.fromMap(Map<String, dynamic> map) {
+    final subjectsMap = <String, Subject>{};
+
+    map.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        subjectsMap[key] = Subject.fromMap(value);
+      }
+    });
+
     return DirectMessageModel(
       chatId: map['chatId'] != null ? map['chatId'] as String : null,
       timestamp: Timestamp.fromDate(DateTime.parse(map['createdAt'] as String)),
@@ -62,11 +78,14 @@ class DirectMessageModel {
       classId: map['classId'] as String,
       tuteeId: map['tuteeId'] as String,
       lastMessageId: map['lastMessageId'] as String,
+      subjects: subjectsMap,
+      className: map['className'] as String,
     );
   }
 
   factory DirectMessageModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
+    final subjectsMap = doc.data()?['subjects'] as Map<String, dynamic>? ?? {};
     return DirectMessageModel(
       chatId: doc['chatId'],
       timestamp: doc['createdAt'],
@@ -79,6 +98,9 @@ class DirectMessageModel {
       classId: doc['classId'],
       tuteeId: doc['tuteeId'],
       lastMessageId: doc['lastMessageId'],
+      subjects: subjectsMap.map((key, value) =>
+          MapEntry(key, Subject.fromMap(value as Map<String, dynamic>))),
+      className: doc['className'],
     );
   }
 }

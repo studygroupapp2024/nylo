@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/pages/home/tutor/components/chips/schedule_chip.dart';
+import 'package:nylo/pages/home/tutor/components/text/bold_text.dart';
 import 'package:nylo/structure/models/schedule_model.dart';
 
 class ScheduleChipWithName extends ConsumerWidget {
@@ -23,13 +24,7 @@ class ScheduleChipWithName extends ConsumerWidget {
                     const Divider(
                       thickness: 0.3,
                     ),
-                    const Text(
-                      "Schedule",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    const BoldText(text: "Schedule"),
                     const SizedBox(
                       height: 5,
                     ),

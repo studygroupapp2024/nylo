@@ -73,8 +73,9 @@ final selectedschedulesProvider = StreamProvider.family
 // Get the current timestamp
 int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
-final userSchedulesProvider = StreamProvider.family
-    .autoDispose<List<TutorScheduleModel>, ScheduleData>((ref, scheduleData) {
+final userSchedulesProvider =
+    StreamProvider.family<List<TutorScheduleModel>, ScheduleData>(
+        (ref, scheduleData) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final schedules = _firestore
       .collection("institution")

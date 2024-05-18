@@ -16,7 +16,7 @@ final directMessageProvider = StateProvider.autoDispose<DirectMessage>((ref) {
 
 // get User Study Groups
 final tutorDirectMessages =
-    StreamProvider.family.autoDispose<List<DirectMessageModel>, String>(
+    StreamProvider.family<List<DirectMessageModel>, String>(
   (ref, userId) {
     final institutionId = ref.watch(setGlobalUniversityId);
     final userStudyGroups = _firestore
@@ -43,7 +43,7 @@ final tutorDirectMessages =
 );
 
 final tuteeDirectMessages =
-    StreamProvider.family.autoDispose<List<DirectMessageModel>, String>(
+    StreamProvider.family<List<DirectMessageModel>, String>(
   (ref, userId) {
     final institutionId = ref.watch(setGlobalUniversityId);
     final userStudyGroups = _firestore
@@ -108,8 +108,8 @@ final directMessageMemberInfoProvider =
       );
 });
 
-final directMessageInfoProvider = StreamProvider.family
-    .autoDispose<SubjectMatterModel, String>((ref, subjectMatterId) {
+final directMessageInfoProvider =
+    StreamProvider.family<SubjectMatterModel, String>((ref, subjectMatterId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final document = _firestore
       .collection("institution")

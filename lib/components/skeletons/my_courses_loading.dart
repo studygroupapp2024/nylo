@@ -19,14 +19,14 @@ class MyCoursesLoading extends StatelessWidget {
           return Container(
             margin: const EdgeInsets.only(
               left: 20,
-              right: 50,
+              right: 20,
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Skeleton(
                   height: 15,
-                  width: 150,
+                  width: 125,
                 ),
                 SizedBox(
                   height: 10,
@@ -34,6 +34,18 @@ class MyCoursesLoading extends StatelessWidget {
                 Skeleton(
                   height: 18,
                   width: double.infinity,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Skeleton(height: 25, width: 80),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Skeleton(height: 25, width: 80),
+                  ],
                 )
               ],
             ),
@@ -43,3 +55,12 @@ class MyCoursesLoading extends StatelessWidget {
     );
   }
 }
+
+   //                 return Padding(
+    //                   padding: const EdgeInsets.only(top: 5),
+    //                   child: Shimmer.fromColors(
+    //                     baseColor: Colors.grey[400]!,
+    //                     highlightColor: Colors.grey[300]!,
+    //                     child: const Skeleton(height: 30, width: 80),
+    //                   ),
+    //                 );

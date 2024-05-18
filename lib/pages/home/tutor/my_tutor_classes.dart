@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nylo/components/chats/time.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/skeletons/my_tutor_chat_loading.dart';
 import 'package:nylo/pages/home/study_group/search_study_group.dart';
 import 'package:nylo/pages/home/tutor/components/chips/subject_chip.dart';
+import 'package:nylo/pages/home/tutor/components/text/bold_text.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
@@ -411,15 +413,7 @@ class TutorClassses extends ConsumerWidget {
                                                                                     maxLines: 1,
                                                                                     overflow: TextOverflow.ellipsis,
                                                                                   ),
-                                                                            Align(
-                                                                              alignment: Alignment.centerLeft,
-                                                                              child: Text(
-                                                                                style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
-                                                                                DateFormat('hh:mm a').format(
-                                                                                  chatIds.lastMessageTimeSent!.toDate(),
-                                                                                ),
-                                                                              ),
-                                                                            ),
+                                                                            Time(time: chatIds.lastMessageTimeSent!),
                                                                           ],
                                                                         )
                                                                       : Text(
@@ -449,13 +443,8 @@ class TutorClassses extends ConsumerWidget {
                                                                     CrossAxisAlignment
                                                                         .start,
                                                                 children: [
-                                                                  Text(
-                                                                    chatIds
-                                                                        .className,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .start,
-                                                                  ),
+                                                                  Text(chatIds
+                                                                      .className),
                                                                   const SizedBox(
                                                                     height: 5,
                                                                   ),
@@ -464,12 +453,9 @@ class TutorClassses extends ConsumerWidget {
                                                                         chatIds
                                                                             .subjects!,
                                                                   ),
-                                                                  Text(
-                                                                    data.name,
-                                                                    style: const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  ),
+                                                                  BoldText(
+                                                                      text: data
+                                                                          .name),
                                                                   const SizedBox(
                                                                     height: 4,
                                                                   ),
@@ -492,15 +478,7 @@ class TutorClassses extends ConsumerWidget {
                                                                                     maxLines: 1,
                                                                                     overflow: TextOverflow.ellipsis,
                                                                                   ),
-                                                                            Align(
-                                                                              alignment: Alignment.centerLeft,
-                                                                              child: Text(
-                                                                                style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
-                                                                                DateFormat('hh:mm a').format(
-                                                                                  chatIds.lastMessageTimeSent!.toDate(),
-                                                                                ),
-                                                                              ),
-                                                                            ),
+                                                                            Time(time: chatIds.lastMessageTimeSent!),
                                                                           ],
                                                                         )
                                                                       : Text(

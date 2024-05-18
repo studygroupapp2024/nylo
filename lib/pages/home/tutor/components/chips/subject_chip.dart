@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nylo/pages/home/tutor/components/text/bold_text.dart';
 import 'package:nylo/structure/services/subject_matter_services.dart';
 
 class SubjectChip extends StatelessWidget {
@@ -26,12 +27,9 @@ class SubjectChip extends StatelessWidget {
               vertical: 5,
               horizontal: 10,
             ),
-            child: Text(
-              subject.subjectCode,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
+            child: BoldText(
+              text: subject.subjectCode,
+              fontSize: 12,
             ),
           ),
         );

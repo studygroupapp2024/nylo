@@ -5,6 +5,7 @@ import 'package:nylo/components/dialogs/alert_dialog.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/skeletons/my_courses_loading.dart';
 import 'package:nylo/pages/home/tutor/components/chips/subject_chip.dart';
+import 'package:nylo/pages/home/tutor/components/text/bold_text.dart';
 import 'package:nylo/pages/home/tutor/edit_class.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/scheduler/view_schedule.dart';
@@ -94,13 +95,7 @@ class RegisterAsTutor extends ConsumerWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        classes.className,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
+                                      BoldText(text: classes.className),
                                       const SizedBox(
                                         height: 5,
                                       ),

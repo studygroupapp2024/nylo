@@ -260,61 +260,6 @@ class TutorClassses extends ConsumerWidget {
                                     ),
                                     child: Row(
                                       children: [
-                                        Align(
-                                          alignment: Alignment.topLeft,
-                                          child: IntrinsicHeight(
-                                            child: Consumer(
-                                              builder: (context, ref, child) {
-                                                if (chatIds.proctorId !=
-                                                    _auth.currentUser!.uid) {
-                                                  return Row(
-                                                    children: [
-                                                      Container(
-                                                        height: 70,
-                                                        width: 70,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5),
-                                                        child: CircleAvatar(
-                                                          backgroundImage:
-                                                              NetworkImage(
-                                                            chatIds
-                                                                .members![chatIds
-                                                                    .proctorId]!
-                                                                .imageUrl,
-                                                          ),
-                                                          radius: 30,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Row(
-                                                    children: [
-                                                      Container(
-                                                        height: 70,
-                                                        width: 70,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5),
-                                                        child: CircleAvatar(
-                                                          backgroundImage:
-                                                              NetworkImage(
-                                                            chatIds
-                                                                .members![chatIds
-                                                                    .tuteeId]!
-                                                                .imageUrl,
-                                                          ),
-                                                          radius: 30,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                        ),
                                         const SizedBox(
                                           width: 10,
                                         ),
@@ -325,154 +270,165 @@ class TutorClassses extends ConsumerWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Consumer(
-                                                builder: (context, ref, child) {
-                                                  if (chatIds.proctorId !=
-                                                      _auth.currentUser!.uid) {
-                                                    return Column(
+                                              chatIds.proctorId !=
+                                                      _auth.currentUser!.uid
+                                                  ? Row(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Text(
-                                                          chatIds.className,
-                                                          textAlign:
-                                                              TextAlign.start,
+                                                        CircleAvatar(
+                                                          backgroundImage:
+                                                              NetworkImage(
+                                                            chatIds
+                                                                .members![chatIds
+                                                                    .proctorId]!
+                                                                .imageUrl,
+                                                          ),
+                                                          radius: 30,
                                                         ),
                                                         const SizedBox(
-                                                          height: 5,
+                                                          width: 10,
                                                         ),
-                                                        SubjectChip(
-                                                          subjects:
-                                                              chatIds.subjects!,
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(chatIds
+                                                                .className),
+                                                            const SizedBox(
+                                                                height: 5),
+                                                            SubjectChip(
+                                                              subjects: chatIds
+                                                                  .subjects!,
+                                                            ),
+                                                            BoldText(
+                                                                text: chatIds
+                                                                    .members![
+                                                                        chatIds
+                                                                            .proctorId]!
+                                                                    .name),
+                                                            const SizedBox(
+                                                                height: 4),
+                                                            chatIds.lastMessageTimeSent !=
+                                                                    null
+                                                                ? Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      chatIds.lastMessageSender ==
+                                                                              chatIds.members![chatIds.proctorId]!.name
+                                                                          ? Text(
+                                                                              "${firstName.substring(0, 1).toUpperCase()}${firstName.substring(1).toLowerCase()}: $format",
+                                                                              style: const TextStyle(fontSize: 13),
+                                                                              maxLines: 1,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                            )
+                                                                          : Text(
+                                                                              "You: $format",
+                                                                              style: const TextStyle(fontSize: 13),
+                                                                              maxLines: 1,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                            ),
+                                                                      Time(
+                                                                          time:
+                                                                              chatIds.lastMessageTimeSent!),
+                                                                    ],
+                                                                  )
+                                                                : Text(
+                                                                    chatIds
+                                                                        .lastMessage,
+                                                                    maxLines: 1,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                          ],
                                                         ),
-                                                        Text(
-                                                          chatIds
-                                                              .members![chatIds
-                                                                  .proctorId]!
-                                                              .name,
-                                                          style: const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 4,
-                                                        ),
-                                                        chatIds.lastMessageTimeSent !=
-                                                                null
-                                                            ? Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  chatIds.lastMessageSender ==
-                                                                          chatIds
-                                                                              .members![chatIds.proctorId]!
-                                                                              .name
-                                                                      ? Text(
-                                                                          "${firstName.substring(0, 1).toUpperCase()}${firstName.substring(1).toLowerCase()}: $format",
-                                                                          style:
-                                                                              const TextStyle(fontSize: 13),
-                                                                          maxLines:
-                                                                              1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                        )
-                                                                      : Text(
-                                                                          "You: $format",
-                                                                          style:
-                                                                              const TextStyle(fontSize: 13),
-                                                                          maxLines:
-                                                                              1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                        ),
-                                                                  Time(
-                                                                      time: chatIds
-                                                                          .lastMessageTimeSent!),
-                                                                ],
-                                                              )
-                                                            : Text(
-                                                                chatIds
-                                                                    .lastMessage,
-                                                                maxLines: 2,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
                                                       ],
-                                                    );
-                                                  } else {
-                                                    return Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                    )
+                                                  : Row(
                                                       children: [
-                                                        Text(chatIds.className),
-                                                        const SizedBox(
-                                                          height: 5,
+                                                        Container(
+                                                          height: 70,
+                                                          width: 70,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5),
+                                                          child: CircleAvatar(
+                                                            backgroundImage:
+                                                                NetworkImage(
+                                                              chatIds
+                                                                  .members![chatIds
+                                                                      .tuteeId]!
+                                                                  .imageUrl,
+                                                            ),
+                                                            radius: 30,
+                                                          ),
                                                         ),
-                                                        SubjectChip(
-                                                          subjects:
-                                                              chatIds.subjects!,
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(chatIds
+                                                                .className),
+                                                            const SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            SubjectChip(
+                                                              subjects: chatIds
+                                                                  .subjects!,
+                                                            ),
+                                                            BoldText(
+                                                              text: chatIds
+                                                                  .members![chatIds
+                                                                      .tuteeId]!
+                                                                  .name,
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 4,
+                                                            ),
+                                                            chatIds.lastMessageTimeSent !=
+                                                                    null
+                                                                ? Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      chatIds.lastMessageSender ==
+                                                                              chatIds.members![chatIds.tuteeId]!.name
+                                                                          ? Text(
+                                                                              "${firstName.substring(0, 1).toUpperCase()}${firstName.substring(1).toLowerCase()}: $format",
+                                                                              style: const TextStyle(fontSize: 13),
+                                                                              maxLines: 1,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                            )
+                                                                          : Text(
+                                                                              "You: $format",
+                                                                              style: const TextStyle(fontSize: 13),
+                                                                              maxLines: 1,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                            ),
+                                                                      Time(
+                                                                          time:
+                                                                              chatIds.lastMessageTimeSent!),
+                                                                    ],
+                                                                  )
+                                                                : Text(
+                                                                    chatIds
+                                                                        .lastMessage,
+                                                                    maxLines: 1,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                          ],
                                                         ),
-                                                        BoldText(
-                                                          text: chatIds
-                                                              .members![chatIds
-                                                                  .tuteeId]!
-                                                              .name,
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 4,
-                                                        ),
-                                                        chatIds.lastMessageTimeSent !=
-                                                                null
-                                                            ? Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  chatIds.lastMessageSender ==
-                                                                          chatIds
-                                                                              .members![chatIds.tuteeId]!
-                                                                              .name
-                                                                      ? Text(
-                                                                          "${firstName.substring(0, 1).toUpperCase()}${firstName.substring(1).toLowerCase()}: $format",
-                                                                          style:
-                                                                              const TextStyle(fontSize: 13),
-                                                                          maxLines:
-                                                                              1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                        )
-                                                                      : Text(
-                                                                          "You: $format",
-                                                                          style:
-                                                                              const TextStyle(fontSize: 13),
-                                                                          maxLines:
-                                                                              1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                        ),
-                                                                  Time(
-                                                                      time: chatIds
-                                                                          .lastMessageTimeSent!),
-                                                                ],
-                                                              )
-                                                            : Text(
-                                                                chatIds
-                                                                    .lastMessage,
-                                                                maxLines: 2,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
                                                       ],
-                                                    );
-                                                  }
-                                                },
-                                              ),
+                                                    ),
                                             ],
                                           ),
                                         ),

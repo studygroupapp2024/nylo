@@ -248,7 +248,6 @@ class ChatService {
     final Timestamp timestamp = Timestamp.now();
     final DateTime date = DateTime.now();
 
-    print("DATA: $date");
     // create a new message
     MessageModel newMessage = MessageModel(
       senderId: currentUserId,
@@ -408,11 +407,9 @@ class ChatService {
           .doc(institutionId)
           .collection("direct_messages")
           .doc(groupChatId)
-          .collection("members")
-          .doc(userId)
           .update(
         {
-          'lastMessageIdRead': messageId,
+          'members.$userId.lastMessageIdRead': messageId,
         },
       );
     }

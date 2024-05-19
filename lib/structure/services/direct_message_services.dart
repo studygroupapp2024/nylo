@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nylo/structure/models/chat_members_model.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
@@ -31,10 +30,13 @@ class DirectMessage {
     final userInfodata = userInfo.data();
 
     final userName = userInfodata!['name'];
+    final userImage = userInfodata['imageUrl'];
+    //get proctor data
     final proctorInfo = await _users.getUserInfo(proctorId, institutionId);
     final proctorInfoData = proctorInfo.data();
 
     final proctorName = proctorInfoData!['name'];
+    final proctorImage = proctorInfoData['imageUrl'];
     try {
       final Timestamp timestamp = Timestamp.now();
 
@@ -67,40 +69,48 @@ class DirectMessage {
           .doc(directMessageId)
           .update({'chatId': directMessageId});
 
-      // Add the user and the proctor to the members of the direct message
-      ChatMembersModel addUserAsMember = ChatMembersModel(
-        lastReadChat: timestamp,
-        userId: _auth.currentUser!.uid,
+      // ADD MEMBERS
+      Member tutee = Member(
         isAdmin: false,
         receiveNotification: true,
+        id: _auth.currentUser!.uid,
+        imageUrl: userImage,
+        name: userName,
       );
 
-      await institution
-          .doc(institutionId)
-          .collection("direct_messages")
-          .doc(directMessageId)
-          .collection("members")
-          .doc(_auth.currentUser!.uid)
-          .set(
-            addUserAsMember.toMap(),
-          );
-
-      ChatMembersModel addProctorAsMember = ChatMembersModel(
-        lastReadChat: timestamp,
-        userId: proctorId,
+      Member proctor = Member(
         isAdmin: true,
         receiveNotification: true,
+        id: proctorId,
+        imageUrl: proctorImage,
+        name: proctorName,
       );
 
-      await institution
-          .doc(institutionId)
-          .collection("direct_messages")
-          .doc(directMessageId)
-          .collection("members")
-          .doc(proctorId)
-          .set(
-            addProctorAsMember.toMap(),
-          );
+      final List<Member> members = [tutee, proctor];
+
+      List<Member> membersMap = members.map((members) => members).toList();
+
+      for (var member in membersMap) {
+        final ChatMembers membersModel = ChatMembers(
+          isAdmin: member.isAdmin,
+          receiveNotification: member.receiveNotification,
+          imageUrl: member.imageUrl,
+          name: member.name,
+        );
+
+        final MembersMap addMember = MembersMap(
+          members: {
+            member.id: membersModel,
+          },
+        );
+
+        // Subjects to add
+        await institution
+            .doc(institutionId)
+            .collection("direct_messages")
+            .doc(directMessageId)
+            .set(addMember.toMap(), SetOptions(merge: true));
+      }
 
       // Add the group chat to the user's subject matter
       var data = {

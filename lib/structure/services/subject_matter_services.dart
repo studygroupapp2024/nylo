@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
@@ -28,11 +26,6 @@ class Subject {
       subjectCode: map['subjectCode'] as String,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Subject.fromJson(String source) =>
-      Subject.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
 class SubjectMatter {
@@ -49,7 +42,6 @@ class SubjectMatter {
     try {
       // get current info
       final Timestamp timestamp = Timestamp.now();
-      print("COURSES: $courses");
 
       List<String> subjectCode =
           courses.map((course) => course.subjectCode).toList();

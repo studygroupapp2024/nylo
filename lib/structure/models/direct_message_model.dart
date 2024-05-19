@@ -2,6 +2,73 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nylo/structure/services/subject_matter_services.dart';
 
+class Member {
+  final bool isAdmin;
+  final bool receiveNotification;
+  final String? lastMessageIdRead;
+  final String id;
+  final String imageUrl;
+  final String name;
+  Member({
+    required this.isAdmin,
+    required this.receiveNotification,
+    this.lastMessageIdRead,
+    required this.id,
+    required this.imageUrl,
+    required this.name,
+  });
+}
+
+class ChatMembers {
+  final bool isAdmin;
+  final bool receiveNotification;
+  final String? lastMessageIdRead;
+  final String imageUrl;
+  final String name;
+
+  ChatMembers({
+    required this.isAdmin,
+    required this.receiveNotification,
+    this.lastMessageIdRead,
+    required this.imageUrl,
+    required this.name,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'isAdmin': isAdmin,
+      'receiveNotification': receiveNotification,
+      'lastMessageIdRead': lastMessageIdRead,
+      'imageUrl': imageUrl,
+      'name': name
+    };
+  }
+
+  factory ChatMembers.fromMap(Map<String, dynamic> map) {
+    return ChatMembers(
+      isAdmin: map['isAdmin'] as bool,
+      receiveNotification: map['receiveNotification'] as bool,
+      lastMessageIdRead: map['lastMessageIdRead'] != null
+          ? map['lastMessageIdRead'] as String
+          : null,
+      imageUrl: map['imageUrl'] as String,
+      name: map['name'] as String,
+    );
+  }
+}
+
+class MembersMap {
+  Map<String, ChatMembers>? members;
+
+  MembersMap({this.members});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'members': members!.map((key, value) => MapEntry(key, value.toMap())),
+    };
+  }
+}
+
 class DirectMessageModel {
   final String? chatId;
   final Timestamp timestamp;
@@ -16,7 +83,7 @@ class DirectMessageModel {
   final String? lastMessageId;
   final Map<String, Subject>? subjects;
   final String className;
-
+  final Map<String, ChatMembers>? members;
   DirectMessageModel({
     this.chatId,
     required this.timestamp,
@@ -31,6 +98,7 @@ class DirectMessageModel {
     required this.lastMessageId,
     this.subjects,
     required this.className,
+    this.members,
   });
 
   Map<String, dynamic> toMap() {
@@ -49,6 +117,8 @@ class DirectMessageModel {
       'subjects':
           subjects?.map((key, value) => MapEntry(key, value.toMap())) ?? {},
       'className': className,
+      'members':
+          members?.map((key, value) => MapEntry(key, value.toMap())) ?? {},
     };
   }
 
@@ -58,6 +128,13 @@ class DirectMessageModel {
     map.forEach((key, value) {
       if (value is Map<String, dynamic>) {
         subjectsMap[key] = Subject.fromMap(value);
+      }
+    });
+
+    final membersMap = <String, ChatMembers>{};
+    map.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        membersMap[key] = ChatMembers.fromMap(value);
       }
     });
 
@@ -80,12 +157,16 @@ class DirectMessageModel {
       lastMessageId: map['lastMessageId'] as String,
       subjects: subjectsMap,
       className: map['className'] as String,
+      members: membersMap,
     );
   }
 
   factory DirectMessageModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
     final subjectsMap = doc.data()?['subjects'] as Map<String, dynamic>? ?? {};
+
+    final membersMap = doc.data()?['members'] as Map<String, dynamic>? ?? {};
+
     return DirectMessageModel(
       chatId: doc['chatId'],
       timestamp: doc['createdAt'],
@@ -101,6 +182,8 @@ class DirectMessageModel {
       subjects: subjectsMap.map((key, value) =>
           MapEntry(key, Subject.fromMap(value as Map<String, dynamic>))),
       className: doc['className'],
+      members: membersMap.map((key, value) =>
+          MapEntry(key, ChatMembers.fromMap(value as Map<String, dynamic>))),
     );
   }
 }

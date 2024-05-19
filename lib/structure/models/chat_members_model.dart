@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatMembersModel {
   final Timestamp? lastReadChat;
   final String userId;
-
   final bool isAdmin;
   final bool receiveNotification;
   final String? lastMessageIdRead;

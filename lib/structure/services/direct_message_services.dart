@@ -30,10 +30,13 @@ class DirectMessage {
     final userInfodata = userInfo.data();
 
     final userName = userInfodata!['name'];
+    final userImage = userInfodata['imageUrl'];
+    //get proctor data
     final proctorInfo = await _users.getUserInfo(proctorId, institutionId);
     final proctorInfoData = proctorInfo.data();
 
     final proctorName = proctorInfoData!['name'];
+    final proctorImage = proctorInfoData['imageUrl'];
     try {
       final Timestamp timestamp = Timestamp.now();
 
@@ -68,12 +71,20 @@ class DirectMessage {
 
       // ADD MEMBERS
       Member tutee = Member(
-          isAdmin: false,
-          receiveNotification: true,
-          id: _auth.currentUser!.uid);
+        isAdmin: false,
+        receiveNotification: true,
+        id: _auth.currentUser!.uid,
+        imageUrl: userImage,
+        name: userName,
+      );
 
-      Member proctor =
-          Member(isAdmin: true, receiveNotification: true, id: proctorId);
+      Member proctor = Member(
+        isAdmin: true,
+        receiveNotification: true,
+        id: proctorId,
+        imageUrl: proctorImage,
+        name: proctorName,
+      );
 
       final List<Member> members = [tutee, proctor];
 
@@ -83,6 +94,8 @@ class DirectMessage {
         final ChatMembers membersModel = ChatMembers(
           isAdmin: member.isAdmin,
           receiveNotification: member.receiveNotification,
+          imageUrl: member.imageUrl,
+          name: member.name,
         );
 
         final MembersMap addMember = MembersMap(

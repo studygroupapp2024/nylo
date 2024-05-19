@@ -7,11 +7,15 @@ class Member {
   final bool receiveNotification;
   final String? lastMessageIdRead;
   final String id;
+  final String imageUrl;
+  final String name;
   Member({
     required this.isAdmin,
     required this.receiveNotification,
     this.lastMessageIdRead,
     required this.id,
+    required this.imageUrl,
+    required this.name,
   });
 }
 
@@ -19,11 +23,15 @@ class ChatMembers {
   final bool isAdmin;
   final bool receiveNotification;
   final String? lastMessageIdRead;
+  final String imageUrl;
+  final String name;
 
   ChatMembers({
     required this.isAdmin,
     required this.receiveNotification,
     this.lastMessageIdRead,
+    required this.imageUrl,
+    required this.name,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +39,8 @@ class ChatMembers {
       'isAdmin': isAdmin,
       'receiveNotification': receiveNotification,
       'lastMessageIdRead': lastMessageIdRead,
+      'imageUrl': imageUrl,
+      'name': name
     };
   }
 
@@ -41,6 +51,8 @@ class ChatMembers {
       lastMessageIdRead: map['lastMessageIdRead'] != null
           ? map['lastMessageIdRead'] as String
           : null,
+      imageUrl: map['imageUrl'] as String,
+      name: map['name'] as String,
     );
   }
 }

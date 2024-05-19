@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nylo/structure/models/chat_members_model.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
@@ -67,40 +66,38 @@ class DirectMessage {
           .doc(directMessageId)
           .update({'chatId': directMessageId});
 
-      // Add the user and the proctor to the members of the direct message
-      ChatMembersModel addUserAsMember = ChatMembersModel(
-        lastReadChat: timestamp,
-        userId: _auth.currentUser!.uid,
-        isAdmin: false,
-        receiveNotification: true,
-      );
+      // ADD MEMBERS
+      Member tutee = Member(
+          isAdmin: false,
+          receiveNotification: true,
+          id: _auth.currentUser!.uid);
 
-      await institution
-          .doc(institutionId)
-          .collection("direct_messages")
-          .doc(directMessageId)
-          .collection("members")
-          .doc(_auth.currentUser!.uid)
-          .set(
-            addUserAsMember.toMap(),
-          );
+      Member proctor =
+          Member(isAdmin: true, receiveNotification: true, id: proctorId);
 
-      ChatMembersModel addProctorAsMember = ChatMembersModel(
-        lastReadChat: timestamp,
-        userId: proctorId,
-        isAdmin: true,
-        receiveNotification: true,
-      );
+      final List<Member> members = [tutee, proctor];
 
-      await institution
-          .doc(institutionId)
-          .collection("direct_messages")
-          .doc(directMessageId)
-          .collection("members")
-          .doc(proctorId)
-          .set(
-            addProctorAsMember.toMap(),
-          );
+      List<Member> membersMap = members.map((members) => members).toList();
+
+      for (var member in membersMap) {
+        final ChatMembers membersModel = ChatMembers(
+          isAdmin: member.isAdmin,
+          receiveNotification: member.receiveNotification,
+        );
+
+        final MembersMap addMember = MembersMap(
+          members: {
+            member.id: membersModel,
+          },
+        );
+
+        // Subjects to add
+        await institution
+            .doc(institutionId)
+            .collection("direct_messages")
+            .doc(directMessageId)
+            .set(addMember.toMap(), SetOptions(merge: true));
+      }
 
       // Add the group chat to the user's subject matter
       var data = {

@@ -6,7 +6,7 @@ import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 
 class ChatInfoContainerWithSwitch extends ConsumerWidget {
-  const ChatInfoContainerWithSwitch({
+  ChatInfoContainerWithSwitch({
     super.key,
     required this.onTap,
     required this.title,
@@ -21,6 +21,7 @@ class ChatInfoContainerWithSwitch extends ConsumerWidget {
   final String groupChatId;
   final bool isGroup;
 
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final singleUserGroupChatInformation =
@@ -117,7 +118,8 @@ class ChatInfoContainerWithSwitch extends ConsumerWidget {
                               .tertiaryContainer;
                         },
                       ),
-                      value: data.receiveNotification,
+                      value: data.members![_firebaseAuth.currentUser!.uid]!
+                          .receiveNotification,
                       onChanged: (value) {
                         ref.read(groupChatProvider).configureNotification(
                               groupChatId,

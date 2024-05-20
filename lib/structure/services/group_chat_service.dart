@@ -35,10 +35,8 @@ class GroupChat {
           .doc(institutionId)
           .collection("direct_messages")
           .doc(groupChatId)
-          .collection("members")
-          .doc(userId)
           .update({
-        'receiveNotification': receiveNotification,
+        'members.$userId.receiveNotification': receiveNotification,
       });
     }
   }

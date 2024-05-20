@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nylo/structure/models/chat_members_model.dart';
 import 'package:nylo/structure/models/chat_model.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/models/subject_matter_model.dart';
@@ -94,18 +93,17 @@ final tutorClassMessagesProvider =
 );
 
 final directMessageMemberInfoProvider =
-    StreamProvider.family.autoDispose<ChatMembersModel, String>((ref, chatId) {
+    StreamProvider.family<DirectMessageModel, String>((ref, chatId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final document = _firestore
       .collection("institution")
       .doc(institutionId)
       .collection("direct_messages")
       .doc(chatId)
-      .collection("members")
-      .doc(_auth.currentUser!.uid);
-  return document.snapshots().map(
-        ChatMembersModel.fromSnapshot,
-      );
+      .snapshots();
+  return document.map(
+    DirectMessageModel.fromSnapshot,
+  );
 });
 
 final directMessageInfoProvider =

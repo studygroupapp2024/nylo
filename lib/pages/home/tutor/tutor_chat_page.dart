@@ -17,6 +17,7 @@ import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/storage_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TutorChatPage extends HookConsumerWidget {
   final String groupChatId;
@@ -185,20 +186,34 @@ class TutorChatPage extends HookConsumerWidget {
                                         children: [
                                           // change image
                                           userInfo.when(
-                                            data: (data) {
-                                              return CircleAvatar(
-                                                radius: 20,
-                                                backgroundImage: NetworkImage(
-                                                  data.imageUrl,
-                                                ),
-                                              );
-                                            },
-                                            error: (error, stackTrace) => Text(
-                                              error.toString(),
-                                            ),
-                                            loading: () =>
-                                                const CircularProgressIndicator(),
-                                          ),
+                                              data: (data) {
+                                                return CircleAvatar(
+                                                  radius: 20,
+                                                  backgroundImage: NetworkImage(
+                                                    data.imageUrl,
+                                                  ),
+                                                );
+                                              },
+                                              error: (error, stackTrace) =>
+                                                  Text(
+                                                    error.toString(),
+                                                  ),
+                                              loading: () {
+                                                return Center(
+                                                  child: Shimmer.fromColors(
+                                                    baseColor:
+                                                        Colors.grey[400]!,
+                                                    highlightColor:
+                                                        Colors.grey[300]!,
+                                                    child: CircleAvatar(
+                                                      backgroundColor: Colors
+                                                          .black
+                                                          .withOpacity(.15),
+                                                      radius: 20,
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
 
                                           Container(
                                             height: 20,

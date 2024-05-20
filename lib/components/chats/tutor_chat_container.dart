@@ -49,19 +49,28 @@ class TutorChatContainer extends StatelessWidget {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          chatIds.lastMessageSender == name
+                          chatIds.lastMessageSender == name &&
+                                  chatIds.lastMessageType != 'announcement'
                               ? Text(
                                   "${firstName.substring(0, 1).toUpperCase()}${firstName.substring(1).toLowerCase()}: $format",
                                   style: const TextStyle(fontSize: 13),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 )
-                              : Text(
-                                  "You: $format",
-                                  style: const TextStyle(fontSize: 13),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                              : chatIds.lastMessageSender != name &&
+                                      chatIds.lastMessageType != 'announcement'
+                                  ? Text(
+                                      "You: $format",
+                                      style: const TextStyle(fontSize: 13),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  : Text(
+                                      format,
+                                      style: const TextStyle(fontSize: 13),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                           Time(time: chatIds.lastMessageTimeSent!),
                         ],
                       )

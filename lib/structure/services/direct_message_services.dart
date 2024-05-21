@@ -22,6 +22,7 @@ class DirectMessage {
     String subjectMatterId,
     List<SelectedCoursesToTeachModel> courses,
     String className,
+    String subjectMatterDescription,
   ) async {
     //get student data
     final userInfo =
@@ -52,6 +53,7 @@ class DirectMessage {
         tuteeId: _auth.currentUser!.uid,
         lastMessageId: null,
         className: className,
+        classDescription: subjectMatterDescription,
       );
 
       DocumentReference newDirectMessageRef = await institution
@@ -191,6 +193,7 @@ class DirectMessage {
           'membersId': [proctorId, _auth.currentUser!.uid],
           'classId': subjectMatterId,
           'isSuccess': true,
+          'classDescription': subjectMatterDescription,
           // Add more key-value pairs as needed
         };
 

@@ -93,8 +93,7 @@ final tutorClassMessagesProvider =
 );
 
 final directMessageMemberInfoProvider =
-    StreamProvider.family<DirectMessageModel, String>((ref, chatId) async* {
-  await Future.delayed(const Duration(seconds: 10));
+    StreamProvider.family<DirectMessageModel, String>((ref, chatId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final document = _firestore
       .collection("institution")
@@ -102,7 +101,7 @@ final directMessageMemberInfoProvider =
       .collection("direct_messages")
       .doc(chatId)
       .snapshots();
-  yield* document.map(
+  return document.map(
     DirectMessageModel.fromSnapshot,
   );
 });

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nylo/structure/messaging/message_api.dart';
-import 'package:nylo/structure/models/chat_members_model.dart';
+import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/services/chat_services.dart';
 import 'package:nylo/structure/services/user_service.dart';
 
@@ -64,27 +64,40 @@ class MemberRequest {
 
     final uid = userInfodata!['uid'];
     final userName = userInfodata['name'];
-
+    final userImage = userInfodata['imageUrl'];
     final fcmtoken = userInfodata['fcmtoken'];
+
+    Member user = Member(
+      isAdmin: true,
+      receiveNotification: true,
+      id: userId,
+      imageUrl: userImage,
+      name: userName,
+    );
+
+    final ChatMembers membersModel = ChatMembers(
+      isAdmin: user.isAdmin,
+      receiveNotification: user.receiveNotification,
+      imageUrl: user.imageUrl,
+      name: user.name,
+    );
+
+    final MembersMap addMember = MembersMap(
+      members: {
+        user.id: membersModel,
+      },
+    );
 
     if (isAccepted) {
       // create a new Member
-      ChatMembersModel newMember = ChatMembersModel(
-          lastReadChat: timestamp,
-          userId: uid,
-          isAdmin: false,
-          receiveNotification: true);
 
+      // Subjects to add
       await _firestore
           .collection("institution")
           .doc(institutionId)
           .collection("study_groups")
           .doc(documentId)
-          .collection("members")
-          .doc(userId)
-          .set(
-            newMember.toMap(),
-          );
+          .set(addMember.toMap(), SetOptions(merge: true));
 
       // send notification
       _firebaseMessage.sendPushMessage(

@@ -25,6 +25,7 @@ class GroupChatModel {
   final String? groupChatImage;
   final String courseTitle;
   final String lastMessageId;
+  final Map<String, ChatMembers>? membersRequest;
 
   GroupChatModel({
     required this.docID,
@@ -45,6 +46,7 @@ class GroupChatModel {
     required this.courseTitle,
     required this.lastMessageId,
     this.members,
+    this.membersRequest,
   });
 
   Map<String, dynamic> toMap() {
@@ -66,6 +68,11 @@ class GroupChatModel {
       'groupChatImage': groupChatImage,
       'courseTitle': courseTitle,
       'lastMessageId': lastMessageId,
+      'members':
+          members?.map((key, value) => MapEntry(key, value.toMap())) ?? {},
+      'membersRequest':
+          membersRequest?.map((key, value) => MapEntry(key, value.toMap())) ??
+              {},
     };
   }
 
@@ -75,6 +82,13 @@ class GroupChatModel {
     map.forEach((key, value) {
       if (value is Map<String, dynamic>) {
         membersMap[key] = ChatMembers.fromMap(value);
+      }
+    });
+
+    final membersRequestMap = <String, ChatMembers>{};
+    map.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        membersRequestMap[key] = ChatMembers.fromMap(value);
       }
     });
 
@@ -103,12 +117,16 @@ class GroupChatModel {
       courseTitle: map['studyGroupTitle'] as String,
       lastMessageId: map['lastMessageId'] as String,
       members: membersMap,
+      membersRequest: membersRequestMap,
     );
   }
 
   factory GroupChatModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
     final membersMap = doc.data()?['members'] as Map<String, dynamic>? ?? {};
+
+    final membersRequest =
+        doc.data()?['membersRequest'] as Map<String, dynamic>? ?? {};
     return GroupChatModel(
       docID: doc['chatId'],
       creatorId: doc['creatorId'],
@@ -128,6 +146,8 @@ class GroupChatModel {
       courseTitle: doc['courseTitle'],
       lastMessageId: doc['lastMessageId'],
       members: membersMap.map((key, value) =>
+          MapEntry(key, ChatMembers.fromMap(value as Map<String, dynamic>))),
+      membersRequest: membersRequest.map((key, value) =>
           MapEntry(key, ChatMembers.fromMap(value as Map<String, dynamic>))),
     );
   }

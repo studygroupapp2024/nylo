@@ -404,11 +404,9 @@ class ChatService {
           .doc(institutionId)
           .collection("study_groups")
           .doc(groupChatId)
-          .collection("members")
-          .doc(userId)
           .update(
         {
-          'lastMessageIdRead': messageId,
+          'members.$userId.lastMessageIdRead': messageId,
         },
       );
     } else {

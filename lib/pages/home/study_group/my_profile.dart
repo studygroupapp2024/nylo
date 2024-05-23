@@ -258,6 +258,7 @@ class ProfilePage extends ConsumerWidget {
                       ref
                           .read(isLoadingProvider.notifier)
                           .update((state) => false);
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

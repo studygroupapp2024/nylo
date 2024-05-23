@@ -103,12 +103,7 @@ class ChatPage extends HookConsumerWidget {
                     settings: const RouteSettings(name: "/ChatPage"),
                     builder: (context) => ChatInfo(
                       groupChatId: groupChatId,
-                      creator: creator,
-                      groupChatTitle: title,
-                      groupChatDescription: desc,
                       dateCreated: dateCreated,
-                      courseCode: courseCode,
-                      courseTitle: courseTitle,
                       members: members,
                     ),
                   ),

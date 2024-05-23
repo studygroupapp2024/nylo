@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:nylo/structure/messaging/message_api.dart';
-import 'package:nylo/structure/models/chat_members_model.dart';
+import 'package:nylo/structure/models/direct_message_model.dart';
 import 'package:nylo/structure/models/group_chat_model.dart';
 import 'package:nylo/structure/services/chat_services.dart';
 import 'package:nylo/structure/services/user_service.dart';
@@ -25,10 +25,8 @@ class GroupChat {
           .doc(institutionId)
           .collection("study_groups")
           .doc(groupChatId)
-          .collection("members")
-          .doc(userId)
           .update({
-        'receiveNotification': receiveNotification,
+        'members.$userId.receiveNotification': receiveNotification,
       });
     } else {
       await institution
@@ -121,14 +119,6 @@ class GroupChat {
             courseTitle: courseTitle,
           );
 
-          // create a new study group
-          ChatMembersModel newMemberList = ChatMembersModel(
-            lastReadChat: null,
-            userId: _auth.currentUser!.uid,
-            isAdmin: true,
-            receiveNotification: true,
-          );
-
           // groupChat.add(newGroupChat.toMap());
           // add new study group to the database database
           DocumentReference newGroupChatRef = await institution
@@ -145,16 +135,6 @@ class GroupChat {
               .collection("study_groups")
               .doc(groupChatId)
               .update({'chatId': groupChatId});
-
-          await institution
-              .doc(institutionId)
-              .collection("study_groups")
-              .doc(groupChatId)
-              .collection("members")
-              .doc(_auth.currentUser!.uid)
-              .set(
-                newMemberList.toMap(),
-              );
 
           // Add the group chat to the user's study group chat
 
@@ -179,6 +159,43 @@ class GroupChat {
             institutionId,
             true,
           );
+
+          // add member
+          final userInfo =
+              await _users.getUserInfo(_auth.currentUser!.uid, institutionId);
+
+          final userInfodata = userInfo.data();
+
+          final userImage = userInfodata!['imageUrl'];
+
+          Member user = Member(
+            isAdmin: true,
+            receiveNotification: true,
+            id: _auth.currentUser!.uid,
+            imageUrl: userImage,
+            name: userName,
+          );
+
+          final ChatMembers membersModel = ChatMembers(
+            isAdmin: user.isAdmin,
+            receiveNotification: user.receiveNotification,
+            imageUrl: user.imageUrl,
+            name: user.name,
+          );
+
+          final MembersMap addMember = MembersMap(
+            members: {
+              user.id: membersModel,
+            },
+          );
+
+          // Subjects to add
+          await institution
+              .doc(institutionId)
+              .collection("study_groups")
+              .doc(groupChatId)
+              .set(addMember.toMap(), SetOptions(merge: true));
+
           return true;
         } else {
           final Timestamp timestamp = Timestamp.now();
@@ -202,14 +219,6 @@ class GroupChat {
             courseTitle: courseTitle,
           );
 
-          // create a new study group
-          ChatMembersModel newMemberList = ChatMembersModel(
-            lastReadChat: null,
-            userId: _auth.currentUser!.uid,
-            isAdmin: true,
-            receiveNotification: true,
-          );
-
           // groupChat.add(newGroupChat.toMap());
           // add new study group to the database database
           DocumentReference newGroupChatRef = await institution
@@ -227,15 +236,41 @@ class GroupChat {
               .doc(groupChatId)
               .update({'chatId': groupChatId});
 
+          // add member
+          final userInfo =
+              await _users.getUserInfo(_auth.currentUser!.uid, institutionId);
+
+          final userInfodata = userInfo.data();
+
+          final userImage = userInfodata!['imageUrl'];
+
+          Member user = Member(
+            isAdmin: true,
+            receiveNotification: true,
+            id: _auth.currentUser!.uid,
+            imageUrl: userImage,
+            name: userName,
+          );
+
+          final ChatMembers membersModel = ChatMembers(
+            isAdmin: user.isAdmin,
+            receiveNotification: user.receiveNotification,
+            imageUrl: user.imageUrl,
+            name: user.name,
+          );
+
+          final MembersMap addMember = MembersMap(
+            members: {
+              user.id: membersModel,
+            },
+          );
+
+          // Subjects to add
           await institution
               .doc(institutionId)
               .collection("study_groups")
               .doc(groupChatId)
-              .collection("members")
-              .doc(_auth.currentUser!.uid)
-              .set(
-                newMemberList.toMap(),
-              );
+              .set(addMember.toMap(), SetOptions(merge: true));
 
           // Add the group chat to the user's study group chat
 

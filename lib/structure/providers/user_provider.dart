@@ -35,15 +35,3 @@ final editProfilePathProvider = StateProvider<File?>((ref) => null);
 final editProfilePathNameProvider = StateProvider<String>((ref) => '');
 
 final editProfileNameProvider = StateProvider<String>((ref) => '');
-
-// ================== CURRENT USER INFO PROVIDER ======================
-
-final currentUserName = StateProvider<String>((ref) => '');
-
-final currentUserNameFCMToken = StateProvider<String>((ref) => '');
-
-final currentUserImageURL = StateProvider<String>((ref) => '');
-
-final currentUserEmail = StateProvider<String>((ref) => '');
-
-final currentUserUID = StateProvider<String>((ref) => '');

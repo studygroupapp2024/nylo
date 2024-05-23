@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nylo/structure/models/direct_message_model.dart';
 
 // GROUPCHAT MODEL
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -15,7 +16,7 @@ class GroupChatModel {
   final String studyGroupCourseId;
   final Timestamp timestamp;
   final List<dynamic> membersId;
-
+  final Map<String, ChatMembers>? members;
   final List<dynamic> membersRequestId;
   final String lastMessage;
   final String lastMessageSender;
@@ -24,6 +25,7 @@ class GroupChatModel {
   final String? groupChatImage;
   final String courseTitle;
   final String lastMessageId;
+  final Map<String, ChatMembers>? membersRequest;
 
   GroupChatModel({
     required this.docID,
@@ -43,6 +45,8 @@ class GroupChatModel {
     this.groupChatImage,
     required this.courseTitle,
     required this.lastMessageId,
+    this.members,
+    this.membersRequest,
   });
 
   Map<String, dynamic> toMap() {
@@ -64,11 +68,30 @@ class GroupChatModel {
       'groupChatImage': groupChatImage,
       'courseTitle': courseTitle,
       'lastMessageId': lastMessageId,
+      'members':
+          members?.map((key, value) => MapEntry(key, value.toMap())) ?? {},
+      'membersRequest':
+          membersRequest?.map((key, value) => MapEntry(key, value.toMap())) ??
+              {},
     };
   }
 
   // ),
   factory GroupChatModel.fromMap(Map<String, dynamic> map) {
+    final membersMap = <String, ChatMembers>{};
+    map.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        membersMap[key] = ChatMembers.fromMap(value);
+      }
+    });
+
+    final membersRequestMap = <String, ChatMembers>{};
+    map.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        membersRequestMap[key] = ChatMembers.fromMap(value);
+      }
+    });
+
     return GroupChatModel(
       docID: map['docID'] as String,
       creatorId: map['creatorId'] as String,
@@ -93,11 +116,17 @@ class GroupChatModel {
           : null,
       courseTitle: map['studyGroupTitle'] as String,
       lastMessageId: map['lastMessageId'] as String,
+      members: membersMap,
+      membersRequest: membersRequestMap,
     );
   }
 
   factory GroupChatModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
+    final membersMap = doc.data()?['members'] as Map<String, dynamic>? ?? {};
+
+    final membersRequest =
+        doc.data()?['membersRequest'] as Map<String, dynamic>? ?? {};
     return GroupChatModel(
       docID: doc['chatId'],
       creatorId: doc['creatorId'],
@@ -116,6 +145,10 @@ class GroupChatModel {
       groupChatImage: doc['groupChatImage'],
       courseTitle: doc['courseTitle'],
       lastMessageId: doc['lastMessageId'],
+      members: membersMap.map((key, value) =>
+          MapEntry(key, ChatMembers.fromMap(value as Map<String, dynamic>))),
+      membersRequest: membersRequest.map((key, value) =>
+          MapEntry(key, ChatMembers.fromMap(value as Map<String, dynamic>))),
     );
   }
 }

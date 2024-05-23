@@ -13,14 +13,15 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 // ============================ STREAM PROVIDERS =============================
 
 final singleGroupChatInformationProvider =
-    StreamProvider.family<GroupChatModel, String>((ref, chatId) {
+    StreamProvider.family<GroupChatModel, String>((ref, chatId) async* {
+  await Future.delayed(const Duration(seconds: 10));
   final institutionId = ref.watch(setGlobalUniversityId);
   final document = _firestore
       .collection("institution")
       .doc(institutionId)
       .collection("study_groups")
       .doc(chatId);
-  return document.snapshots().map(
+  yield* document.snapshots().map(
         GroupChatModel.fromSnapshot,
       );
 });
@@ -130,25 +131,37 @@ final selectedGroupChatInformationProvider = StreamProvider.family
 // get User Study Groups
 final userChatIdsProvider = StreamProvider.family<List<GroupChatModel>, String>(
   (ref, userId) {
-    final institutionId = ref.watch(setGlobalUniversityId);
-    final userStudyGroups = _firestore
-        .collection("institution")
-        .doc(institutionId)
-        .collection("study_groups")
-        .orderBy(
-          'lastMessageTimeSent',
-          descending: true,
-        )
-        .snapshots()
-        .map(
-          (querySnapshot) => querySnapshot.docs
-              .map(
-                (snapshot) => GroupChatModel.fromSnapshot(snapshot),
-              )
-              .where((group) => group.membersId.contains(userId))
-              .toList(),
-        );
-    return userStudyGroups;
+    try {
+      final institutionId = ref.watch(setGlobalUniversityId);
+      final userStudyGroups = _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("study_groups")
+          .orderBy(
+            'lastMessageTimeSent',
+            descending: true,
+          )
+          .snapshots()
+          .map(
+            (querySnapshot) => querySnapshot.docs
+                .map(
+                  (snapshot) => GroupChatModel.fromSnapshot(snapshot),
+                )
+                .where((group) => group.membersId.contains(userId))
+                .toList(),
+          );
+      return userStudyGroups;
+    } catch (e) {
+      if (e is FirebaseException && e.code == 'permission-denied') {
+        print('Permission denied: ${e.message}');
+        return Stream.value([]);
+        // Handle the permission denied error
+      } else {
+        print('Error: ${e.toString()}');
+        return Stream.value([]);
+        // Handle other errors
+      }
+    }
   },
 );
 

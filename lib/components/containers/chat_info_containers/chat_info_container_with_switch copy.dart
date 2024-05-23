@@ -71,7 +71,7 @@ class NotificationSwitch extends ConsumerWidget {
                         ref.watch(setGlobalUniversityId),
                         firebaseAuth.currentUser!.uid,
                         value,
-                        false,
+                        isGroup,
                       );
                 },
               ),

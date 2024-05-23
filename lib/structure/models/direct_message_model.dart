@@ -69,6 +69,19 @@ class MembersMap {
   }
 }
 
+class MembersRequestMap {
+  Map<String, ChatMembers>? membersRequest;
+
+  MembersRequestMap({this.membersRequest});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'membersRequest':
+          membersRequest!.map((key, value) => MapEntry(key, value.toMap())),
+    };
+  }
+}
+
 class DirectMessageModel {
   final String? chatId;
   final Timestamp timestamp;

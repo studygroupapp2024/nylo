@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
 
 class MembersContainer extends StatelessWidget {
   final String member;
@@ -55,7 +54,7 @@ class MembersContainer extends StatelessWidget {
               ],
             ),
           ),
-          if (_firebaseAuth.currentUser!.uid == creatorId && !isAdmin)
+          if (!isAdmin)
             IconButton(
               onPressed: onPressed,
               icon: const Icon(Icons.remove_circle_outline),

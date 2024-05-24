@@ -4,7 +4,6 @@ import 'package:nylo/components/containers/members_container.dart';
 import 'package:nylo/components/dialogs/alert_dialog.dart';
 import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
-import 'package:nylo/structure/providers/user_provider.dart';
 
 class Members extends ConsumerWidget {
   final String groupChatId;
@@ -20,9 +19,7 @@ class Members extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupChatMembers = ref.watch(
-      groupChatMembersProvider(groupChatId),
-    );
+    final group = ref.watch(singleGroupChatInformationProvider(groupChatId));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -30,56 +27,47 @@ class Members extends ConsumerWidget {
       ),
       body: Consumer(
         builder: (context, ref, child) {
-          return groupChatMembers.when(
-            data: (membersList) {
+          return group.when(
+            data: (groupchat) {
               return ListView.builder(
                 shrinkWrap: true,
-                itemCount: membersList.length,
+                itemCount: groupchat.members!.length,
                 itemBuilder: (context, index) {
-                  final members = membersList[index];
-
-                  return Consumer(
-                    builder: (context, ref, child) {
-                      final userInfo =
-                          ref.watch(userInfoProvider(members.userId));
-
-                      return userInfo.when(
-                        data: (info) {
-                          return MembersContainer(
-                            member: info.name,
-                            role: members.isAdmin ? "Admin" : "Member",
-                            image: info.imageUrl,
-                            isAdmin: members.isAdmin,
-                            creatorId: creatorId,
-                            onPressed: () async {
-                              await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return ConfirmationDialog(
-                                    confirm: () async {
-                                      ref.read(groupChatProvider).removeMember(
-                                            groupChatId,
-                                            members.userId,
-                                            ref.watch(setGlobalUniversityId),
-                                            "kick",
-                                            info.name,
-                                            groupChatTitle,
-                                            creatorId,
-                                          );
-                                    },
-                                    content:
-                                        "Are you sure you want to remove this member?",
-                                    title: "Confirmation",
-                                    type: "Yes",
+                  final values = groupchat.members!.values.toList();
+                  final keys = groupchat.members!.keys.toList();
+                  final userKey = keys[index];
+                  final members = values[index];
+                  return MembersContainer(
+                    member: members.name, // Use the individual member
+                    role: members.isAdmin
+                        ? "Admin"
+                        : "Member", // Check the role for each member
+                    image: members.imageUrl,
+                    isAdmin: members.isAdmin,
+                    creatorId: groupchat.creatorId,
+                    onPressed: () async {
+                      print("User key: $userKey");
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ConfirmationDialog(
+                            confirm: () async {
+                              ref.read(groupChatProvider).removeMember(
+                                    groupChatId,
+                                    userKey,
+                                    ref.watch(setGlobalUniversityId),
+                                    "kick",
+                                    members.name,
+                                    groupChatTitle,
+                                    creatorId,
                                   );
-                                },
-                              );
                             },
+                            content:
+                                "Are you sure you want to remove this member?",
+                            title: "Confirmation",
+                            type: "Yes",
                           );
                         },
-                        error: (error, stackTrace) => Text(error.toString()),
-                        loading: () =>
-                            const Center(child: CircularProgressIndicator()),
                       );
                     },
                   );

@@ -29,6 +29,9 @@ class HomeCategoryLoading extends StatelessWidget {
                 height: 4,
               ),
               const Skeleton(height: 15, width: 75),
+              const SizedBox(
+                height: 5,
+              ),
               const Skeleton(height: 20, width: 125),
             ],
           ),

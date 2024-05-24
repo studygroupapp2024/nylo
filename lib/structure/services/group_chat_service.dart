@@ -309,15 +309,6 @@ class GroupChat {
     String groupChatTitle,
     String creatorId,
   ) async {
-    // remove the member from the group
-    await institution
-        .doc(institutionId)
-        .collection("study_groups")
-        .doc(groupChatId)
-        .collection("members")
-        .doc(userId)
-        .delete();
-
     // remove the group chat from the user's study group chat
     await institution
         .doc(institutionId)
@@ -340,6 +331,13 @@ class GroupChat {
       },
     );
 
+    await institution
+        .doc(institutionId)
+        .collection("study_groups")
+        .doc(groupChatId)
+        .update({
+      'members.$userId': FieldValue.delete(),
+    });
     // get user data
     final userInfo = await _users.getUserInfo(
       userId,

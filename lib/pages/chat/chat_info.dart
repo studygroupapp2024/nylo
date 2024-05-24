@@ -460,27 +460,32 @@ class ChatInfo extends ConsumerWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              const Skeleton(height: 25, width: 75),
+                              const Skeleton(height: 20, width: 75),
                               const SizedBox(
                                 height: 10,
+                              ),
+                              const Skeleton(height: 35, width: 300),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Skeleton(
+                                  height: 15, width: double.infinity),
+                              const SizedBox(
+                                height: 15,
                               ),
                               const Skeleton(height: 30, width: 200),
                               const SizedBox(
                                 height: 10,
                               ),
-                              const Row(
-                                children: [
-                                  Skeleton(height: 25, width: 125),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Skeleton(height: 25, width: 125),
-                                ],
+                              const Skeleton(height: 15, width: 125),
+                              const SizedBox(
+                                height: 15,
                               ),
+                              const Skeleton(height: 30, width: 135),
                               const SizedBox(
                                 height: 10,
                               ),
-                              const Skeleton(height: 25, width: 100),
+                              const Skeleton(height: 15, width: 125),
                               const SizedBox(
                                 height: 20,
                               ),

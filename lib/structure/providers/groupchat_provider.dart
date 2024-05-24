@@ -13,15 +13,14 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 // ============================ STREAM PROVIDERS =============================
 
 final singleGroupChatInformationProvider =
-    StreamProvider.family<GroupChatModel, String>((ref, chatId) async* {
-  await Future.delayed(const Duration(seconds: 10));
+    StreamProvider.family<GroupChatModel, String>((ref, chatId) {
   final institutionId = ref.watch(setGlobalUniversityId);
   final document = _firestore
       .collection("institution")
       .doc(institutionId)
       .collection("study_groups")
       .doc(chatId);
-  yield* document.snapshots().map(
+  return document.snapshots().map(
         GroupChatModel.fromSnapshot,
       );
 });

@@ -57,18 +57,16 @@ class MemberRequest {
     String title,
     String institutionId,
   ) async {
-    final Timestamp timestamp = Timestamp.now();
     final userInfo = await _users.getUserInfo(userId, institutionId);
 
     final userInfodata = userInfo.data();
 
-    final uid = userInfodata!['uid'];
-    final userName = userInfodata['name'];
+    final userName = userInfodata!['name'];
     final userImage = userInfodata['imageUrl'];
     final fcmtoken = userInfodata['fcmtoken'];
 
     Member user = Member(
-      isAdmin: true,
+      isAdmin: false,
       receiveNotification: true,
       id: userId,
       imageUrl: userImage,

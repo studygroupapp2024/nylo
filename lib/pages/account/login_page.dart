@@ -24,10 +24,12 @@ class LoginPage extends ConsumerWidget {
   void signInWithGoogle(
     BuildContext context,
     List<Map<String, dynamic>> idAndUnis,
+    WidgetRef ref,
   ) async {
     await _authService.signInWithGoogle(
       context,
       idAndUnis,
+      ref,
     );
   }
 
@@ -224,6 +226,7 @@ class LoginPage extends ConsumerWidget {
                           onTap: () => signInWithGoogle(
                             context,
                             idAndUnis,
+                            ref,
                           ),
                           child: Row(
                             children: [

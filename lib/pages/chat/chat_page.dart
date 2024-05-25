@@ -50,16 +50,14 @@ class ChatPage extends HookConsumerWidget {
 
   final ChatRepository _chatRepository = ChatRepository();
   final ScrollController listScrollController = ScrollController();
-  late final Stream<dynamic> groupChats;
 
   Stream<dynamic> _requestChats(
       String groupChatId, String institutionId, bool isGroupChat) {
-    groupChats = _chatRepository.listenToChatsRealTime(
+    return _chatRepository.listenToChatsRealTime(
       groupChatId,
       institutionId,
-      true,
+      isGroupChat,
     );
-    return groupChats;
   }
 
   @override
@@ -77,14 +75,23 @@ class ChatPage extends HookConsumerWidget {
       [],
     );
 
-    useEffect(() {
-      _requestChats(groupChatId, institutionId, true);
-      return null;
-    }, []);
+    // useEffect(() {
+    //   _requestChats(groupChatId, institutionId, true);
+    //   return null;
+    // }, []);
+
+    final chatStream = useMemoized(
+        () => _requestChats(groupChatId, institutionId, true),
+        [groupChatId, institutionId]);
+    final chatSnapshot = useStream(chatStream);
 
     final groupChatMembers = ref.watch(
       groupChatMembersProvider(groupChatId),
     );
+
+    useEffect(() {
+      return () => _chatRepository.dispose();
+    }, []);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -122,21 +129,17 @@ class ChatPage extends HookConsumerWidget {
           child: Column(
             children: [
               Flexible(
-                child: StreamBuilder(
-                  stream: groupChats,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      return Align(
+                child: !chatSnapshot.hasData
+                    ? const Center(child: CircularProgressIndicator())
+                    : Align(
                         alignment: Alignment.topCenter,
                         child: ListView.builder(
                           reverse: true,
                           controller: listScrollController,
                           itemCount:
-                              snapshot.data!.length + (isRequesting ? 1 : 0),
+                              chatSnapshot.data.length + (isRequesting ? 1 : 0),
                           itemBuilder: (context, index) {
-                            if (index == snapshot.data!.length) {
+                            if (index == chatSnapshot.data!.length) {
                               // This is the last item, and we're fetching more
                               if (isRequesting) {
                                 // Display a loading indicator
@@ -153,7 +156,7 @@ class ChatPage extends HookConsumerWidget {
                               }
                             }
                             final MessageModel messageInfo =
-                                snapshot.data![index];
+                                chatSnapshot.data![index];
 
                             final userInfo = ref.watch(
                               userInfoProvider(
@@ -388,10 +391,7 @@ class ChatPage extends HookConsumerWidget {
                             );
                           },
                         ),
-                      );
-                    }
-                  },
-                ),
+                      ),
               ),
               if (members.contains(_firebaseAuth.currentUser!.uid))
                 Padding(

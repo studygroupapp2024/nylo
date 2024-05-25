@@ -11,12 +11,13 @@ class ChatRepository {
       StreamController<List<MessageModel>>.broadcast();
 
   final List<List<MessageModel>> _allPagedResults = [];
+  StreamSubscription? _chatSubscription;
 
   static const int chatLimit = 15;
   DocumentSnapshot? _lastDocument;
   bool _hasMoreData = true;
 
-  Stream listenToChatsRealTime(
+  Stream<List<MessageModel>> listenToChatsRealTime(
       String chatId, String institutionId, bool isGroupChat) {
     _requestChats(chatId, institutionId, isGroupChat);
     return _chatController.stream;
@@ -55,7 +56,7 @@ class ChatRepository {
 
     var currentRequestIndex = _allPagedResults.length;
 
-    pagechatQuery.snapshots().listen(
+    _chatSubscription = pagechatQuery.snapshots().listen(
       (snapshot) {
         if (snapshot.docs.isNotEmpty) {
           var generalChats = snapshot.docs
@@ -85,6 +86,11 @@ class ChatRepository {
     );
   }
 
-  void requestMoreData(chatId, institutionId, isGroupChat) =>
+  void requestMoreData(String chatId, String institutionId, bool isGroupChat) =>
       _requestChats(chatId, institutionId, isGroupChat);
+
+  void dispose() {
+    _chatSubscription?.cancel();
+    _chatController.close();
+  }
 }

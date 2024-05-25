@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/image_placeholder/image_placeholder.dart';
 
 import '../buttons/rounded_button_with_progress.dart';
 
-class StudyGroupContainer extends ConsumerWidget {
+class StudyGroupContainer extends StatelessWidget {
   final void Function()? onTap;
   final String title;
   final String desc;
@@ -29,7 +28,7 @@ class StudyGroupContainer extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15),
       child: IntrinsicHeight(

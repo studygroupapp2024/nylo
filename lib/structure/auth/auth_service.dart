@@ -145,6 +145,11 @@ class AuthService {
     ref.invalidate(tuteeDirectMessages);
     ref.invalidate(selectedClassInformationProvider);
     ref.invalidate(userSubjectMatterProvider);
+    ref.invalidate(unenrolledCoursesProvider);
+    ref.invalidate(multipleStudentCoursesInformationProvider);
+    ref.invalidate(selectedGroupChatInformationProvider);
+    ref.invalidate(courseIdProvider);
+    ref.invalidate(directMessageMemberInfoProvider);
 
     await _auth.signOut();
     // sign out from Google

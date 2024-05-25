@@ -226,17 +226,17 @@ class LoginPage extends ConsumerWidget {
                           onTap: isLoading
                               ? () {}
                               : () async {
-                                  ref
-                                      .read(googleSignInLoading.notifier)
-                                      .update((state) => true);
+                                  final signin =
+                                      ref.read(googleSignInLoading.notifier);
+                                  signin.update((state) => true);
                                   await signInWithGoogle(
                                     context,
                                     idAndUnis,
                                     ref,
                                   );
-                                  ref.read(googleSignInLoading.notifier).update(
-                                        (state) => false,
-                                      );
+                                  signin.update(
+                                    (state) => false,
+                                  );
                                 },
                           child: Row(
                             children: [

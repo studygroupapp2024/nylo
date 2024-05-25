@@ -21,13 +21,15 @@ class LoginPage extends ConsumerWidget {
   });
 
   //login with Google
-  void signInWithGoogle(
+  Future<void> signInWithGoogle(
     BuildContext context,
     List<Map<String, dynamic>> idAndUnis,
+    WidgetRef ref,
   ) async {
     await _authService.signInWithGoogle(
       context,
       idAndUnis,
+      ref,
     );
   }
 
@@ -69,7 +71,7 @@ class LoginPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncData = ref.watch(listOfDomains);
     final List<Map<String, dynamic>> idAndUnis = [];
-
+    final isLoading = ref.watch(googleSignInLoading);
     if (asyncData is AsyncData) {
       final listDomains = asyncData.value;
       if (listDomains != null && listDomains.isNotEmpty) {
@@ -221,10 +223,21 @@ class LoginPage extends ConsumerWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: GestureDetector(
-                          onTap: () => signInWithGoogle(
-                            context,
-                            idAndUnis,
-                          ),
+                          onTap: isLoading
+                              ? () {}
+                              : () async {
+                                  final signin =
+                                      ref.read(googleSignInLoading.notifier);
+                                  signin.update((state) => true);
+                                  await signInWithGoogle(
+                                    context,
+                                    idAndUnis,
+                                    ref,
+                                  );
+                                  signin.update(
+                                    (state) => false,
+                                  );
+                                },
                           child: Row(
                             children: [
                               SvgPicture.asset(
@@ -232,11 +245,14 @@ class LoginPage extends ConsumerWidget {
                                 height: 20,
                                 width: 20,
                               ),
-                              const Expanded(
-                                child: Text(
-                                  "Google",
-                                  textAlign: TextAlign.center,
-                                ),
+                              Expanded(
+                                child: isLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
+                                    : const Text(
+                                        "Google",
+                                        textAlign: TextAlign.center,
+                                      ),
                               ),
                               const SizedBox(
                                 width: 20,
@@ -283,3 +299,5 @@ class LoginPage extends ConsumerWidget {
     );
   }
 }
+
+final googleSignInLoading = StateProvider<bool>((ref) => false);

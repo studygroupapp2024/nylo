@@ -2,11 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/error/firebaseauth_exception_error_extension.dart';
 import 'package:nylo/error/login_response.dart';
 import 'package:nylo/structure/messaging/message_api.dart';
 import 'package:nylo/structure/models/user_model.dart';
+import 'package:nylo/structure/providers/course_provider.dart';
+import 'package:nylo/structure/providers/direct_message_provider.dart';
+import 'package:nylo/structure/providers/groupchat_provider.dart';
+import 'package:nylo/structure/providers/register_as_tutor_providers.dart';
+import 'package:nylo/structure/providers/subject_matter_provider.dart';
+import 'package:nylo/structure/providers/user_provider.dart';
 
 class AuthService {
   // instance of Auth
@@ -74,11 +81,12 @@ class AuthService {
     String universityId,
     String emailDomain,
     List<String> domains,
+    WidgetRef ref,
   ) async {
     try {
       if (!domains.contains(emailDomain)) {
         // Email does not match the required domain
-        await signOut(); // Sign out the user
+        await signOut(ref); // Sign out the user
 
         informationSnackBar(
           context,
@@ -123,7 +131,26 @@ class AuthService {
   }
 
   // signout
-  Future<void> signOut() async {
+  Future<void> signOut(WidgetRef ref) async {
+    // Cleaning all listeners to prevent permission denied error when signing out
+    ref.invalidate(userHasStudyGroupRequest);
+    ref.invalidate(userInfoProvider);
+    ref.invalidate(userChatIdsProvider);
+    ref.invalidate(currentStudentCoursesInformationProvider);
+    ref.invalidate(completedStudentCoursesInformationProvider);
+    ref.invalidate(groupChatMembersProvider);
+    ref.invalidate(userInfoProvider);
+    ref.invalidate(singleGroupChatInformationProvider);
+    ref.invalidate(tutorDirectMessages);
+    ref.invalidate(tuteeDirectMessages);
+    ref.invalidate(selectedClassInformationProvider);
+    ref.invalidate(userSubjectMatterProvider);
+    ref.invalidate(unenrolledCoursesProvider);
+    ref.invalidate(multipleStudentCoursesInformationProvider);
+    ref.invalidate(selectedGroupChatInformationProvider);
+    ref.invalidate(courseIdProvider);
+    ref.invalidate(directMessageMemberInfoProvider);
+
     await _auth.signOut();
     // sign out from Google
     await GoogleSignIn().signOut();
@@ -142,6 +169,7 @@ class AuthService {
   Future<UserCredential?> signInWithGoogle(
     BuildContext context,
     List<Map<String, dynamic>> idAndUni,
+    WidgetRef ref,
   ) async {
     try {
       // Begin interactive signin process
@@ -178,7 +206,7 @@ class AuthService {
         }
 
         if (uni == null || uniName == null) {
-          await signOut(); // Sign out the user
+          await signOut(ref); // Sign out the user
 
           informationSnackBar(
             context,
@@ -216,7 +244,7 @@ class AuthService {
         return userCredential;
       }
     } catch (e) {
-      await signOut(); // Sign out the user
+      await signOut(ref); // Sign out the user
 
       informationSnackBar(
         context,

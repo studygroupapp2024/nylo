@@ -29,6 +29,7 @@ class RegisterPage extends ConsumerWidget {
     String universityId,
     String emailDomain,
     List<String> domains,
+    WidgetRef ref,
   ) async {
     // get auth service
     final auth = AuthService();
@@ -51,6 +52,7 @@ class RegisterPage extends ConsumerWidget {
           universityId,
           emailDomain,
           domains,
+          ref,
         );
         if (!response.isSuccess) {
           showDialog(
@@ -438,6 +440,7 @@ class RegisterPage extends ConsumerWidget {
                                 ref.watch(dropDownValueProvider),
                                 //ref.watch(emailDomainProvider),
                                 ref.watch(dropDownListProvider), //domains!,
+                                ref,
                               );
                             }
                           : () {

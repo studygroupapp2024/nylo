@@ -141,12 +141,13 @@ class ProfilePage extends ConsumerWidget {
                               );
 
                               if (result == null) {
-                                informationSnackBar(
-                                  context,
-                                  Icons.info_outline,
-                                  "No image has been selected.",
-                                );
-
+                                if (context.mounted) {
+                                  informationSnackBar(
+                                    context,
+                                    Icons.info_outline,
+                                    "No image has been selected.",
+                                  );
+                                }
                                 return;
                               }
                               final path = result.files.single.path;

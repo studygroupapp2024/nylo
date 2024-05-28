@@ -68,13 +68,15 @@ class ChatInfo extends ConsumerWidget {
                                         );
 
                                         if (result == null) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  "No item has been selected."),
-                                            ),
-                                          );
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    "No item has been selected."),
+                                              ),
+                                            );
+                                          }
                                           return;
                                         }
                                         final path = result.files.single.path;

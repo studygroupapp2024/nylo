@@ -55,23 +55,27 @@ class RegisterPage extends ConsumerWidget {
           ref,
         );
         if (!response.isSuccess) {
+          if (context.mounted) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(response.message ?? 'Unknown error'),
+              ),
+            );
+          }
+        }
+      } else {
+        if (context.mounted) {
           showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-              title: Text(response.message ?? 'Unknown error'),
+            builder: (context) => const CreateGroupChatDialog(
+              confirm: null,
+              content: "Password does not match.",
+              title: "Failed",
+              type: "Okay",
             ),
           );
         }
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) => const CreateGroupChatDialog(
-            confirm: null,
-            content: "Password does not match.",
-            title: "Failed",
-            type: "Okay",
-          ),
-        );
       }
     } else {
       showDialog(

@@ -46,7 +46,6 @@ class Members extends ConsumerWidget {
                     isAdmin: members.isAdmin,
                     creatorId: groupchat.creatorId,
                     onPressed: () async {
-                      print("User key: $userKey");
                       await showDialog(
                         context: context,
                         builder: (context) {

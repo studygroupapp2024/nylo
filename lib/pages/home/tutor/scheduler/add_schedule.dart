@@ -124,12 +124,13 @@ class AddSchedule extends ConsumerWidget {
                     );
 
                 if (isSuccess) {
-                  informationSnackBar(
-                    context,
-                    Icons.notification_add,
-                    "The schedule has been added",
-                  );
-
+                  if (context.mounted) {
+                    informationSnackBar(
+                      context,
+                      Icons.notification_add,
+                      "The schedule has been added",
+                    );
+                  }
                   _endTimeController.clear();
                   _startTimeController.clear();
                   _dateController.clear();

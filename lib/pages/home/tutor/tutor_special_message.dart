@@ -69,12 +69,13 @@ class TutorSendSpecialMessage extends ConsumerWidget {
                 );
 
                 if (result == null) {
-                  informationSnackBar(
-                    context,
-                    Icons.info_outline,
-                    "No item has been selected.",
-                  );
-
+                  if (context.mounted) {
+                    informationSnackBar(
+                      context,
+                      Icons.info_outline,
+                      "No item has been selected.",
+                    );
+                  }
                   return;
                 }
 
@@ -93,8 +94,10 @@ class TutorSendSpecialMessage extends ConsumerWidget {
                     filename.toLowerCase().endsWith('.docx')) {
                   ref.read(documentTypeProvider.notifier).state = 'document';
                 } else {
-                  informationSnackBar(
-                      context, Icons.warning, "Unknown file type");
+                  if (context.mounted) {
+                    informationSnackBar(
+                        context, Icons.warning, "Unknown file type");
+                  }
                 }
               },
               child: Container(

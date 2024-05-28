@@ -87,13 +87,13 @@ class AuthService {
       if (!domains.contains(emailDomain)) {
         // Email does not match the required domain
         await signOut(ref); // Sign out the user
-
-        informationSnackBar(
-          context,
-          Icons.info_outline,
-          'There is no domain match',
-        );
-
+        if (context.mounted) {
+          informationSnackBar(
+            context,
+            Icons.info_outline,
+            'There is no domain match',
+          );
+        }
         // Return null to indicate failed sign-in attempt
         return LoginResponse(
             isSuccess: false, message: "There is no domain match");
@@ -207,13 +207,13 @@ class AuthService {
 
         if (uni == null || uniName == null) {
           await signOut(ref); // Sign out the user
-
-          informationSnackBar(
-            context,
-            Icons.info_outline,
-            'Email domain is not allowed.',
-          );
-
+          if (context.mounted) {
+            informationSnackBar(
+              context,
+              Icons.info_outline,
+              'Email domain is not allowed.',
+            );
+          }
           return null;
         }
 
@@ -245,13 +245,13 @@ class AuthService {
       }
     } catch (e) {
       await signOut(ref); // Sign out the user
-
-      informationSnackBar(
-        context,
-        Icons.info_outline,
-        'Email domain is not allowed.',
-      );
-
+      if (context.mounted) {
+        informationSnackBar(
+          context,
+          Icons.info_outline,
+          'Email domain is not allowed.',
+        );
+      }
       return null;
     }
     return null;

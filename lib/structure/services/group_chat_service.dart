@@ -404,18 +404,15 @@ class GroupChat {
     String institutionId,
   ) async {
     File file = File(filePath);
-    try {
-      await _firebaseStorage.ref('chatImages/$filename').putFile(file);
-      String downloadUrl =
-          await _firebaseStorage.ref('chatImages/$filename').getDownloadURL();
 
-      await institution
-          .doc(institutionId)
-          .collection("study_groups")
-          .doc(groupChatId)
-          .update({"groupChatImage": downloadUrl});
-    } on FirebaseException catch (e) {
-      print(e);
-    }
+    await _firebaseStorage.ref('chatImages/$filename').putFile(file);
+    String downloadUrl =
+        await _firebaseStorage.ref('chatImages/$filename').getDownloadURL();
+
+    await institution
+        .doc(institutionId)
+        .collection("study_groups")
+        .doc(groupChatId)
+        .update({"groupChatImage": downloadUrl});
   }
 }

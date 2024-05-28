@@ -204,35 +204,37 @@ class TutorClassses extends ConsumerWidget {
                                     _auth.currentUser!.uid,
                                     false,
                                   );
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      settings: const RouteSettings(
-                                          name: "/ChatOption"),
-                                      builder: (context) {
-                                        // Convert the Firebase Timestamp to a DateTime object
-                                        DateTime dateTime =
-                                            chatIds.timestamp.toDate();
+                                  if (context.mounted) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        settings: const RouteSettings(
+                                            name: "/ChatOption"),
+                                        builder: (context) {
+                                          // Convert the Firebase Timestamp to a DateTime object
+                                          DateTime dateTime =
+                                              chatIds.timestamp.toDate();
 
-                                        // Format the DateTime object into a string in "Month Day, Year" format
-                                        String formattedDate =
-                                            DateFormat.yMMMMd()
-                                                .format(dateTime);
+                                          // Format the DateTime object into a string in "Month Day, Year" format
+                                          String formattedDate =
+                                              DateFormat.yMMMMd()
+                                                  .format(dateTime);
 
-                                        return TutorChatPage(
-                                          groupChatId: chatIds.chatId!,
-                                          title:
-                                              _auth.currentUser!.displayName!,
-                                          creator: chatIds.proctorId,
-                                          dateCreated: formattedDate,
-                                          members: chatIds.membersId,
-                                          classId: chatIds.classId,
-                                          institutionId:
-                                              ref.watch(setGlobalUniversityId),
-                                        );
-                                      },
-                                    ),
-                                  );
+                                          return TutorChatPage(
+                                            groupChatId: chatIds.chatId!,
+                                            title:
+                                                _auth.currentUser!.displayName!,
+                                            creator: chatIds.proctorId,
+                                            dateCreated: formattedDate,
+                                            members: chatIds.membersId,
+                                            classId: chatIds.classId,
+                                            institutionId: ref
+                                                .watch(setGlobalUniversityId),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: IntrinsicHeight(
                                   child: Container(

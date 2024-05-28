@@ -87,38 +87,41 @@ class FindPage extends ConsumerWidget {
                                       _auth.currentUser!.uid,
                                       true,
                                     );
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        settings: const RouteSettings(
-                                            name: "/ChatOption"),
-                                        builder: (context) {
-                                          // Convert the Firebase Timestamp to a DateTime object
-                                          DateTime dateTime =
-                                              chatIds.timestamp.toDate();
+                                    if (context.mounted) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          settings: const RouteSettings(
+                                              name: "/ChatOption"),
+                                          builder: (context) {
+                                            // Convert the Firebase Timestamp to a DateTime object
+                                            DateTime dateTime =
+                                                chatIds.timestamp.toDate();
 
-                                          // Format the DateTime object into a string in "Month Day, Year" format
-                                          String formattedDate =
-                                              DateFormat.yMMMMd()
-                                                  .format(dateTime);
+                                            // Format the DateTime object into a string in "Month Day, Year" format
+                                            String formattedDate =
+                                                DateFormat.yMMMMd()
+                                                    .format(dateTime);
 
-                                          return ChatPage(
-                                            groupChatId:
-                                                chatIds.docID.toString(),
-                                            title: chatIds.studyGroupTitle,
-                                            creator: chatIds.creatorId,
-                                            desc: chatIds.studyGroupDescription,
-                                            dateCreated: formattedDate,
-                                            courseCode:
-                                                chatIds.studyGroupCourseName,
-                                            courseTitle: chatIds.courseTitle,
-                                            members: chatIds.membersId,
-                                            institutionId: ref
-                                                .watch(setGlobalUniversityId),
-                                          );
-                                        },
-                                      ),
-                                    );
+                                            return ChatPage(
+                                              groupChatId:
+                                                  chatIds.docID.toString(),
+                                              title: chatIds.studyGroupTitle,
+                                              creator: chatIds.creatorId,
+                                              desc:
+                                                  chatIds.studyGroupDescription,
+                                              dateCreated: formattedDate,
+                                              courseCode:
+                                                  chatIds.studyGroupCourseName,
+                                              courseTitle: chatIds.courseTitle,
+                                              members: chatIds.membersId,
+                                              institutionId: ref
+                                                  .watch(setGlobalUniversityId),
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    }
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(

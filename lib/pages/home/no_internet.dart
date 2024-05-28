@@ -56,12 +56,16 @@ class NoInternet extends StatelessWidget {
                     bool result =
                         await InternetConnectionChecker().hasConnection;
                     if (result) {
-                      Navigator.of(context).pop();
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
                     } else {
-                      informationSnackBar(
-                          context,
-                          Icons.signal_wifi_connected_no_internet_4_outlined,
-                          "No internet connection found");
+                      if (context.mounted) {
+                        informationSnackBar(
+                            context,
+                            Icons.signal_wifi_connected_no_internet_4_outlined,
+                            "No internet connection found");
+                      }
                     }
                   },
                   margin: const EdgeInsets.all(0),

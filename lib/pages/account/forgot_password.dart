@@ -25,44 +25,50 @@ class _ForgotPasswordPage extends State<ForgotPasswordPage> {
     try {
       if (_emailController.text.isNotEmpty) {
         await _auth.sendPasswordResetEmail(email: _emailController.text.trim());
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Password Reset Email Sent'),
-            content:
-                const Text('Please check your email to reset your password.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Okay'),
-              ),
-            ],
-          ),
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const CreateGroupChatDialog(
-                confirm: null,
-                content: "Kindly enter your email to proceed.",
-                title: "Failed",
-                type: "Okay");
-          },
-        );
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Password Reset Email Sent'),
+              content:
+                  const Text('Please check your email to reset your password.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Okay'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          if (context.mounted) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const CreateGroupChatDialog(
+                    confirm: null,
+                    content: "Kindly enter your email to proceed.",
+                    title: "Failed",
+                    type: "Okay");
+              },
+            );
+          }
+        }
       }
     } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const CreateGroupChatDialog(
-                confirm: null,
-                content: "There was an error. Please try again.",
-                title: "Failed",
-                type: "Okay");
-          });
+      if (context.mounted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CreateGroupChatDialog(
+                  confirm: null,
+                  content: "There was an error. Please try again.",
+                  title: "Failed",
+                  type: "Okay");
+            });
+      }
     }
   }
 

@@ -25,35 +25,33 @@ class UserInformation {
     String institutionId,
     String name,
   ) async {
-    try {
-      if (filename.isNotEmpty) {
-        File file = File(filePath);
-        await _firebaseStorage.ref('profileImages/$filename').putFile(file);
-        String downloadUrl = await _firebaseStorage
-            .ref('profileImages/$filename')
-            .getDownloadURL();
+    if (filename.isNotEmpty) {
+      File file = File(filePath);
+      await _firebaseStorage.ref('profileImages/$filename').putFile(file);
+      String downloadUrl = await _firebaseStorage
+          .ref('profileImages/$filename')
+          .getDownloadURL();
 
-        await _firestore
-            .collection("institution")
-            .doc(institutionId)
-            .collection("students")
-            .doc(userId)
-            .update({
-          "imageUrl": downloadUrl,
-          "name": name,
-        });
-        return downloadUrl;
-      } else {
-        await _firestore
-            .collection("institution")
-            .doc(institutionId)
-            .collection("students")
-            .doc(userId)
-            .update({
-          "name": name,
-        });
-      }
-    } on FirebaseException catch (e) {}
+      await _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("students")
+          .doc(userId)
+          .update({
+        "imageUrl": downloadUrl,
+        "name": name,
+      });
+      return downloadUrl;
+    } else {
+      await _firestore
+          .collection("institution")
+          .doc(institutionId)
+          .collection("students")
+          .doc(userId)
+          .update({
+        "name": name,
+      });
+    }
     return null;
   }
 }

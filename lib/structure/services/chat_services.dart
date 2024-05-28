@@ -99,7 +99,6 @@ class ChatService {
       isGroup,
     );
 
-    print("MEMBERS ID NOTIF: $membersIdNotif");
     // get all their FCM token
     final listfcmtoken = [];
 
@@ -116,8 +115,6 @@ class ChatService {
       // Add the FCM token to the list
       listfcmtoken.add(userfcmToken);
     }
-
-    print("LIST FCM TOKEN: $listfcmtoken");
 
     final List<String> nameParts = userName.split(' ');
     final String firstName = nameParts[0];
@@ -256,7 +253,6 @@ class ChatService {
     final String curreUserEmail = userName;
 
     final Timestamp timestamp = Timestamp.now();
-    final DateTime date = DateTime.now();
 
     // create a new message
     MessageModel newMessage = MessageModel(
@@ -349,44 +345,40 @@ class ChatService {
     String institutionId,
     bool isGroup,
   ) async {
-    try {
-      File file = File(filePath);
-      await _firebaseStorage.ref('chatImages/$fileName').putFile(file);
-      String downloadUrl =
-          await _firebaseStorage.ref('chatImages/$fileName').getDownloadURL();
+    File file = File(filePath);
+    await _firebaseStorage.ref('chatImages/$fileName').putFile(file);
+    String downloadUrl =
+        await _firebaseStorage.ref('chatImages/$fileName').getDownloadURL();
 
-      // if image
-      if (category == "image") {
-        await sendMessage(
-          groupChatid,
-          message,
-          type,
-          downloadUrl,
-          institutionId,
-          groupChatTitle,
-          "image",
-          fileName,
-          isGroup,
-        );
-        return true;
+    // if image
+    if (category == "image") {
+      await sendMessage(
+        groupChatid,
+        message,
+        type,
+        downloadUrl,
+        institutionId,
+        groupChatTitle,
+        "image",
+        fileName,
+        isGroup,
+      );
+      return true;
 
-        // if document
-      } else {
-        await sendMessage(
-          groupChatid,
-          message,
-          type,
-          downloadUrl,
-          institutionId,
-          groupChatTitle,
-          "document",
-          fileName,
-          isGroup,
-        );
-        return true;
-      }
-    } on FirebaseException catch (e) {
-      return false;
+      // if document
+    } else {
+      await sendMessage(
+        groupChatid,
+        message,
+        type,
+        downloadUrl,
+        institutionId,
+        groupChatTitle,
+        "document",
+        fileName,
+        isGroup,
+      );
+      return true;
     }
   }
 

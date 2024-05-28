@@ -152,11 +152,9 @@ final userChatIdsProvider = StreamProvider.family<List<GroupChatModel>, String>(
       return userStudyGroups;
     } catch (e) {
       if (e is FirebaseException && e.code == 'permission-denied') {
-        print('Permission denied: ${e.message}');
         return Stream.value([]);
         // Handle the permission denied error
       } else {
-        print('Error: ${e.toString()}');
         return Stream.value([]);
         // Handle other errors
       }

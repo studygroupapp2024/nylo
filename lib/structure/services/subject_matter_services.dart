@@ -80,8 +80,6 @@ class SubjectMatter {
           courses.map((course) => course).toList();
 
       for (var subject in subjectsMap) {
-        print(subject.subjectCode);
-
         final Subject subjectModel = Subject(
           subjectCode: subject.subjectCode,
           subjectTitle: subject.subjectTitle,

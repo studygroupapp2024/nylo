@@ -66,11 +66,13 @@ class CreateStudyGroup extends ConsumerWidget {
                           );
 
                           if (result == null) {
-                            informationSnackBar(
-                              context,
-                              Icons.info_outline,
-                              "No image has been selected.",
-                            );
+                            if (context.mounted) {
+                              informationSnackBar(
+                                context,
+                                Icons.info_outline,
+                                "No image has been selected.",
+                              );
+                            }
 
                             return;
                           }
@@ -311,31 +313,34 @@ class CreateStudyGroup extends ConsumerWidget {
 
                         ref.read(editUploadImageNameProvider.notifier).state =
                             '';
-
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const CreateGroupChatDialog(
-                              confirm: null,
-                              content: "The group chat has been created",
-                              title: "Success",
-                              type: "Okay",
+                        if (context.mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const CreateGroupChatDialog(
+                                confirm: null,
+                                content: "The group chat has been created",
+                                title: "Success",
+                                type: "Okay",
+                              );
+                            },
+                          );
+                        } else {
+                          if (context.mounted) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const CreateGroupChatDialog(
+                                  confirm: null,
+                                  content:
+                                      "There was an error creating the study group. Kindly try again.",
+                                  title: "Failed",
+                                  type: "Okay",
+                                );
+                              },
                             );
-                          },
-                        );
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const CreateGroupChatDialog(
-                              confirm: null,
-                              content:
-                                  "There was an error creating the study group. Kindly try again.",
-                              title: "Failed",
-                              type: "Okay",
-                            );
-                          },
-                        );
+                          }
+                        }
                       }
                     },
                     margin: const EdgeInsets.symmetric(horizontal: 25),

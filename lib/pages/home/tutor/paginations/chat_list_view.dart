@@ -82,9 +82,9 @@
 //         isFetchingMore =
 //             true; // Set isFetchingMore to true before fetching more data
 //       });
-//       print("IS FETCHING MORE: $isFetchingMore");
+
 //       _fireStoreRepository.requestMoreData();
-//       print("Fetching more data...");
+
 
 //       setState(() {
 //         isFetchingMore =

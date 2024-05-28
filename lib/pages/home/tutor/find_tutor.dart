@@ -285,36 +285,39 @@ class FindTutor extends ConsumerWidget {
                                                         );
 
                                                     if (getData['isSuccess']) {
-                                                      Navigator.pop(context);
+                                                      if (context.mounted) {
+                                                        Navigator.pop(context);
 
-                                                      Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              TutorChatPage(
-                                                            groupChatId: getData[
-                                                                'directMessageId'],
-                                                            title: getData[
-                                                                'title'],
-                                                            creator: getData[
-                                                                'creator'],
-                                                            dateCreated: getData[
-                                                                'dateCreated'],
-                                                            members: getData[
-                                                                'membersId'],
-                                                            classId: getData[
-                                                                'classId'],
-                                                            institutionId:
-                                                                ref.watch(
-                                                                    setGlobalUniversityId),
+                                                        Navigator
+                                                            .pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                TutorChatPage(
+                                                              groupChatId: getData[
+                                                                  'directMessageId'],
+                                                              title: getData[
+                                                                  'title'],
+                                                              creator: getData[
+                                                                  'creator'],
+                                                              dateCreated: getData[
+                                                                  'dateCreated'],
+                                                              members: getData[
+                                                                  'membersId'],
+                                                              classId: getData[
+                                                                  'classId'],
+                                                              institutionId:
+                                                                  ref.watch(
+                                                                      setGlobalUniversityId),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      );
-                                                      ref
-                                                          .read(
-                                                              isLoadingProvider
-                                                                  .notifier)
-                                                          .state = false;
+                                                        );
+                                                        ref
+                                                            .read(
+                                                                isLoadingProvider
+                                                                    .notifier)
+                                                            .state = false;
+                                                      }
                                                     }
                                                   },
                                                   margin:

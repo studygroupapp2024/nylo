@@ -224,7 +224,7 @@ class LoginPage extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: GestureDetector(
                           onTap: isLoading
-                              ? () {}
+                              ? null
                               : () async {
                                   final signin =
                                       ref.read(googleSignInLoading.notifier);

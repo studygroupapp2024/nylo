@@ -1,13 +1,12 @@
 // collect to all the document
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/structure/models/user_courses.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/services/course_services.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-final FirebaseAuth _auth = FirebaseAuth.instance;
+
 final multipleStudentCoursesInformationProvider =
     StreamProvider.family<List<StudentCoursesModel>, String>((ref, userId) {
   final institutionId = ref.watch(setGlobalUniversityId);

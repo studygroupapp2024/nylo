@@ -69,43 +69,49 @@ class SendSpecialMessage extends ConsumerWidget {
                 );
 
                 if (result == null) {
-                  informationSnackBar(
-                    context,
-                    Icons.info_outline,
-                    "No item has been selected.",
-                  );
+                  if (context.mounted) {
+                    informationSnackBar(
+                      context,
+                      Icons.info_outline,
+                      "No item has been selected.",
+                    );
+                  }
 
                   return;
                 }
 
                 final fileSize = result.files.single.size;
-                print("object: $fileSize");
+
                 if (fileSize > 10 * 1024 * 1024) {
-                  informationSnackBar(
-                    context,
-                    Icons.info_outline,
-                    "File size exceeds the limit of 10MB.",
-                  );
-                  return;
-                }
+                  if (context.mounted) {
+                    informationSnackBar(
+                      context,
+                      Icons.info_outline,
+                      "File size exceeds the limit of 10MB.",
+                    );
+                    return;
+                  }
 
-                final filename = result.files.single.name;
-                ref.read(pathNameProvider.notifier).state =
-                    result.files.single.path.toString();
-                ref.read(fileNameProvider.notifier).state =
-                    result.files.single.name;
+                  final filename = result.files.single.name;
+                  ref.read(pathNameProvider.notifier).state =
+                      result.files.single.path.toString();
+                  ref.read(fileNameProvider.notifier).state =
+                      result.files.single.name;
 
-                if (filename.toLowerCase().endsWith('.jpg') ||
-                    filename.toLowerCase().endsWith('.jpeg') ||
-                    filename.toLowerCase().endsWith('.png')) {
-                  ref.read(documentTypeProvider.notifier).state = 'image';
-                } else if (filename.toLowerCase().endsWith('.pdf') ||
-                    filename.toLowerCase().endsWith('.doc') ||
-                    filename.toLowerCase().endsWith('.docx')) {
-                  ref.read(documentTypeProvider.notifier).state = 'document';
-                } else {
-                  informationSnackBar(
-                      context, Icons.warning, "Unknown file type");
+                  if (filename.toLowerCase().endsWith('.jpg') ||
+                      filename.toLowerCase().endsWith('.jpeg') ||
+                      filename.toLowerCase().endsWith('.png')) {
+                    ref.read(documentTypeProvider.notifier).state = 'image';
+                  } else if (filename.toLowerCase().endsWith('.pdf') ||
+                      filename.toLowerCase().endsWith('.doc') ||
+                      filename.toLowerCase().endsWith('.docx')) {
+                    ref.read(documentTypeProvider.notifier).state = 'document';
+                  } else {
+                    if (context.mounted) {
+                      informationSnackBar(
+                          context, Icons.warning, "Unknown file type");
+                    }
+                  }
                 }
               },
               child: Container(

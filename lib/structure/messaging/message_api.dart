@@ -14,37 +14,6 @@ import 'package:nylo/pages/home/study_group/my_study_groups.dart';
 import 'package:nylo/pages/home/tutor/my_tutor_classes.dart';
 import 'package:nylo/pages/home/tutor/scheduler/set_schedule.dart';
 
-// @pragma("vm:entry-point")
-// Future<void> handleBackgroundMessage(RemoteMessage message) async {
-//   if (message.notification != null) {
-//     print("CLICKED");
-//     // int id = Random().nextInt(1000000);
-//     // await AwesomeNotifications().createNotification(
-//     //   content: NotificationContent(
-//     //     id: id,
-//     //     channelKey: 'high_importance_channel',
-//     //     title: message.data['title'],
-//     //     body: message.data['body'],
-//     //     actionType: ActionType.SilentAction,
-//     //     notificationLayout: NotificationLayout.Default,
-//     //     payload: {
-//     //       "navigate": "true",
-//     //     },
-//     //   ),
-//     // actionButtons: [
-//     //   NotificationActionButton(
-//     //     key: 'check',
-//     //     label: 'Check it out',
-//     //     actionType: ActionType.SilentAction,
-//     //     color: Colors.green,
-//     //   )
-//     // ],
-//   } else {
-//     print("Notification is null");
-//   }
-//   print("Payload: ${message.data}");
-// }
-
 class FirebaseMessage {
   final firebaseMessaging = FirebaseMessaging.instance;
 

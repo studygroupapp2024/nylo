@@ -231,26 +231,29 @@ class RegisterAsTutorPage extends ConsumerWidget {
                         if (success) {
                           _nameController.clear();
                           _descriptionController.clear();
-
-                          Navigator.pop(context);
-                          informationSnackBar(
-                            context,
-                            Icons.notifications,
-                            "Class has been created.",
-                          );
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            informationSnackBar(
+                              context,
+                              Icons.notifications,
+                              "Class has been created.",
+                            );
+                          }
                         } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const CreateGroupChatDialog(
-                                confirm: null,
-                                content:
-                                    "There was an error creating the class. Kindly try again.",
-                                title: "Failed",
-                                type: "Okay",
-                              );
-                            },
-                          );
+                          if (context.mounted) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const CreateGroupChatDialog(
+                                  confirm: null,
+                                  content:
+                                      "There was an error creating the class. Kindly try again.",
+                                  title: "Failed",
+                                  type: "Okay",
+                                );
+                              },
+                            );
+                          }
                         }
                       }
                     },

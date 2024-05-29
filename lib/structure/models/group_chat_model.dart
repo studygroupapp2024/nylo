@@ -68,9 +68,6 @@ class GroupChatModel {
       'lastMessageId': lastMessageId,
       'members':
           members?.map((key, value) => MapEntry(key, value.toMap())) ?? {},
-      'membersRequest':
-          membersRequest?.map((key, value) => MapEntry(key, value.toMap())) ??
-              {},
     };
   }
 

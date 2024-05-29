@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nylo/structure/models/chat_members_model.dart';
 import 'package:nylo/structure/models/group_chat_model.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/services/group_chat_service.dart';
@@ -25,21 +24,6 @@ final singleGroupChatInformationProvider =
       );
 });
 
-final singleMemberGroupChatInformationProvider =
-    StreamProvider.family<ChatMembersModel, String>((ref, chatId) {
-  final institutionId = ref.watch(setGlobalUniversityId);
-  final document = _firestore
-      .collection("institution")
-      .doc(institutionId)
-      .collection("study_groups")
-      .doc(chatId)
-      .collection("members")
-      .doc(_auth.currentUser!.uid);
-  return document.snapshots().map(
-        ChatMembersModel.fromSnapshot,
-      );
-});
-
 // collect to all the document
 final multipleGroupChatInformationProvider =
     StreamProvider<List<GroupChatModel>>((ref) {
@@ -58,29 +42,6 @@ final multipleGroupChatInformationProvider =
       );
   return getStudyGroups;
 });
-
-final groupChatMembersProvider =
-    StreamProvider.family<List<ChatMembersModel>, String>(
-  (ref, chatId) {
-    final institutionId = ref.watch(setGlobalUniversityId);
-    final getMembers = _firestore
-        .collection("institution")
-        .doc(institutionId)
-        .collection("study_groups")
-        .doc(chatId)
-        .collection("members")
-        .snapshots()
-        .map(
-          (querySnapshot) => querySnapshot.docs
-              .map(
-                (members) => ChatMembersModel.fromSnapshot(members),
-              )
-              .toList(),
-        );
-
-    return getMembers;
-  },
-);
 
 final courseIdProvider =
     StreamProvider.family<List<String>, String>((ref, userId) {

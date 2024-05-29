@@ -21,20 +21,27 @@ class ChatService {
     bool isGroupChat,
   ) async {
     if (isGroupChat) {
-      final QuerySnapshot membersSnapshot = await FirebaseFirestore.instance
-          .collection("institution")
-          .doc(institutionId)
-          .collection("study_groups")
-          .doc(groupChatId)
-          .collection("members")
-          .where("receiveNotification", isEqualTo: true)
-          .get();
-
+      final DocumentSnapshot<Map<String, dynamic>> membersSnapshot =
+          await FirebaseFirestore.instance
+              .collection("institution")
+              .doc(institutionId)
+              .collection("study_groups")
+              .doc(groupChatId)
+              .get();
       List<String> membersList = [];
 
-      // Extract member IDs from the snapshot
-      for (var doc in membersSnapshot.docs) {
-        membersList.add(doc.id);
+      if (membersSnapshot.exists) {
+        Map<String, dynamic> data = membersSnapshot.data()!;
+        if (data.containsKey("members")) {
+          Map<String, dynamic> membersData = data["members"];
+          membersData.forEach((key, value) {
+            if (value is Map<String, dynamic> &&
+                value.containsKey("receiveNotification") &&
+                value["receiveNotification"] == true) {
+              membersList.add(key); // Adding the user ID to membersList
+            }
+          });
+        }
       }
 
       return membersList;

@@ -7,3 +7,8 @@ Nylo is a mobile application written using Dart, Flutter, and Firebase. This ena
 - Dart
 - Flutter
 - Firebase
+
+# Database Model
+
+
+![Nylo Data Model](https://github.com/studygroupapp2024/nylo/assets/112135724/d0f9c2d9-90a7-481d-8619-cd771795a28b)

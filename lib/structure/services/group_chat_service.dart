@@ -45,7 +45,21 @@ class GroupChat {
     String institutionId,
     String userId,
   ) async {
-    // remove the study group
+    // Get a reference to the messages collection
+    var messagesCollection = institution
+        .doc(institutionId)
+        .collection('study_groups')
+        .doc(groupChatId)
+        .collection('messages');
+
+    // Get all documents in the messages collection
+    var messagesSnapshot = await messagesCollection.get();
+
+    // Iterate over each document and delete it
+    for (var doc in messagesSnapshot.docs) {
+      await doc.reference.delete();
+    }
+
     await institution
         .doc(institutionId)
         .collection("study_groups")

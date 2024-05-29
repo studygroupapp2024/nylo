@@ -14,7 +14,6 @@ import 'package:nylo/repositories/chat_repo.dart';
 import 'package:nylo/structure/models/chat_model.dart';
 import 'package:nylo/structure/providers/chat_provider.dart';
 import 'package:nylo/structure/providers/create_group_chat_providers.dart';
-import 'package:nylo/structure/providers/groupchat_provider.dart';
 import 'package:nylo/structure/providers/storage_provider.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
@@ -75,19 +74,10 @@ class ChatPage extends HookConsumerWidget {
       [],
     );
 
-    // useEffect(() {
-    //   _requestChats(groupChatId, institutionId, true);
-    //   return null;
-    // }, []);
-
     final chatStream = useMemoized(
         () => _requestChats(groupChatId, institutionId, true),
         [groupChatId, institutionId]);
     final chatSnapshot = useStream(chatStream);
-
-    final groupChatMembers = ref.watch(
-      groupChatMembersProvider(groupChatId),
-    );
 
     useEffect(() {
       return () => _chatRepository.dispose();
@@ -426,46 +416,35 @@ class ChatPage extends HookConsumerWidget {
                           controller: _messageController,
                         ),
                       ),
-                      groupChatMembers.when(data: (membersList) {
-                        return SendButton(
-                          onPressed: () async {
-                            if (_messageController.text.isNotEmpty) {
-                              ref
-                                  .read(isLoadingProvider.notifier)
-                                  .update((state) => true);
+                      SendButton(
+                        onPressed: () async {
+                          if (_messageController.text.isNotEmpty) {
+                            ref
+                                .read(isLoadingProvider.notifier)
+                                .update((state) => true);
 
-                              final sendMessage =
-                                  await ref.read(chatProvider).sendMessage(
-                                        groupChatId,
-                                        _messageController.text,
-                                        "chat",
-                                        "",
-                                        ref.watch(setGlobalUniversityId),
-                                        title,
-                                        "",
-                                        "",
-                                        true,
-                                      );
-                              ref
-                                  .read(isLoadingProvider.notifier)
-                                  .update((state) => false);
+                            final sendMessage =
+                                await ref.read(chatProvider).sendMessage(
+                                      groupChatId,
+                                      _messageController.text,
+                                      "chat",
+                                      "",
+                                      ref.watch(setGlobalUniversityId),
+                                      title,
+                                      "",
+                                      "",
+                                      true,
+                                    );
+                            ref
+                                .read(isLoadingProvider.notifier)
+                                .update((state) => false);
 
-                              if (sendMessage) {
-                                _messageController.clear();
-                              }
+                            if (sendMessage) {
+                              _messageController.clear();
                             }
-                          },
-                        );
-                      }, error: (error, stackTrace) {
-                        return Center(
-                          child: Text('Error: $error'),
-                        );
-                      }, loading: () {
-                        return const Align(
-                          alignment: Alignment.center,
-                          child: Icon(Icons.send),
-                        );
-                      }),
+                          }
+                        },
+                      ),
                     ],
                   ),
                 )

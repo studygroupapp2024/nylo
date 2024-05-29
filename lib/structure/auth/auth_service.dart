@@ -138,7 +138,7 @@ class AuthService {
     ref.invalidate(userChatIdsProvider);
     ref.invalidate(currentStudentCoursesInformationProvider);
     ref.invalidate(completedStudentCoursesInformationProvider);
-    ref.invalidate(groupChatMembersProvider);
+
     ref.invalidate(userInfoProvider);
     ref.invalidate(singleGroupChatInformationProvider);
     ref.invalidate(tutorDirectMessages);

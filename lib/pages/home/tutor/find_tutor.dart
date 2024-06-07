@@ -165,8 +165,10 @@ class FindTutor extends ConsumerWidget {
                                                                   radius: 40,
                                                                   backgroundImage:
                                                                       NetworkImage(
-                                                                    userData
-                                                                        .imageUrl,
+                                                                    userData.imageUrl ??
+                                                                        _auth
+                                                                            .currentUser!
+                                                                            .photoURL!,
                                                                   ),
                                                                 ),
                                                                 const SizedBox(
@@ -178,8 +180,10 @@ class FindTutor extends ConsumerWidget {
                                                                           .start,
                                                                   children: [
                                                                     Text(
-                                                                      userData
-                                                                          .name,
+                                                                      userData.name ??
+                                                                          _auth
+                                                                              .currentUser!
+                                                                              .displayName!,
                                                                       style:
                                                                           const TextStyle(
                                                                         fontSize:
@@ -416,7 +420,7 @@ class FindTutor extends ConsumerWidget {
             return Container(
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                  userData.imageUrl,
+                  userData.imageUrl ?? _auth.currentUser!.photoURL!,
                 ),
               ),
             );

@@ -62,7 +62,8 @@ class HomePage extends ConsumerWidget {
                         return Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            names.name,
+                            names.name ??
+                                _firebaseAuth.currentUser!.displayName!,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -102,12 +103,16 @@ class HomePage extends ConsumerWidget {
                       data: (image) {
                         return GestureDetector(
                           onTap: () {
+                            ref.read(userNameProvider.notifier).state =
+                                image.name ??
+                                    _firebaseAuth.currentUser!.displayName!;
+
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProfilePage(
-                                  name: image.name,
-                                  imageUrl: image.imageUrl,
+                                  imageUrl: image.imageUrl ??
+                                      _firebaseAuth.currentUser!.photoURL!,
                                   university: image.university,
                                 ),
                               ),
@@ -120,7 +125,8 @@ class HomePage extends ConsumerWidget {
                           },
                           child: CircleAvatar(
                             radius: 16,
-                            backgroundImage: NetworkImage(image.imageUrl),
+                            backgroundImage: NetworkImage(image.imageUrl ??
+                                _firebaseAuth.currentUser!.photoURL!),
                           ),
                         );
                       },

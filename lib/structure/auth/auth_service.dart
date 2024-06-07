@@ -224,22 +224,33 @@ class AuthService {
           'students': FieldValue.arrayUnion([userId]),
         });
 
-        await _firestore
+        UserModel newUserData = UserModel(
+          uid: userCredential.user!.uid,
+          email: userCredential.user!.email!,
+          fcmtoken: fcmtoken!,
+          universityId: uni,
+          university: uniName,
+          name: userCredential.user!.displayName!,
+          imageUrl: userCredential.user!.photoURL.toString(),
+        );
+
+        final DocumentReference docRef = _firestore
             .collection('institution')
             .doc(uni)
             .collection("students")
-            .doc(userCredential.user!.uid)
-            .set(
-          {
-            'uid': userCredential.user!.uid,
-            'email': userCredential.user!.email,
-            'name': userCredential.user!.displayName,
-            'imageUrl': userCredential.user!.photoURL,
+            .doc(userCredential.user!.uid);
+
+        final DocumentSnapshot docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+          // Document exists, update only necessary fields
+          await docRef.update({
             'fcmtoken': fcmtoken,
-            'universityId': uni,
-            'university': uniName,
-          },
-        );
+          });
+        } else {
+          // Document does not exist, create it
+          await docRef.set(newUserData.toMap());
+        }
 
         return userCredential;
       }

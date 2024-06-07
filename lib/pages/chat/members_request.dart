@@ -56,14 +56,16 @@ class MembersRequest extends ConsumerWidget {
                                     CircleAvatar(
                                       radius: 20,
                                       backgroundImage: NetworkImage(
-                                        data.imageUrl,
+                                        data.imageUrl ??
+                                            auth.currentUser!.photoURL!,
                                       ),
                                     ),
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.all(10),
                                         child: Text(
-                                          data.name,
+                                          data.name ??
+                                              auth.currentUser!.displayName!,
                                           style: const TextStyle(
                                             fontSize: 16,
                                           ),

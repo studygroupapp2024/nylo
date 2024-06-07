@@ -188,7 +188,10 @@ class TutorChatPage extends HookConsumerWidget {
                                                 return CircleAvatar(
                                                   radius: 20,
                                                   backgroundImage: NetworkImage(
-                                                    data.imageUrl,
+                                                    data.imageUrl ??
+                                                        _firebaseAuth
+                                                            .currentUser!
+                                                            .photoURL!,
                                                   ),
                                                 );
                                               },
@@ -241,7 +244,10 @@ class TutorChatPage extends HookConsumerWidget {
                                               userInfo.when(
                                                 data: (data) {
                                                   final formattedName =
-                                                      formatName(data.name);
+                                                      formatName(data.name ??
+                                                          _firebaseAuth
+                                                              .currentUser!
+                                                              .displayName!);
                                                   return Text(
                                                     formattedName,
                                                     style: const TextStyle(

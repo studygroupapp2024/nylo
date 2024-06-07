@@ -14,16 +14,14 @@ import 'package:nylo/structure/providers/create_group_chat_providers.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/providers/user_provider.dart';
 
+final userNameProvider = StateProvider<String>((ref) => '');
+
 class ProfilePage extends ConsumerWidget {
   final String imageUrl;
-  final String name;
+
   final String university;
 
-  ProfilePage(
-      {super.key,
-      required this.imageUrl,
-      required this.name,
-      required this.university});
+  ProfilePage({super.key, required this.imageUrl, required this.university});
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final TextEditingController _nameController = TextEditingController();
@@ -31,6 +29,7 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final editOrSave = ref.watch(editOrSaveProvider);
+    final name = ref.watch(userNameProvider);
     _nameController.text = name;
     return Scaffold(
       appBar: AppBar(
@@ -87,12 +86,17 @@ class ProfilePage extends ConsumerWidget {
                             ref.watch(setGlobalUniversityId),
                             _nameController.text,
                           );
-
+                      ref
+                          .read(nameProvider.notifier)
+                          .update((state) => _nameController.text);
                       informationSnackBar(
                         context,
                         Icons.notifications,
                         "Your profile picture has been updated",
                       );
+
+                      ref.read(userNameProvider.notifier).state =
+                          _nameController.text;
                     }
                   },
                   style: TextButton.styleFrom(
@@ -117,8 +121,6 @@ class ProfilePage extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
                 bottom: 60,
               ),
               child: Column(

@@ -4,18 +4,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   final String uid;
-  final String name;
+  final String? name;
   final String email;
   final String fcmtoken;
-  final String imageUrl;
+  final String? imageUrl;
   final String university;
   final String universityId;
   UserModel({
     required this.uid,
-    required this.name,
+    this.name,
     required this.email,
     required this.fcmtoken,
-    required this.imageUrl,
+    this.imageUrl,
     required this.university,
     required this.universityId,
   });

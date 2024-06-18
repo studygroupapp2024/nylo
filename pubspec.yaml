@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: 'none'
 
-version: 1.0.0+3
+version: 1.0.6+6
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -11,9 +11,9 @@ environment:
 
 dependencies:
 
-  cloud_firestore: ^4.15.6
-  firebase_auth: ^4.17.6
-  firebase_core: ^2.29.0
+  cloud_firestore: ^5.0.1
+  firebase_auth: ^5.1.0
+  firebase_core: ^3.1.0
   flutter:
     sdk: flutter
   hooks_riverpod: ^2.5.1
@@ -22,8 +22,8 @@ dependencies:
   google_sign_in: ^6.2.1
   intl: ^0.19.0
   uuid: ^4.3.3
-  firebase_messaging: ^14.7.20
-  firebase_storage: ^11.6.10
+  firebase_messaging: ^15.0.1
+  firebase_storage: ^12.0.1
   googleapis_auth: ^1.5.1
   awesome_notifications: ^0.9.3+1
   smooth_page_indicator: ^1.1.0
@@ -37,7 +37,8 @@ dependencies:
   get: ^4.6.6
   internet_connection_checker: ^1.0.0+1
   shimmer: ^3.0.0
-  
+  firebase_app_check: ^0.3.0+1 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

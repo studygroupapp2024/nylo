@@ -23,11 +23,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await Firebase.initializeApp();
-
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.debug, //.playIntegrity,
   );
+
   await FirebaseMessage().initNotifications();
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

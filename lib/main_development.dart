@@ -27,8 +27,6 @@ void main() async {
     androidProvider: AndroidProvider.debug, //.playIntegrity,
   );
 
-  // await Firebase.initializeApp();
-
   await FirebaseMessage().initNotifications();
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

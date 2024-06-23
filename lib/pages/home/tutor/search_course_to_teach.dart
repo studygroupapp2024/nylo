@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/information_snackbar.dart';
 import 'package:nylo/components/no_data_holder.dart';
+import 'package:nylo/components/skeletons/my_courses_loading.dart';
 import 'package:nylo/pages/home/tutor/components/chips/tutor_courses_chip_with_button.dart';
 import 'package:nylo/structure/models/selected_courses_to_teach_model.dart';
 import 'package:nylo/structure/providers/course_provider.dart';
@@ -69,7 +70,7 @@ class SearchCourseToTeach extends ConsumerWidget {
                 child: TutorCoursesChipWithButton(),
               ),
             ),
-            if (ref.watch(courseSearchQueryLengthProvider) < 3)
+            if (ref.watch(courseSearchQueryLengthProvider) < 4)
               const Expanded(
                 child: Center(
                   child: Text(
@@ -78,7 +79,7 @@ class SearchCourseToTeach extends ConsumerWidget {
                   ),
                 ),
               ),
-            if (ref.watch(courseSearchQueryLengthProvider) >= 3)
+            if (ref.watch(courseSearchQueryLengthProvider) >= 4)
               Expanded(
                 child: Consumer(
                   builder: (context, ref, child) {
@@ -147,8 +148,12 @@ class SearchCourseToTeach extends ConsumerWidget {
                         child: Text('Error: $error'),
                       );
                     }, loading: () {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: SizedBox(
+                          height: 500,
+                          child: MyCoursesLoading(),
+                        ),
                       );
                     });
                   },

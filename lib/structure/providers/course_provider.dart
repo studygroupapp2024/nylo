@@ -1,6 +1,7 @@
 // collect to all the document
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nylo/functions/generate_trigrams.dart';
 import 'package:nylo/structure/models/user_courses.dart';
 import 'package:nylo/structure/providers/university_provider.dart';
 import 'package:nylo/structure/services/course_services.dart';
@@ -61,6 +62,7 @@ final completedStudentCoursesInformationProvider =
       .collection('students')
       .doc(userId)
       .collection("courses")
+      .limit(10)
       .snapshots()
       .map(
         (querySnapshot) => querySnapshot.docs
@@ -80,11 +82,13 @@ final unenrolledCoursesProvider = StreamProvider.autoDispose
   final searchQuery = ref.watch(courseSearchQueryProvider);
   final institutionId = ref.watch(setGlobalUniversityId);
 
+  final trigram = generateTrigram(searchQuery.toLowerCase());
   final stream = _firestore
       .collection("institution")
       .doc(institutionId)
       .collection("subjects")
-      .limit(10)
+      .where("trigrams", arrayContainsAny: trigram)
+      .limit(500)
       .snapshots()
       .map((querySnapshot) => querySnapshot.docs
           .map((snapshot) => {
@@ -108,16 +112,19 @@ final unenrolledCoursesProvider = StreamProvider.autoDispose
 });
 
 // search course
+// Define the stream provider
 final searchCoursesProvider = StreamProvider.autoDispose
     .family<List<Map<String, dynamic>>, String>((ref, userId) {
   final searchQuery = ref.watch(courseSearchQueryProvider);
   final institutionId = ref.watch(setGlobalUniversityId);
 
+  final trigram = generateTrigram(searchQuery.toLowerCase());
   final stream = _firestore
       .collection("institution")
       .doc(institutionId)
       .collection("subjects")
-      .limit(10)
+      .where("trigrams", arrayContainsAny: trigram)
+      .limit(500)
       .snapshots()
       .map((querySnapshot) => querySnapshot.docs
           .map((snapshot) => {
@@ -142,7 +149,8 @@ final searchCoursesProvider = StreamProvider.autoDispose
 
 final courseSearchQueryProvider = StateProvider<String>((ref) => '');
 
-final courseSearchQueryLengthProvider = StateProvider<int>((ref) => 0);
+final courseSearchQueryLengthProvider =
+    StateProvider.autoDispose<int>((ref) => 0);
 
 final courseProvider = StateProvider.autoDispose<Courses>((ref) {
   return Courses();

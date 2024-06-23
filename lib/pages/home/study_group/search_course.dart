@@ -12,6 +12,7 @@ class SearchCourse extends ConsumerWidget {
   final TextEditingController _controller = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Courses courses = Courses();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -57,7 +58,7 @@ class SearchCourse extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.primary)),
               ),
             ),
-            if (ref.watch(courseSearchQueryLengthProvider) < 3)
+            if (ref.watch(courseSearchQueryLengthProvider) < 4)
               const Expanded(
                 child: Center(
                   child: Text(
@@ -66,7 +67,7 @@ class SearchCourse extends ConsumerWidget {
                   ),
                 ),
               ),
-            if (ref.watch(courseSearchQueryLengthProvider) >= 3)
+            if (ref.watch(courseSearchQueryLengthProvider) >= 4)
               Expanded(
                 child: Consumer(
                   builder: (context, ref, child) {

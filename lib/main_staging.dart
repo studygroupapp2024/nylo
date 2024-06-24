@@ -14,7 +14,7 @@ import 'package:nylo/themes/light_mode.dart';
 @pragma('vm:entry-point')
 void main() async {
   DependencyInjection.init();
-  AppConfig.setEnvironment(Flavors.development);
+  AppConfig.setEnvironment(Flavors.staging);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: 'nylo-staging',

@@ -15,7 +15,7 @@ import 'package:nylo/themes/light_mode.dart';
 @pragma('vm:entry-point')
 void main() async {
   // Get.put(NetworkController());
-  AppConfig.setEnvironment(Flavors.development);
+  AppConfig.setEnvironment(Flavors.production);
   DependencyInjection.init();
 
   WidgetsFlutterBinding.ensureInitialized();

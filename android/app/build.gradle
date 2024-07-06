@@ -17,12 +17,12 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '9'
+    flutterVersionCode = '10'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0.9'
+    flutterVersionName = '1.0.10'
 }
 
 def keystoreProperties = new Properties()
@@ -52,7 +52,7 @@ android {
     defaultConfig {
         applicationId "com.turnix.nylo"
         minSdkVersion 23
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

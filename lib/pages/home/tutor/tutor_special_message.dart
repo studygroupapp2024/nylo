@@ -167,7 +167,9 @@ class TutorSendSpecialMessage extends ConsumerWidget {
                     ref.watch(pathNameProvider),
                     ref.watch(fileNameProvider),
                     groupChatId,
-                    messageController.text,
+                    messageController.text.isEmpty
+                        ? 'Check this out!'
+                        : messageController.text,
                     'chat',
                     ref.watch(documentTypeProvider),
                     groupChatTitle,

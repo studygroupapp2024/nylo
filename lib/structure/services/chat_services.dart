@@ -352,6 +352,8 @@ class ChatService {
     String institutionId,
     bool isGroup,
   ) async {
+    print("filePath: $filePath");
+    print("fileName: $fileName");
     File file = File(filePath);
     await _firebaseStorage.ref('chatImages/$fileName').putFile(file);
     String downloadUrl =

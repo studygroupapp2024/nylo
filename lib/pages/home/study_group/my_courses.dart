@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nylo/components/containers/user_courses_container.dart';
 import 'package:nylo/components/dialogs/alert_dialog.dart';
+import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/skeletons/my_courses_loading.dart';
 import 'package:nylo/pages/home/study_group/search_course.dart';
 import 'package:nylo/structure/models/user_courses.dart';
@@ -57,68 +58,90 @@ class FindCourses extends ConsumerWidget {
             children: [
               courses!.when(
                 data: (courses) {
-                  return Wrap(
-                    children: courses.map<Widget>(
-                      (courseData) {
-                        var icon = (courseData.isCompleted == true)
-                            ? Icon(
-                                Icons.remove_circle_outline,
-                                color: Theme.of(context).colorScheme.primary,
-                              )
-                            : Icon(
-                                Icons.check_circle_outline,
-                                color: Theme.of(context).colorScheme.primary,
-                              );
-                        return MyCoursesContainer(
-                          courseTitle: courseData.courseTitle,
-                          courseCode: courseData.courseCode,
-                          icon: icon,
-                          onTap: () {
-                            completedOrNot
-                                ? showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return ConfirmationDialog(
-                                        confirm: () async {
-                                          ref
-                                              .read(courseProvider)
-                                              .markCompleted(
-                                                courseData.courseId,
-                                                ref.watch(
-                                                    setGlobalUniversityId),
-                                              );
-                                        },
-                                        content:
-                                            "Have you completed this course?",
-                                        title: "Confirmation",
-                                        type: "Yes",
-                                      );
-                                    },
-                                  )
-                                : showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return ConfirmationDialog(
-                                        confirm: () async {
-                                          ref.read(courseProvider).deleteCourse(
-                                                courseData.courseId,
-                                                courseData.courseId,
-                                                ref.watch(
-                                                    setGlobalUniversityId),
-                                              );
-                                        },
-                                        content:
-                                            "Do you really want to delete this course?",
-                                        title: "Confirmation",
-                                        type: "Yes",
-                                      );
-                                    },
-                                  );
-                          },
-                        );
-                      },
-                    ).toList(),
-                  );
+                  if (courses.isEmpty) {
+                    return Center(
+                      child: NoContent(
+                        icon: 'assets/icons/study-student_svgrepo.com.svg',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchCourse(),
+                            ),
+                          );
+                        },
+                        description: !completedOrNot
+                            ? "No completed courses"
+                            : "Find your courses",
+                        buttonText: "Enroll to a course",
+                      ),
+                    );
+                  } else {
+                    return Wrap(
+                      children: courses.map<Widget>(
+                        (courseData) {
+                          var icon = (courseData.isCompleted == true)
+                              ? Icon(
+                                  Icons.remove_circle_outline,
+                                  color: Theme.of(context).colorScheme.primary,
+                                )
+                              : Icon(
+                                  Icons.check_circle_outline,
+                                  color: Theme.of(context).colorScheme.primary,
+                                );
+                          return MyCoursesContainer(
+                            courseTitle: courseData.courseTitle,
+                            courseCode: courseData.courseCode,
+                            icon: icon,
+                            onTap: () {
+                              completedOrNot
+                                  ? showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return ConfirmationDialog(
+                                          confirm: () async {
+                                            ref
+                                                .read(courseProvider)
+                                                .markCompleted(
+                                                  courseData.courseId,
+                                                  ref.watch(
+                                                      setGlobalUniversityId),
+                                                );
+                                          },
+                                          content:
+                                              "Have you completed this course?",
+                                          title: "Confirmation",
+                                          type: "Yes",
+                                        );
+                                      },
+                                    )
+                                  : showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return ConfirmationDialog(
+                                          confirm: () async {
+                                            ref
+                                                .read(courseProvider)
+                                                .deleteCourse(
+                                                  courseData.courseId,
+                                                  courseData.courseId,
+                                                  ref.watch(
+                                                      setGlobalUniversityId),
+                                                );
+                                          },
+                                          content:
+                                              "Do you really want to delete this course?",
+                                          title: "Confirmation",
+                                          type: "Yes",
+                                        );
+                                      },
+                                    );
+                            },
+                          );
+                        },
+                      ).toList(),
+                    );
+                  }
                 },
                 error: (error, stackTrace) {
                   return Center(

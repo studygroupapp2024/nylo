@@ -104,6 +104,7 @@ class RegisterPage extends ConsumerWidget {
           child: Scaffold(
         appBar: AppBar(
           title: const Text("Create Account"),
+          centerTitle: true,
         ),
         body: PageView(
           controller: controller,

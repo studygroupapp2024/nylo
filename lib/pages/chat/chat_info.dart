@@ -40,7 +40,7 @@ class ChatInfo extends ConsumerWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,91 +50,97 @@ class ChatInfo extends ConsumerWidget {
                     group.when(
                       data: (groupInfo) {
                         return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: 125,
-                              width: 125,
-                              child: GestureDetector(
-                                onTap: members.contains(auth.currentUser!.uid)
-                                    ? () async {
-                                        final result =
-                                            await FilePicker.platform.pickFiles(
-                                          allowMultiple: false,
-                                          type: FileType.custom,
-                                          allowedExtensions: [
-                                            'jpg',
-                                            'png',
-                                          ],
-                                        );
+                            Align(
+                              alignment: Alignment.center,
+                              child: SizedBox(
+                                height: 125,
+                                width: 125,
+                                child: GestureDetector(
+                                  onTap: members.contains(auth.currentUser!.uid)
+                                      ? () async {
+                                          final result = await FilePicker
+                                              .platform
+                                              .pickFiles(
+                                            allowMultiple: false,
+                                            type: FileType.custom,
+                                            allowedExtensions: [
+                                              'jpg',
+                                              'png',
+                                            ],
+                                          );
 
-                                        if (result == null) {
-                                          if (context.mounted) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                    "No item has been selected."),
-                                              ),
-                                            );
+                                          if (result == null) {
+                                            if (context.mounted) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      "No item has been selected."),
+                                                ),
+                                              );
+                                            }
+                                            return;
                                           }
-                                          return;
+                                          final path = result.files.single.path;
+                                          final filename =
+                                              result.files.single.name;
+                                          ref
+                                              .read(groupChatProvider)
+                                              .changeGroupChatProfile(
+                                                path.toString(),
+                                                filename,
+                                                groupChatId,
+                                                ref.watch(
+                                                    setGlobalUniversityId),
+                                              );
                                         }
-                                        final path = result.files.single.path;
-                                        final filename =
-                                            result.files.single.name;
-                                        ref
-                                            .read(groupChatProvider)
-                                            .changeGroupChatProfile(
-                                              path.toString(),
-                                              filename,
-                                              groupChatId,
-                                              ref.watch(setGlobalUniversityId),
-                                            );
-                                      }
-                                    : () {},
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 60,
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .tertiaryContainer,
-                                    ),
-                                    groupInfo.groupChatImage != ''
-                                        ? CircleAvatar(
+                                      : () {},
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 60,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiaryContainer,
+                                      ),
+                                      groupInfo.groupChatImage != ''
+                                          ? CircleAvatar(
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .background,
+                                              backgroundImage: NetworkImage(
+                                                  groupInfo.groupChatImage!),
+                                              radius: 60,
+                                            )
+                                          : ImagePlaceholder(
+                                              radius: 60,
+                                              textColor: Colors.white,
+                                              title: groupInfo.courseTitle,
+                                              subtitle: "Study Group",
+                                              titleFontSize: 12,
+                                              subtitleFontSize: 10,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiaryContainer,
+                                            ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: CircleAvatar(
                                             backgroundColor: Theme.of(context)
                                                 .colorScheme
-                                                .background,
-                                            backgroundImage: NetworkImage(
-                                                groupInfo.groupChatImage!),
-                                            radius: 60,
-                                          )
-                                        : ImagePlaceholder(
-                                            radius: 60,
-                                            textColor: Colors.white,
-                                            title: groupInfo.courseTitle,
-                                            subtitle: "Study Group",
-                                            titleFontSize: 12,
-                                            subtitleFontSize: 10,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiaryContainer,
+                                                .primary,
+                                            radius: 13,
+                                            child: const Icon(Icons.add),
                                           ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: CircleAvatar(
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          radius: 13,
-                                          child: const Icon(Icons.add),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

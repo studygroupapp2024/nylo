@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nylo/components/chats/tutor_chat_container.dart';
 import 'package:nylo/components/no_data_holder.dart';
 import 'package:nylo/components/skeletons/my_tutor_chat_loading.dart';
-import 'package:nylo/pages/home/study_group/search_study_group.dart';
+import 'package:nylo/pages/home/tutor/find_tutor.dart';
 import 'package:nylo/pages/home/tutor/register_as_tutor.dart';
 import 'package:nylo/pages/home/tutor/tutor_chat_page.dart';
 import 'package:nylo/structure/models/direct_message_model.dart';
@@ -141,13 +141,13 @@ class TutorClassses extends ConsumerWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FindStudyGroup(),
+                                  builder: (context) => FindTutor(),
                                 ),
                               );
                             },
                             description:
-                                "It seems like you have no tutors groups yet. Do you want to find one?",
-                            buttonText: "Find Study Group");
+                                "It seems like you have no tutors yet. Do you want to find one?",
+                            buttonText: "Find Tutor");
                       } else {
                         return NoContent(
                             icon: 'assets/icons/search-phone_svgrepo.com.svg',

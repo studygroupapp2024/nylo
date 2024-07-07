@@ -42,12 +42,7 @@ class TutorChatInfo extends ConsumerWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              left: 20,
-              right: 20,
-              bottom: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

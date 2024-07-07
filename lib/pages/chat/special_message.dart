@@ -78,38 +78,41 @@ class SendSpecialMessage extends ConsumerWidget {
                   }
 
                   return;
-                }
-
-                final fileSize = result.files.single.size;
-
-                if (fileSize > 10 * 1024 * 1024) {
-                  if (context.mounted) {
-                    informationSnackBar(
-                      context,
-                      Icons.info_outline,
-                      "File size exceeds the limit of 10MB.",
-                    );
-                    return;
-                  }
-
-                  final filename = result.files.single.name;
-                  ref.read(pathNameProvider.notifier).state =
-                      result.files.single.path.toString();
-                  ref.read(fileNameProvider.notifier).state =
-                      result.files.single.name;
-
-                  if (filename.toLowerCase().endsWith('.jpg') ||
-                      filename.toLowerCase().endsWith('.jpeg') ||
-                      filename.toLowerCase().endsWith('.png')) {
-                    ref.read(documentTypeProvider.notifier).state = 'image';
-                  } else if (filename.toLowerCase().endsWith('.pdf') ||
-                      filename.toLowerCase().endsWith('.doc') ||
-                      filename.toLowerCase().endsWith('.docx')) {
-                    ref.read(documentTypeProvider.notifier).state = 'document';
-                  } else {
+                } else {
+                  final fileSize = result.files.single.size;
+                  print("fileSize: $fileSize");
+                  if (fileSize > 10 * 1024 * 1024) {
                     if (context.mounted) {
                       informationSnackBar(
-                          context, Icons.warning, "Unknown file type");
+                        context,
+                        Icons.info_outline,
+                        "File size exceeds the limit of 10MB.",
+                      );
+                      return;
+                    }
+                  } else {
+                    final filename = result.files.single.name;
+
+                    ref.read(pathNameProvider.notifier).state =
+                        result.files.single.path.toString();
+                    ref.read(fileNameProvider.notifier).state =
+                        result.files.single.name;
+                    print("filename: $filename");
+
+                    if (filename.toLowerCase().endsWith('.jpg') ||
+                        filename.toLowerCase().endsWith('.jpeg') ||
+                        filename.toLowerCase().endsWith('.png')) {
+                      ref.read(documentTypeProvider.notifier).state = 'image';
+                    } else if (filename.toLowerCase().endsWith('.pdf') ||
+                        filename.toLowerCase().endsWith('.doc') ||
+                        filename.toLowerCase().endsWith('.docx')) {
+                      ref.read(documentTypeProvider.notifier).state =
+                          'document';
+                    } else {
+                      if (context.mounted) {
+                        informationSnackBar(
+                            context, Icons.warning, "Unknown file type");
+                      }
                     }
                   }
                 }
@@ -181,7 +184,9 @@ class SendSpecialMessage extends ConsumerWidget {
                     ref.watch(pathNameProvider),
                     ref.watch(fileNameProvider),
                     groupChatId,
-                    messageController.text,
+                    messageController.text.isEmpty
+                        ? 'Check this out!'
+                        : messageController.text,
                     'chat',
                     ref.watch(documentTypeProvider),
                     groupChatTitle,

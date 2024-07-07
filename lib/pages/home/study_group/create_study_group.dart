@@ -33,7 +33,8 @@ class CreateStudyGroup extends ConsumerWidget {
     final courseId = ref.watch(selectedcourseIdProvider);
     final courseTitle = ref.watch(selectedcourseTitleProvider);
     final buttonColor = ref.watch(buttonColorProvider);
-
+    final chatDescription = ref.watch(chatDescriptionProvider);
+    final chatName = ref.watch(chatNameProvider);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -279,66 +280,87 @@ class CreateStudyGroup extends ConsumerWidget {
                   RoundedButtonWithProgress(
                     text: "Create Study Group",
                     onTap: () async {
-                      ref.read(isLoadingProvider.notifier).state = true;
-                      final success =
-                          await ref.read(groupChatProvider).addStudyGroup(
-                                _nameController.text,
-                                _descriptionController.text,
-                                selectedCourse.toString(),
-                                courseId.toString(),
-                                courseTitle.toString(),
-                                ref.watch(setGlobalUniversityId),
-                                ref
-                                    .watch(editUploadImagePathNameProvider)
-                                    .toString(),
-                                ref.watch(editUploadImageNameProvider),
-                              );
+                      print("selected course is $selectedCourse");
 
-                      ref.read(isLoadingProvider.notifier).state = false;
+                      if (chatDescription.isEmpty ||
+                          chatName.isEmpty ||
+                          selectedCourse.isEmpty) {
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CreateGroupChatDialog(
+                              confirm: () {},
+                              content: "Kindly fill in all the fields.",
+                              title: "Study Group Creation Failed",
+                              type: "Okay",
+                            );
+                          },
+                        );
 
-                      if (success) {
-                        _nameController.clear();
-                        _descriptionController.clear();
-                        ref.read(selectedCourseProvider.notifier).state = '';
-                        ref.read(selectedcourseIdProvider.notifier).state = '';
-                        ref.read(selectedcourseTitleProvider.notifier).state =
-                            '';
+                        print("EMPTYYYYYYYYY");
+                      } else {
+                        ref.read(isLoadingProvider.notifier).state = true;
+                        final success =
+                            await ref.read(groupChatProvider).addStudyGroup(
+                                  _nameController.text,
+                                  _descriptionController.text,
+                                  selectedCourse.toString(),
+                                  courseId.toString(),
+                                  courseTitle.toString(),
+                                  ref.watch(setGlobalUniversityId),
+                                  ref
+                                      .watch(editUploadImagePathNameProvider)
+                                      .toString(),
+                                  ref.watch(editUploadImageNameProvider),
+                                );
 
-                        ref.read(editUploadImagePathProvider.notifier).state =
-                            null;
+                        ref.read(isLoadingProvider.notifier).state = false;
 
-                        ref
-                            .read(editUploadImagePathNameProvider.notifier)
-                            .state = '';
+                        if (success) {
+                          _nameController.clear();
+                          _descriptionController.clear();
+                          ref.read(selectedCourseProvider.notifier).state = '';
+                          ref.read(selectedcourseIdProvider.notifier).state =
+                              '';
+                          ref.read(selectedcourseTitleProvider.notifier).state =
+                              '';
 
-                        ref.read(editUploadImageNameProvider.notifier).state =
-                            '';
-                        if (context.mounted) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const CreateGroupChatDialog(
-                                confirm: null,
-                                content: "The group chat has been created",
-                                title: "Success",
-                                type: "Okay",
-                              );
-                            },
-                          );
-                        } else {
+                          ref.read(editUploadImagePathProvider.notifier).state =
+                              null;
+
+                          ref
+                              .read(editUploadImagePathNameProvider.notifier)
+                              .state = '';
+
+                          ref.read(editUploadImageNameProvider.notifier).state =
+                              '';
                           if (context.mounted) {
                             showDialog(
                               context: context,
                               builder: (context) {
                                 return const CreateGroupChatDialog(
                                   confirm: null,
-                                  content:
-                                      "There was an error creating the study group. Kindly try again.",
-                                  title: "Failed",
+                                  content: "The group chat has been created",
+                                  title: "Success",
                                   type: "Okay",
                                 );
                               },
                             );
+                          } else {
+                            if (context.mounted) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const CreateGroupChatDialog(
+                                    confirm: null,
+                                    content:
+                                        "There was an error creating the study group. Kindly try again.",
+                                    title: "Failed",
+                                    type: "Okay",
+                                  );
+                                },
+                              );
+                            }
                           }
                         }
                       }

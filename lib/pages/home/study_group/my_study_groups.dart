@@ -124,8 +124,10 @@ class FindPage extends ConsumerWidget {
                                     }
                                   },
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 10,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                      right: 15,
                                     ),
                                     height: 100,
                                     decoration: chatIds
@@ -138,11 +140,8 @@ class FindPage extends ConsumerWidget {
                                                 .colorScheme
                                                 .background,
                                             borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(50),
-                                              topRight: Radius.circular(30),
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(30),
+                                                const BorderRadius.all(
+                                              Radius.circular(30),
                                             ),
                                           )
                                         : BoxDecoration(
@@ -150,11 +149,8 @@ class FindPage extends ConsumerWidget {
                                                 .colorScheme
                                                 .secondary,
                                             borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(50),
-                                              topRight: Radius.circular(30),
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(30),
+                                                const BorderRadius.all(
+                                              Radius.circular(20),
                                             ),
                                           ),
                                     child: Row(

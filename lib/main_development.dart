@@ -45,6 +45,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       // routerConfig: router,
       home: const AuthGate(),
